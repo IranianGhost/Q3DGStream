@@ -116,10 +116,36 @@ def storage_check(args, nbytes):
         raise RuntimeError('insufficient free space for dedicated progressive QUIC cache')
 
 
+async def send_priority_scene(proto, init, config, boundfile, frames, args):
+    """Opt-in chunk scheduler. Keep metadata/additions/frame dependencies intact."""
+    from research.quic.priority_transport.transport import FileJob, send_files
+    options = dict(policy=args.policy, max_inflight=args.max_inflight)
+    rows = []
+    async def batch(jobs, phase):
+        result = await send_files(proto, jobs, **options)
+        for row in result:
+            row['phase'] = phase
+        rows.extend(result)
+    await batch([FileJob(boundfile, 'NTCs/progressive/bounds.json', 0),
+                 FileJob(init, 'init_3dgs.ply', 0),
+                 FileJob(config, 'NTCs/config.json', 0)], 'metadata')
+    if args.warmup_delay:
+        await asyncio.sleep(args.warmup_delay)
+    for idx, addition, stages in frames:
+        await batch([FileJob(addition, f'additional_3dgs/additions_{idx:06d}.ply', 0)], f'addition-{idx}')
+        await batch([FileJob(path, f'NTCs/progressive/NTC_{idx:06d}_P{st}.qblk', st)
+                     for st, path in enumerate(stages)], f'ntc-{idx}')
+        print(f'[PRIORITY CHUNKS] NTC={idx:03d}: all files committed', flush=True)
+    return rows
+
+
 async def transfer(args, scene_data):
     from aioquic.asyncio import connect
     from aioquic.quic.configuration import QuicConfiguration
-    from quic_transport import ALPN, send_file
+    if args.transport == 'priority':
+        from research.quic.priority_transport.transport import ALPN
+    else:
+        from quic_transport import ALPN, send_file
     import torch
 
     init, config, first, frames, _ = scene_data
@@ -129,13 +155,22 @@ async def transfer(args, scene_data):
         'xyz_bound_max': state['xyz_bound_max'].cpu().float().tolist(),
     }
     conf = QuicConfiguration(is_client=True, alpn_protocols=ALPN)
-    conf.verify_mode = ssl.CERT_NONE    # local loopback ONLY
+    if args.transport == 'priority':
+        conf.load_verify_locations(str(args.cert))
+    else:
+        conf.verify_mode = ssl.CERT_NONE    # existing legacy loopback behavior
     conf.server_name = 'localhost'
 
     with tempfile.TemporaryDirectory(prefix='qntc_dynamic_priority_bounds_') as tmp:
         boundfile = Path(tmp) / 'bounds.json'
         boundfile.write_text(json.dumps(bounds))
         async with connect('127.0.0.1', args.port, configuration=conf) as proto:
+            if args.transport == 'priority':
+                rows = await send_priority_scene(proto, init, config, boundfile, frames, args)
+                if args.transport_log:
+                    args.transport_log.parent.mkdir(parents=True, exist_ok=True)
+                    args.transport_log.write_text(json.dumps(rows, indent=2))
+                return
             # Initial metadata and scene, then true original additions before each NTC update.
             await send_file(proto, 'NTCs/progressive/bounds.json', boundfile, timeout=120)
             await send_file(proto, 'init_3dgs.ply', init, timeout=120)
@@ -166,7 +201,18 @@ def main():
     p.add_argument('--stage-delay', type=float, default=0.0)
     p.add_argument('--warmup-delay', type=float, default=2.0)
     p.add_argument('--preflight-only', action='store_true')
+    p.add_argument('--transport', choices=['legacy', 'priority'], default='legacy')
+    p.add_argument('--policy', choices=['fifo', 'strict', 'weighted'], default='strict')
+    p.add_argument('--max-inflight', type=int, default=16)
+    p.add_argument('--cert', type=Path, help='trusted localhost certificate for priority transport')
+    p.add_argument('--transport-log', type=Path)
     a = p.parse_args()
+    if not 1 <= a.max_inflight <= 128:
+        p.error('--max-inflight must be 1..128')
+    if a.transport == 'priority' and (not a.cert or not a.cert.is_file()):
+        p.error('--transport priority requires --cert PATH')
+    if a.transport == 'priority' and a.stage_delay:
+        p.error('--stage-delay is only available with legacy transport')
     if not (0 <= a.start <= a.end <= 298) or a.stage_delay < 0 or a.warmup_delay < 0:
         p.error('require 0 <= start <= end <= 298 and nonnegative delays')
     if a.start != 0:

@@ -1,0 +1,184 @@
+"""Verified chunk transport for Q3DGStream files. ALPN intentionally differs from legacy."""
+
+import asyncio
+from dataclasses import dataclass
+import hashlib
+import json
+from pathlib import Path
+import struct
+import time
+
+from .core import CHUNK_SIZE, FileAssembler, Scheduler
+
+ALPN = ["q3dg-priority-chunks/1"]
+
+
+@dataclass(frozen=True)
+class FileJob:
+    path: Path
+    remote: str
+    priority: int
+    release_ms: float = 0
+
+
+def file_hash(path):
+    digest = hashlib.sha256()
+    with Path(path).open("rb") as f:
+        while block := f.read(1024 * 1024):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+class Receiver:
+    def __init__(self, cache):
+        self.assembler = FileAssembler(cache)
+        self.tasks = set()
+        self.events = []
+        self.errors = []
+
+    def handler(self, reader, writer):
+        t = asyncio.create_task(self.receive(reader, writer))
+        self.tasks.add(t)
+        t.add_done_callback(self.tasks.discard)
+
+    async def receive(self, reader, writer):
+        try:
+            n = struct.unpack("!I", await asyncio.wait_for(reader.readexactly(4), 30))[
+                0
+            ]
+            if not 0 < n <= 4096:
+                raise ValueError("invalid header size")
+            h = json.loads(await asyncio.wait_for(reader.readexactly(n), 30))
+            if type(h["size"]) is not int or not 0 < h["size"] <= CHUNK_SIZE:
+                raise ValueError("invalid payload size")
+            payload = await asyncio.wait_for(reader.readexactly(h["size"]), 30)
+            if await asyncio.wait_for(reader.read(1), 30):
+                raise ValueError("unexpected trailing bytes")
+            complete = self.assembler.accept(h, payload)
+            received = time.monotonic()
+            self.events.append(
+                dict(
+                    path=h["path"],
+                    offset=h["offset"],
+                    priority=h["priority"],
+                    received=received,
+                    complete=complete,
+                )
+            )
+            writer.write(
+                (
+                    json.dumps(dict(ok=True, received=received, complete=complete))
+                    + "\n"
+                ).encode()
+            )
+            writer.write_eof()
+        except Exception as exc:
+            self.errors.append(repr(exc))
+            try:
+                writer.write(
+                    (json.dumps(dict(ok=False, error=str(exc))) + "\n").encode()
+                )
+                writer.write_eof()
+            except Exception:
+                pass
+
+    async def close(self):
+        for task in list(self.tasks):
+            task.cancel()
+        await asyncio.gather(*list(self.tasks), return_exceptions=True)
+        self.assembler.close()
+
+
+async def send_files(connection, jobs, *, policy="strict", max_inflight=16, timeout=30):
+    """Send file chunks. Completion means receiver validated and atomically committed files.
+
+    Read files lazily per chunk. Inputs must remain unchanged during transfer.
+    Receipt timestamps use receiver monotonic time, comparable only on the same host.
+    """
+    if not 1 <= max_inflight <= 128:
+        raise ValueError("max_inflight must be 1..128")
+    scheduler = Scheduler(policy)
+    jobs = list(jobs)
+    if len({job.remote for job in jobs}) != len(jobs):
+        raise ValueError("duplicate file name")
+    pending = []
+    for job in jobs:
+        if job.priority not in range(4) or job.release_ms < 0:
+            raise ValueError("bad priority/release")
+        size = job.path.stat().st_size
+        if not 0 < size <= 1024**3:
+            raise ValueError("file size must be 1 byte..1 GiB")
+        pending.append((job, size, file_hash(job.path)))
+    started = time.monotonic()
+    active = set()
+    rows = []
+    completed = set()
+
+    async def send(item, selected):
+        job, total, digest, offset = item
+        with job.path.open("rb") as f:
+            f.seek(offset)
+            payload = f.read(min(CHUNK_SIZE, total - offset))
+        h = dict(
+            path=job.remote,
+            total=total,
+            offset=offset,
+            size=len(payload),
+            sha256=digest,
+            chunk_sha256=hashlib.sha256(payload).hexdigest(),
+            priority=job.priority,
+        )
+        encoded = json.dumps(h, separators=(",", ":")).encode()
+        if len(encoded) > 4096:
+            raise ValueError("header too long")
+        row = dict(
+            path=job.remote,
+            priority=job.priority,
+            offset=offset,
+            size=len(payload),
+            release_ms=job.release_ms,
+            selected_ms=selected,
+        )
+        rows.append(row)
+        reader, writer = await connection.create_stream()
+        row["stream_id"] = writer.get_extra_info("stream_id")
+        row["submitted_ms"] = (time.monotonic() - started) * 1000
+        writer.write(struct.pack("!I", len(encoded)) + encoded + payload)
+        writer.write_eof()
+        response = json.loads(await asyncio.wait_for(reader.readline(), timeout))
+        if not response.get("ok"):
+            raise RuntimeError(response.get("error", "receiver rejected chunk"))
+        row["received_ms"] = (response["received"] - started) * 1000
+        row["acked_ms"] = (time.monotonic() - started) * 1000
+        if response["complete"]:
+            completed.add(job.remote)
+
+    try:
+        while pending or active or any(scheduler.q) or scheduler.fifo:
+            elapsed = (time.monotonic() - started) * 1000
+            for entry in pending[:]:
+                job, size, digest = entry
+                if job.release_ms <= elapsed:
+                    for offset in range(0, size, CHUNK_SIZE):
+                        scheduler.add(job.priority, (job, size, digest, offset))
+                    pending.remove(entry)
+            while len(active) < max_inflight:
+                item = scheduler.pop()
+                if item is None:
+                    break
+                active.add(asyncio.create_task(send(item[1], elapsed)))
+            if active:
+                done, active = await asyncio.wait(
+                    active, timeout=0.005, return_when=asyncio.FIRST_COMPLETED
+                )
+                for task in done:
+                    task.result()
+            else:
+                await asyncio.sleep(0.001)
+        if completed != {job.remote for job in jobs}:
+            raise RuntimeError("missing committed file confirmation")
+        return rows
+    finally:
+        for task in active:
+            task.cancel()
+        await asyncio.gather(*active, return_exceptions=True)

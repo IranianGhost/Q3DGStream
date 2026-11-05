@@ -53,3 +53,13 @@ The `QNTC_STAGE_DELAY` setting introduces a pause after each stage for inspectin
 The measured local QUIC experiment confirms delivery of 30 updates, 120 priority stages, and 30 additions files. It uses **application-level stage ordering**, not QUIC's internal stream-priority mechanism. Claims about adaptive bandwidth control, end-to-end 30-update-per-second playback, or saliency-weighted rendered QoE require the corresponding network and GPU measurements.
 
 See [Results](RESULTS.md) for completed tests and [Experiments](EXPERIMENTS.md) for reconstruction evaluation.
+
+## Optional bounded chunk transport
+
+The local extension in [priority_transport](../research/quic/priority_transport/README.md)
+adds FIFO, strict and weighted chunk admission to the existing dynamic sender via
+`--transport priority`. It has its own headless receiver and ALPN, preserves stage
+file bytes and per-frame dependency barriers, and includes synthetic QNP01 tests
+under Linux netem. This does not modify QUIC's internal scheduler or establish
+compatibility with the legacy GPU receiver. See that directory for reproducible
+commands and a comparison with the original stage-ordering implementation.
