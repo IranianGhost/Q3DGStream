@@ -1,0 +1,120 @@
+{
+  "attempts": 36,
+  "successful": 35,
+  "failed": 1,
+  "failures": [
+    {
+      "mode": "chunked",
+      "profile": "burst",
+      "repeat": 3,
+      "valid": false,
+      "error": "RuntimeError with empty receiver error string",
+      "recovered_from": "burst-3-chunked.log; original benchmark did not serialize failure metadata",
+      "observed_qlog_duration_ms": 32874.61,
+      "interpretation": "consistent with the configured 30-second receiver read timeout; original log did not record the exception type"
+    }
+  ],
+  "bytes": 7968015,
+  "sha256": "7465eb688a3524da736fc925ee7e152be558315887d6a4b4e66991afe1f8beb1",
+  "medians": [
+    {
+      "profile": "clean",
+      "whole": 453.94675000000007,
+      "chunked": 861.0555839999989,
+      "successful": {
+        "whole": 3,
+        "chunked": 3
+      },
+      "chunked_over_whole": 1.8968206821615063
+    },
+    {
+      "profile": "bandwidth",
+      "whole": 14101.261590000007,
+      "chunked": 14819.298713999999,
+      "successful": {
+        "whole": 3,
+        "chunked": 3
+      },
+      "chunked_over_whole": 1.0509200626778807
+    },
+    {
+      "profile": "delay",
+      "whole": 14261.25667300002,
+      "chunked": 14997.13642200001,
+      "successful": {
+        "whole": 3,
+        "chunked": 3
+      },
+      "chunked_over_whole": 1.0515999231956317
+    },
+    {
+      "profile": "jitter",
+      "whole": 14329.563422999996,
+      "chunked": 15222.812756999985,
+      "successful": {
+        "whole": 3,
+        "chunked": 3
+      },
+      "chunked_over_whole": 1.0623361164350797
+    },
+    {
+      "profile": "loss",
+      "whole": 42716.500310999945,
+      "chunked": 44662.956853000025,
+      "successful": {
+        "whole": 3,
+        "chunked": 3
+      },
+      "chunked_over_whole": 1.0455668542092351
+    },
+    {
+      "profile": "burst",
+      "whole": 36209.75668300002,
+      "chunked": 40917.01268499998,
+      "successful": {
+        "whole": 3,
+        "chunked": 2
+      },
+      "chunked_over_whole": null
+    }
+  ],
+  "dropped_packets": {
+    "burst-1-whole": 377,
+    "delay-3-whole": 0,
+    "bandwidth-3-chunked": 0,
+    "delay-1-chunked": 0,
+    "clean-1-chunked": 0,
+    "burst-2-chunked": 387,
+    "burst-3-whole": 335,
+    "delay-1-whole": 0,
+    "loss-1-whole": 280,
+    "loss-3-whole": 271,
+    "bandwidth-2-chunked": 0,
+    "clean-2-chunked": 0,
+    "burst-2-whole": 374,
+    "burst-1-chunked": 469,
+    "delay-2-whole": 0,
+    "delay-2-chunked": 0,
+    "bandwidth-1-chunked": 0,
+    "loss-2-whole": 260,
+    "delay-3-chunked": 0,
+    "clean-3-chunked": 0,
+    "loss-1-chunked": 312,
+    "jitter-2-whole": 0,
+    "jitter-1-chunked": 0,
+    "bandwidth-3-whole": 0,
+    "clean-3-whole": 0,
+    "bandwidth-1-whole": 0,
+    "clean-1-whole": 0,
+    "jitter-1-whole": 0,
+    "jitter-2-chunked": 0,
+    "loss-2-chunked": 290,
+    "jitter-3-whole": 0,
+    "loss-3-chunked": 291,
+    "clean-2-whole": 0,
+    "bandwidth-2-whole": 0,
+    "jitter-3-chunked": 0,
+    "burst-3-chunked": 56
+  },
+  "scope": "Original trained checkpoint transfer only; no saliency competition or GPU playback"
+}

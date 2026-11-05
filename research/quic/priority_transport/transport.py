@@ -30,8 +30,9 @@ def file_hash(path):
 
 
 class Receiver:
-    def __init__(self, cache):
+    def __init__(self, cache, on_file=None):
         self.assembler = FileAssembler(cache)
+        self.on_file = on_file
         self.tasks = set()
         self.events = []
         self.errors = []
@@ -49,12 +50,38 @@ class Receiver:
             if not 0 < n <= 4096:
                 raise ValueError("invalid header size")
             h = json.loads(await asyncio.wait_for(reader.readexactly(n), 30))
-            if type(h["size"]) is not int or not 0 < h["size"] <= CHUNK_SIZE:
-                raise ValueError("invalid payload size")
-            payload = await asyncio.wait_for(reader.readexactly(h["size"]), 30)
-            if await asyncio.wait_for(reader.read(1), 30):
-                raise ValueError("unexpected trailing bytes")
-            complete = self.assembler.accept(h, payload)
+            if h.get("whole_file") is True:
+                total = h["total"]
+                if (
+                    type(total) is not int
+                    or not 0 < total <= 1024**3
+                    or h["size"] != total
+                ):
+                    raise ValueError("invalid whole-file size")
+                for offset in range(0, total, CHUNK_SIZE):
+                    payload = await asyncio.wait_for(
+                        reader.readexactly(min(CHUNK_SIZE, total - offset)), 30
+                    )
+                    part = dict(
+                        h,
+                        offset=offset,
+                        size=len(payload),
+                        chunk_sha256=hashlib.sha256(payload).hexdigest(),
+                    )
+                    if offset + len(payload) == total and await asyncio.wait_for(
+                        reader.read(1), 30
+                    ):
+                        raise ValueError("unexpected trailing bytes")
+                    complete = self.assembler.accept(part, payload)
+            else:
+                if type(h["size"]) is not int or not 0 < h["size"] <= CHUNK_SIZE:
+                    raise ValueError("invalid payload size")
+                payload = await asyncio.wait_for(reader.readexactly(h["size"]), 30)
+                if await asyncio.wait_for(reader.read(1), 30):
+                    raise ValueError("unexpected trailing bytes")
+                complete = self.assembler.accept(h, payload)
+            if complete and self.on_file is not None:
+                await asyncio.to_thread(self.on_file, h["path"])
             received = time.monotonic()
             self.events.append(
                 dict(
@@ -76,7 +103,7 @@ class Receiver:
             self.errors.append(repr(exc))
             try:
                 writer.write(
-                    (json.dumps(dict(ok=False, error=str(exc))) + "\n").encode()
+                    (json.dumps(dict(ok=False, error=repr(exc))) + "\n").encode()
                 )
                 writer.write_eof()
             except Exception:
@@ -182,3 +209,55 @@ async def send_files(connection, jobs, *, policy="strict", max_inflight=16, time
         for task in active:
             task.cancel()
         await asyncio.gather(*active, return_exceptions=True)
+
+
+async def send_whole_files(connection, jobs, *, timeout=120):
+    """Controlled sequential-file reference, not the unavailable legacy wire code.
+
+    One stream per complete file. Await commit before starting the next file.
+    Keeps up to a whole file in aioquic's pending buffer, as a simple file sender.
+    """
+    rows = []
+    started = time.monotonic()
+    for job in jobs:
+        remaining = job.release_ms / 1000 - (time.monotonic() - started)
+        if remaining > 0:
+            await asyncio.sleep(remaining)
+        size = job.path.stat().st_size
+        if not 0 < size <= 1024**3:
+            raise ValueError("invalid file size")
+        h = dict(
+            path=job.remote,
+            size=size,
+            total=size,
+            offset=0,
+            priority=job.priority,
+            sha256=file_hash(job.path),
+            whole_file=True,
+        )
+        header = json.dumps(h, separators=(",", ":")).encode()
+        if len(header) > 4096:
+            raise ValueError("header too long")
+        reader, writer = await connection.create_stream()
+        selected = (time.monotonic() - started) * 1000
+        row = dict(
+            path=job.remote,
+            priority=job.priority,
+            release_ms=job.release_ms,
+            selected_ms=selected,
+            submitted_ms=selected,
+            stream_id=writer.get_extra_info("stream_id"),
+            size=size,
+        )
+        writer.write(struct.pack("!I", len(header)) + header)
+        with job.path.open("rb") as f:
+            while block := f.read(1024 * 1024):
+                writer.write(block)
+        writer.write_eof()
+        response = json.loads(await asyncio.wait_for(reader.readline(), timeout))
+        if not response.get("ok") or not response.get("complete"):
+            raise RuntimeError(response)
+        row["received_ms"] = (response["received"] - started) * 1000
+        row["acked_ms"] = (time.monotonic() - started) * 1000
+        rows.append(row)
+    return rows

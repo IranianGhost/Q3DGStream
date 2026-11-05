@@ -956,7 +956,14 @@ def main():
     live = None
     live_autoplay_started = False
 
-    if args.tcp_listen is not None:
+    if args.priority_listen is not None:
+        from live_priority import LivePriorityState
+        g_FVV_path = args.priority_cache
+        g_total_frame = args.frames if args.frames > 0 else 300
+        live = LivePriorityState(cache_root=args.priority_cache, total_frames_hint=g_total_frame, autoplay=args.autoplay)
+        live.start_receiver('127.0.0.1', args.priority_listen,
+                            cert=args.priority_cert, key=args.priority_key)
+    elif args.tcp_listen is not None:
         g_FVV_path = args.tcp_cache
         g_total_frame = args.frames if args.frames > 0 else 300
         live = LiveTCPState(cache_root=args.tcp_cache, total_frames_hint=g_total_frame, autoplay=args.autoplay)
@@ -1076,7 +1083,7 @@ def main():
                 if live is not None:
                     snap = live.ui_snapshot()
                     imgui.separator()
-                    imgui.text("TCP LIVE:")
+                    imgui.text("QUIC PRIORITY LIVE:" if args.priority_listen is not None else "TCP LIVE:")
                     imgui.text(f" cache: {snap['cache']}")
                     imgui.text(f" status: {snap['status']} ({snap['connected']})")
                     if snap["err"]:
@@ -1089,7 +1096,7 @@ def main():
                     imgui.text(f" files: {snap['files']} ({snap['gb']:.2f} GB)")
 
                     imgui.separator()
-                    imgui.text("TCP Stream Monitor:")
+                    imgui.text("QUIC File Monitor:" if args.priority_listen is not None else "TCP Stream Monitor:")
 
                     imgui.text(
                         f" rx goodput avg/inst: "
@@ -1381,6 +1388,11 @@ if __name__ == "__main__":
     parser.add_argument("--tcp_bind", default="127.0.0.1")
     parser.add_argument("--tcp_cache", default=r"C:\tmp\gs_stream_cache\live_session")
     parser.add_argument("--tcp_clear_cache", action="store_true")
+    parser.add_argument("--priority_listen", type=int, default=None,
+                        help="receive bounded-priority QUIC files directly into this player")
+    parser.add_argument("--priority_cache", default="data/cache/priority-player")
+    parser.add_argument("--priority_cert")
+    parser.add_argument("--priority_key")
     parser.add_argument("--frames", type=int, default=0)
     parser.add_argument("--autoplay", action="store_true")
     parser.add_argument("--autoload_fvv", default="")
@@ -1396,4 +1408,9 @@ if __name__ == "__main__":
         help="If >1 and base_black_counts.npy exists, use counts >= this threshold for global fallback",
     )
     args = parser.parse_args()
+    if args.priority_listen is not None:
+        if args.tcp_listen is not None:
+            parser.error("choose either TCP or priority QUIC reception")
+        if not 1 <= args.priority_listen <= 65535 or not args.priority_cert or not args.priority_key:
+            parser.error("priority QUIC requires a valid port, --priority_cert and --priority_key")
     main()

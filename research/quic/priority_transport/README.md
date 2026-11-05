@@ -17,7 +17,7 @@ QUIC's internal packet scheduler. No MoQT is involved.
 | Integrity | Legacy transport implementation unavailable for audit | SHA-256 per chunk and per reconstructed file, atomic file publication |
 | TLS | Existing caller sets `CERT_NONE` for loopback | New path verifies the explicitly trusted localhost certificate |
 | Dependencies | Metadata, additions, then stages in frame order | Explicit commit barriers preserve those dependencies |
-| Receiver | Legacy live/GPU receiver partly absent from this clone | New standalone local receiver reconstructs files without rendering |
+| Receiver | Legacy live/GPU receiver partly absent from this clone | Standalone receiver plus native-player LivePriorityState bridge; GPU validation outstanding |
 
 These are implementation differences, not a measured speedup over the upstream
 binary. The network comparison uses FIFO versus strict versus weighted **within
@@ -29,7 +29,7 @@ Use Python 3.12+ for the pinned optional environment. From the repository root:
 
 ```sh
 python3 -m venv .venv
-.venv/bin/pip install -r research/quic/priority_transport/requirements.txt
+.venv/bin/pip install -r research/quic/priority_transport/requirements-player.txt
 openssl req -x509 -newkey rsa:2048 -nodes -keyout key.pem -out cert.pem -days 7 -subj '/CN=localhost' -addext 'subjectAltName=DNS:localhost'
 .venv/bin/python -m pytest research/quic/priority_transport -q
 .venv/bin/python -m research.quic.priority_transport.benchmark --scenario pipeline --frames 2 --cert cert.pem --key key.pem --output data/outputs/priority-pipeline
@@ -69,13 +69,14 @@ and stage directory arguments as before, plus the new transport options:
 
 The full scene command still requires the original scene assets, compressed
 checkpoint and PyTorch needed to extract model bounds. These assets are not in
-Git and were **not available in this workspace**. The local experiment used
-synthetic INT4 values, not trained NTC weights. Empty Gaussian/metadata fixtures
+Git and were **not available for the initial synthetic experiment**. That initial experiment used
+synthetic INT4 values, not trained NTC weights. Original trained FP32 weights have
+since been obtained; see `docs/PRIORITY_PLAYER_REPORT.md`. Empty Gaussian/metadata fixtures
 exercise the adapter's ordering only, not a valid rendered scene.
 
 The new ALPN is `q3dg-priority-chunks/1`. The legacy receiver does not understand
-this chunk framing. Complete files retain their original QNP01 format, but live
-viewer integration and GPU validation remain future work. Legacy mode remains
+this chunk framing. Complete files retain their original QNP01 format, and a new `LivePriorityState` now connects this framing to the existing player
+(see `docs/PRIORITY_PLAYER_REPORT.md`). GPU validation remains outstanding. Legacy mode remains
 the default. `--stage-delay` applies only to legacy mode.
 
 ## Experiment and interpretation

@@ -1,5 +1,7 @@
 # Load scene updates and decode NTC checkpoints for playback.
 
+from __future__ import annotations
+
 import os
 import json
 import glob
@@ -7,12 +9,10 @@ from typing import Optional, Dict, Any, List
 from collections import OrderedDict
 
 import numpy as np
-import tinycudann as tcnn
 import torch
 
 from plyfile import PlyData, PlyElement
 from NTC import NeuralTransformationCache
-from renderer_cuda import GaussianDataCUDA, gaus_cuda_from_cpu
 from util_gau import load_ply
 
 
@@ -434,6 +434,7 @@ def load_NTCs(FVV_path: str, gau_cuda: GaussianDataCUDA, total_frames: Optional[
     ntcs: List[NeuralTransformationCache] = []
 
     for _ in ntc_paths:
+        import tinycudann as tcnn
         model = tcnn.NetworkWithInputEncoding(
             n_input_dims=3,
             n_output_dims=8,
@@ -493,6 +494,7 @@ def load_Additions(FVV_path: str, total_frames: Optional[int] = None):
     add_paths = add_paths[: max(0, total_frames - 1)]
 
     additions_gaus = [load_ply(p) for p in add_paths]
+    from renderer_cuda import gaus_cuda_from_cpu
     additions_gaus_cuda = [gaus_cuda_from_cpu(g) for g in additions_gaus]
 
     return additions_gaus_cuda

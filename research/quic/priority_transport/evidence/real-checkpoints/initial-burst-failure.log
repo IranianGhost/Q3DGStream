@@ -1,0 +1,25 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/project/research/quic/priority_transport/real_benchmark.py", line 53, in <module>
+    asyncio.run(asyncio.wait_for(run(p.parse_args()),240))
+  File "/usr/local/lib/python3.12/asyncio/runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/asyncio/tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "/project/research/quic/priority_transport/real_benchmark.py", line 33, in run
+    else:rows=await send_files(connection,[job],policy='strict',max_inflight=16,timeout=180)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/project/research/quic/priority_transport/transport.py", line 189, in send_files
+    task.result()
+  File "/project/research/quic/priority_transport/transport.py", line 164, in send
+    raise RuntimeError(response.get("error", "receiver rejected chunk"))
+RuntimeError

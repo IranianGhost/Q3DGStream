@@ -1,0 +1,13 @@
+{
+  "mode": "chunked",
+  "profile": "burst",
+  "repeat": 3,
+  "bytes": 7968015,
+  "sha256": "7465eb688a3524da736fc925ee7e152be558315887d6a4b4e66991afe1f8beb1",
+  "parameters": 1991680,
+  "checkpoint_commit_ms": 36711.37247500008,
+  "ack_ms": 36734.68051700013,
+  "streams": 973,
+  "valid": true,
+  "scope": "One original trained FP32 NTC, steady-state transfer after handshake, no startup scene or rendering"
+}

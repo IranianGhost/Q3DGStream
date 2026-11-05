@@ -1,0 +1,56 @@
+{
+  "source": "Google Drive 1AXDqSzSaT_uNu_DhKeSmZmrBAfuOhWYY from upstream scripts/download_flame_steak.sh",
+  "extraction": "Complete archive extracted with ZIP CRC checks",
+  "files": [
+    {
+      "path": "additional_3dgs/additions_000000.ply",
+      "size": 64173,
+      "sha256": "8323d6dea546cd83525217238ba287682a8661d186917b193d367e739116ce5b",
+      "zip_crc32": 3942814654
+    },
+    {
+      "path": "additional_3dgs/additions_000001.ply",
+      "size": 94333,
+      "sha256": "54f1d8eacb155be60929601b9c9eeda58b2c509214366314fa8be42978a6ab27",
+      "zip_crc32": 3895520408
+    },
+    {
+      "path": "additional_3dgs/additions_000002.ply",
+      "size": 96517,
+      "sha256": "ad0cadc0303ac1c2eae0fcf1d3cf1e989e3904a627f7c17d061ee06cb9bebdcf",
+      "zip_crc32": 2925346487
+    },
+    {
+      "path": "init_3dgs.ply",
+      "size": 29200504,
+      "sha256": "1e33d48bf4df0073d9329ead05df52582a90075b7e9b5edd521e7ff2c794a5cb",
+      "zip_crc32": 1193635187
+    },
+    {
+      "path": "NTCs/config.json",
+      "size": 493,
+      "sha256": "d63c9cb23673623ebcd1aba9bc0465e08227e84437c7a99f8be6b3fd848aa60b",
+      "zip_crc32": 2910562413
+    },
+    {
+      "path": "NTCs/NTC_000000.pth",
+      "size": 7968015,
+      "sha256": "7465eb688a3524da736fc925ee7e152be558315887d6a4b4e66991afe1f8beb1",
+      "zip_crc32": 2558467209
+    },
+    {
+      "path": "NTCs/NTC_000001.pth",
+      "size": 7968015,
+      "sha256": "835bffc74f844856b148011fa974b27b585da3e903f30e8d744bb29e496359f3",
+      "zip_crc32": 437830409
+    },
+    {
+      "path": "NTCs/NTC_000002.pth",
+      "size": 7968015,
+      "sha256": "04dc2d70a5047568491a906727b0858b3775dba56bebebf06c575c427f6f2ee0",
+      "zip_crc32": 3989209685
+    }
+  ],
+  "checkpoint_count": 299,
+  "archive_sha256": "5822aab8ccf5af4c18ca8689edf116c06ead4b5c6e8f7e8a354980f3c62a8880"
+}

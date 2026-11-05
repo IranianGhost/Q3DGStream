@@ -1,0 +1,8 @@
+{
+  "updates": 3,
+  "network_chunks": 6518,
+  "max_play": 3,
+  "source": "Original Flame Steak trained FP32 checkpoints",
+  "verified": "Real QUIC receiver thread, committed-file bridge, original lazy player providers, exact parameter/bounds loading, additions, contiguous playback gate",
+  "unverified": "CUDA inference, GPU rasterization and graphical playback; CPU model holder and renderer stub replace CUDA model construction, rendering and GPU additions conversion"
+}

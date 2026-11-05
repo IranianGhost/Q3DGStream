@@ -1,0 +1,9 @@
+{
+  "python": "3.12.16",
+  "platform": "Linux-6.12.54-linuxkit-aarch64-with-glibc2.41",
+  "torch": "2.15.0+cpu",
+  "aioquic": "1.7.2",
+  "numpy": "2.5.4",
+  "host": "macOS arm64; Docker Desktop local container",
+  "image": "sha256:32eb2d8dcc7392e47830916d828d8fb87a43ee1d83af30dfba947bee1c018677"
+}
