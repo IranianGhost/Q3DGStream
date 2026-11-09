@@ -133,3 +133,62 @@ impaired profiles. Clean-loopback ranks were equal (96.5), so its timing differe
 is not evidence of bypassing queued lower-priority data. Rankings are per chunk.
 The production-shaped batch contains eight chunks and fits in the 16-slot window.
 That pipeline therefore does not demonstrate a priority latency improvement.
+
+## Adaptive offered-load experiments (November 2026)
+
+The new `experiment` module runs a periodic producer independently of transfer
+completion. This is essential: a sender that waits before producing its next
+frame cannot reveal upstream backlog growth. Payload-size feedback changes future
+jobs; existing QUIC chunks remain reliable and are not cancelled. The producer
+queue is capped at eight waiting files (plus one active file), and drops are
+explicitly counted. The existing transport still admits at most 16 chunks.
+
+```sh
+# Full isolated Linux netem matrix; Docker Desktop must be running.
+sh research/quic/priority_transport/run_adaptive_tests.sh
+python -m research.quic.priority_transport.adaptive_analyze data/outputs/adaptive-run-<timestamp>
+
+# Local smoke test; generate localhost certificate as above.
+python -m research.quic.priority_transport.experiment --cert cert.pem --key key.pem \
+  --output data/outputs/adaptive-smoke --duration 3 --policy composite
+
+# Replay arbitrary WHOLE files (including original NTC checkpoints) cyclically.
+python -m research.quic.priority_transport.experiment --cert cert.pem --key key.pem \
+  --output data/outputs/replay --payload-dir /path/to/payloads --sequence --fps 0.2 --duration 10
+```
+
+Without `--sequence`, supplied files sorted by size become selectable load levels.
+This is valid only when the caller intentionally supplies alternative payloads:
+it is not a general way to substitute one temporal NTC checkpoint for another.
+Synthetic levels are 32/128/512 KiB at 4 Hz (1.05/4.19/16.78 Mbit/s payload).
+They are transport load surrogates, **not decodable NTC quality representations**.
+Default `composite` is an experimental policy, not a production recommendation.
+
+Every run records samples, frame outcomes, chunk submit/ACK events, complete qlog,
+source hashes, and netem counters. `queue_bytes` includes queued payload plus the
+unacknowledged remainder of the active file; it is logical work outstanding, not
+allocated RAM or the kernel socket buffer. `quic_retained_bytes` is the sum of
+stream sender buffers retained for transmission/recovery; `app_unacked_bytes`
+counts admitted payload waiting for application ACK. These differ from QUIC
+`bytes_in_flight`. Payload goodput excludes framing, encryption and retransmits.
+
+The controller samples every 250 ms, steps down on queue age >500 ms and/or RTT
+>max(100 ms, 1.5 × minimum RTT), and probes one level higher after eight healthy
+samples. Composite also responds to >1 s without ACK with pending data. All
+thresholds are experimental and frozen before the main evaluation. Flags are
+pressure alarms, not proof the network itself failed. Compare receiver slowdown
+and clean-path overload controls before attributing a growing queue to the link.
+
+Matrix: 15 good→bad→good trials (five policies × three repetitions), seven static
+profiles, two negative controls, and three original-checkpoint runs. Phase changes
+use `tc qdisc change` so queued packets are not deliberately flushed. Kernel
+randomness is not paired across policies. The `seed` field identifies the repeat;
+it is not a fixed netem RNG seed. Netem's actual seeds and counters are retained.
+The 1 s deadline is measured at full receiver file commit on the same host;
+ACK turnaround is recorded separately. No GPU/playback quality is measured.
+
+Analysis scores signal thresholds only on fixed-high traces, with repeat 1 for
+calibration inspection and repeats 2–3 held out. No thresholds are fitted on these
+runs. Samples are correlated and the sample confusion counts do not establish
+statistical significance. Static cases and negative controls are diagnostics,
+not randomized comparative trials.

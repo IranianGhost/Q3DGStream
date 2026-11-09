@@ -1,0 +1,32 @@
+[
+  {
+    "id": 0,
+    "release_s": 0.00023591700005454186,
+    "nominal_release_s": 0.0,
+    "level": 0,
+    "bytes": 7968015,
+    "status": "complete",
+    "source": "NTC_000001.pth",
+    "started_s": 0.005974917000003188,
+    "completed_s": 3.3823148349999883,
+    "ack_latency_ms": 3382.0789179999338,
+    "received_s": 3.370765501000051,
+    "latency_ms": 3370.5295839999962,
+    "deadline_missed": false
+  },
+  {
+    "id": 1,
+    "release_s": 5.001866461000077,
+    "nominal_release_s": 5.0,
+    "level": 1,
+    "bytes": 7968015,
+    "status": "complete",
+    "source": "NTC_000000.pth",
+    "started_s": 5.001900586000033,
+    "completed_s": 8.552646379000066,
+    "ack_latency_ms": 3550.7799179999893,
+    "received_s": 8.540018336999992,
+    "latency_ms": 3538.1518759999153,
+    "deadline_missed": false
+  }
+]

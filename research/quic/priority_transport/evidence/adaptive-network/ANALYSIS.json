@@ -1,0 +1,1949 @@
+{
+  "coverage": {
+    "attempted": 27,
+    "valid": 26,
+    "missing_holdout": []
+  },
+  "comparisons": {
+    "fixed-low": {
+      "ontime": 61,
+      "ontime_bytes": 1998848,
+      "dropped": 0,
+      "p95_latency_ms": 1584.2644159999963,
+      "max_queue_bytes": 262144,
+      "switches": 0,
+      "completed": 72,
+      "elapsed_s": 18.050341548999995,
+      "runs": 3,
+      "attempted": 3
+    },
+    "fixed-high": {
+      "ontime": 22,
+      "ontime_bytes": 11534336,
+      "dropped": 21,
+      "p95_latency_ms": 7082.255960999987,
+      "max_queue_bytes": 4718592,
+      "switches": 0,
+      "completed": 51,
+      "elapsed_s": 20.640116884999998,
+      "runs": 3,
+      "attempted": 3
+    },
+    "queue": {
+      "ontime": 49,
+      "ontime_bytes": 13926400,
+      "dropped": 5,
+      "p95_latency_ms": 2785.6929589999595,
+      "max_queue_bytes": 1310720,
+      "switches": 6,
+      "completed": 67,
+      "elapsed_s": 18.772349841999983,
+      "runs": 3,
+      "attempted": 3
+    },
+    "rtt": {
+      "ontime": 39,
+      "ontime_bytes": 16384000,
+      "dropped": 20,
+      "p95_latency_ms": 6911.395378000008,
+      "max_queue_bytes": 3571712,
+      "switches": 4,
+      "completed": 52,
+      "elapsed_s": 18.83183580000002,
+      "runs": 3,
+      "attempted": 3
+    },
+    "composite": {
+      "ontime": 48,
+      "ontime_bytes": 14024704,
+      "dropped": 4,
+      "p95_latency_ms": 2605.728041999896,
+      "max_queue_bytes": 1081344,
+      "switches": 4,
+      "completed": 68,
+      "elapsed_s": 18.69844413300001,
+      "runs": 3,
+      "attempted": 3
+    }
+  },
+  "signal_scores": {
+    "calibration": {
+      "queue_age": {
+        "network_label": {
+          "tp": 23,
+          "fp": 28,
+          "fn": 0,
+          "tn": 20,
+          "precision": 0.45098039215686275,
+          "recall": 1.0,
+          "f1": 0.6216216216216216,
+          "false_positive_rate": 0.5833333333333334
+        },
+        "next_second_deadline": {
+          "tp": 47,
+          "fp": 0,
+          "fn": 2,
+          "tn": 18,
+          "precision": 1.0,
+          "recall": 0.9591836734693877,
+          "f1": 0.9791666666666666,
+          "false_positive_rate": 0.0
+        },
+        "detection_seconds": [
+          0.22952950000001238
+        ],
+        "clear_seconds": [
+          null
+        ]
+      },
+      "queue_growth": {
+        "network_label": {
+          "tp": 7,
+          "fp": 19,
+          "fn": 16,
+          "tn": 29,
+          "precision": 0.2692307692307692,
+          "recall": 0.30434782608695654,
+          "f1": 0.2857142857142857,
+          "false_positive_rate": 0.3958333333333333
+        },
+        "next_second_deadline": {
+          "tp": 20,
+          "fp": 6,
+          "fn": 29,
+          "tn": 12,
+          "precision": 0.7692307692307693,
+          "recall": 0.40816326530612246,
+          "f1": 0.5333333333333333,
+          "false_positive_rate": 0.3333333333333333
+        },
+        "detection_seconds": [
+          0.22952950000001238
+        ],
+        "clear_seconds": [
+          0.07534500000002708
+        ]
+      },
+      "rtt": {
+        "network_label": {
+          "tp": 22,
+          "fp": 0,
+          "fn": 1,
+          "tn": 48,
+          "precision": 1.0,
+          "recall": 0.9565217391304348,
+          "f1": 0.9777777777777777,
+          "false_positive_rate": 0.0
+        },
+        "next_second_deadline": {
+          "tp": 22,
+          "fp": 0,
+          "fn": 27,
+          "tn": 18,
+          "precision": 1.0,
+          "recall": 0.4489795918367347,
+          "f1": 0.6197183098591549,
+          "false_positive_rate": 0.0
+        },
+        "detection_seconds": [
+          0.4839158750000365
+        ],
+        "clear_seconds": [
+          0.07534500000002708
+        ]
+      },
+      "rtt_variance": {
+        "network_label": {
+          "tp": 23,
+          "fp": 41,
+          "fn": 0,
+          "tn": 7,
+          "precision": 0.359375,
+          "recall": 1.0,
+          "f1": 0.5287356321839081,
+          "false_positive_rate": 0.8541666666666666
+        },
+        "next_second_deadline": {
+          "tp": 42,
+          "fp": 18,
+          "fn": 7,
+          "tn": 0,
+          "precision": 0.7,
+          "recall": 0.8571428571428571,
+          "f1": 0.7706422018348624,
+          "false_positive_rate": 1.0
+        },
+        "detection_seconds": [
+          0.22952950000001238
+        ],
+        "clear_seconds": [
+          0.32830045800000107
+        ]
+      },
+      "packet_loss": {
+        "network_label": {
+          "tp": 11,
+          "fp": 0,
+          "fn": 12,
+          "tn": 48,
+          "precision": 1.0,
+          "recall": 0.4782608695652174,
+          "f1": 0.6470588235294118,
+          "false_positive_rate": 0.0
+        },
+        "next_second_deadline": {
+          "tp": 11,
+          "fp": 0,
+          "fn": 38,
+          "tn": 18,
+          "precision": 1.0,
+          "recall": 0.22448979591836735,
+          "f1": 0.36666666666666664,
+          "false_positive_rate": 0.0
+        },
+        "detection_seconds": [
+          0.22952950000001238
+        ],
+        "clear_seconds": [
+          0.07534500000002708
+        ]
+      },
+      "quic_buffer": {
+        "network_label": {
+          "tp": 19,
+          "fp": 43,
+          "fn": 4,
+          "tn": 5,
+          "precision": 0.3064516129032258,
+          "recall": 0.8260869565217391,
+          "f1": 0.4470588235294118,
+          "false_positive_rate": 0.8958333333333334
+        },
+        "next_second_deadline": {
+          "tp": 40,
+          "fp": 18,
+          "fn": 9,
+          "tn": 0,
+          "precision": 0.6896551724137931,
+          "recall": 0.8163265306122449,
+          "f1": 0.7476635514018691,
+          "false_positive_rate": 1.0
+        },
+        "detection_seconds": [
+          0.22952950000001238
+        ],
+        "clear_seconds": [
+          0.07534500000002708
+        ]
+      },
+      "app_unacked": {
+        "network_label": {
+          "tp": 23,
+          "fp": 48,
+          "fn": 0,
+          "tn": 0,
+          "precision": 0.323943661971831,
+          "recall": 1.0,
+          "f1": 0.48936170212765956,
+          "false_positive_rate": 1.0
+        },
+        "next_second_deadline": {
+          "tp": 49,
+          "fp": 18,
+          "fn": 0,
+          "tn": 0,
+          "precision": 0.7313432835820896,
+          "recall": 1.0,
+          "f1": 0.8448275862068966,
+          "false_positive_rate": 1.0
+        },
+        "detection_seconds": [
+          0.22952950000001238
+        ],
+        "clear_seconds": [
+          null
+        ]
+      },
+      "ack_delay": {
+        "network_label": {
+          "tp": 14,
+          "fp": 3,
+          "fn": 9,
+          "tn": 45,
+          "precision": 0.8235294117647058,
+          "recall": 0.6086956521739131,
+          "f1": 0.7,
+          "false_positive_rate": 0.0625
+        },
+        "next_second_deadline": {
+          "tp": 17,
+          "fp": 0,
+          "fn": 32,
+          "tn": 18,
+          "precision": 1.0,
+          "recall": 0.3469387755102041,
+          "f1": 0.5151515151515151,
+          "false_positive_rate": 0.0
+        },
+        "detection_seconds": [
+          0.7373969170000123
+        ],
+        "clear_seconds": [
+          0.830182834000027
+        ]
+      },
+      "delivery_deficit": {
+        "network_label": {
+          "tp": 23,
+          "fp": 15,
+          "fn": 0,
+          "tn": 33,
+          "precision": 0.6052631578947368,
+          "recall": 1.0,
+          "f1": 0.7540983606557377,
+          "false_positive_rate": 0.3125
+        },
+        "next_second_deadline": {
+          "tp": 34,
+          "fp": 4,
+          "fn": 15,
+          "tn": 14,
+          "precision": 0.8947368421052632,
+          "recall": 0.6938775510204082,
+          "f1": 0.7816091954022989,
+          "false_positive_rate": 0.2222222222222222
+        },
+        "detection_seconds": [
+          0.22952950000001238
+        ],
+        "clear_seconds": [
+          1.0800097090000236
+        ]
+      }
+    },
+    "holdout": {
+      "queue_age": {
+        "network_label": {
+          "tp": 46,
+          "fp": 73,
+          "fn": 0,
+          "tn": 23,
+          "precision": 0.3865546218487395,
+          "recall": 1.0,
+          "f1": 0.5575757575757576,
+          "false_positive_rate": 0.7604166666666666
+        },
+        "next_second_deadline": {
+          "tp": 101,
+          "fp": 10,
+          "fn": 0,
+          "tn": 23,
+          "precision": 0.9099099099099099,
+          "recall": 1.0,
+          "f1": 0.9528301886792453,
+          "false_positive_rate": 0.30303030303030304
+        },
+        "detection_seconds": [
+          0.25066370900003676,
+          0.24725816700004088
+        ],
+        "clear_seconds": [
+          null,
+          null
+        ]
+      },
+      "queue_growth": {
+        "network_label": {
+          "tp": 14,
+          "fp": 44,
+          "fn": 32,
+          "tn": 52,
+          "precision": 0.2413793103448276,
+          "recall": 0.30434782608695654,
+          "f1": 0.2692307692307692,
+          "false_positive_rate": 0.4583333333333333
+        },
+        "next_second_deadline": {
+          "tp": 36,
+          "fp": 18,
+          "fn": 65,
+          "tn": 15,
+          "precision": 0.6666666666666666,
+          "recall": 0.3564356435643564,
+          "f1": 0.4645161290322581,
+          "false_positive_rate": 0.5454545454545454
+        },
+        "detection_seconds": [
+          0.25066370900003676,
+          0.24725816700004088
+        ],
+        "clear_seconds": [
+          0.08979666700008693,
+          0.07846250000000055
+        ]
+      },
+      "rtt": {
+        "network_label": {
+          "tp": 40,
+          "fp": 0,
+          "fn": 6,
+          "tn": 96,
+          "precision": 1.0,
+          "recall": 0.8695652173913043,
+          "f1": 0.9302325581395349,
+          "false_positive_rate": 0.0
+        },
+        "next_second_deadline": {
+          "tp": 40,
+          "fp": 0,
+          "fn": 61,
+          "tn": 33,
+          "precision": 1.0,
+          "recall": 0.39603960396039606,
+          "f1": 0.5673758865248227,
+          "false_positive_rate": 0.0
+        },
+        "detection_seconds": [
+          1.0150757919999478,
+          1.0105902920000744
+        ],
+        "clear_seconds": [
+          0.08979666700008693,
+          0.07846250000000055
+        ]
+      },
+      "rtt_variance": {
+        "network_label": {
+          "tp": 46,
+          "fp": 78,
+          "fn": 0,
+          "tn": 18,
+          "precision": 0.3709677419354839,
+          "recall": 1.0,
+          "f1": 0.5411764705882353,
+          "false_positive_rate": 0.8125
+        },
+        "next_second_deadline": {
+          "tp": 83,
+          "fp": 33,
+          "fn": 18,
+          "tn": 0,
+          "precision": 0.7155172413793104,
+          "recall": 0.8217821782178217,
+          "f1": 0.7649769585253456,
+          "false_positive_rate": 1.0
+        },
+        "detection_seconds": [
+          0.25066370900003676,
+          0.24725816700004088
+        ],
+        "clear_seconds": [
+          0.3448780840000154,
+          0.33264283400001204
+        ]
+      },
+      "packet_loss": {
+        "network_label": {
+          "tp": 23,
+          "fp": 1,
+          "fn": 23,
+          "tn": 95,
+          "precision": 0.9583333333333334,
+          "recall": 0.5,
+          "f1": 0.6571428571428571,
+          "false_positive_rate": 0.010416666666666666
+        },
+        "next_second_deadline": {
+          "tp": 24,
+          "fp": 0,
+          "fn": 77,
+          "tn": 33,
+          "precision": 1.0,
+          "recall": 0.2376237623762376,
+          "f1": 0.384,
+          "false_positive_rate": 0.0
+        },
+        "detection_seconds": [
+          0.5041694999999891,
+          0.24725816700004088
+        ],
+        "clear_seconds": [
+          0.08979666700008693,
+          0.07846250000000055
+        ]
+      },
+      "quic_buffer": {
+        "network_label": {
+          "tp": 35,
+          "fp": 80,
+          "fn": 11,
+          "tn": 16,
+          "precision": 0.30434782608695654,
+          "recall": 0.7608695652173914,
+          "f1": 0.43478260869565216,
+          "false_positive_rate": 0.8333333333333334
+        },
+        "next_second_deadline": {
+          "tp": 81,
+          "fp": 28,
+          "fn": 20,
+          "tn": 5,
+          "precision": 0.7431192660550459,
+          "recall": 0.801980198019802,
+          "f1": 0.7714285714285715,
+          "false_positive_rate": 0.8484848484848485
+        },
+        "detection_seconds": [
+          0.25066370900003676,
+          0.24725816700004088
+        ],
+        "clear_seconds": [
+          0.08979666700008693,
+          0.07846250000000055
+        ]
+      },
+      "app_unacked": {
+        "network_label": {
+          "tp": 41,
+          "fp": 92,
+          "fn": 5,
+          "tn": 4,
+          "precision": 0.3082706766917293,
+          "recall": 0.8913043478260869,
+          "f1": 0.4581005586592179,
+          "false_positive_rate": 0.9583333333333334
+        },
+        "next_second_deadline": {
+          "tp": 96,
+          "fp": 31,
+          "fn": 5,
+          "tn": 2,
+          "precision": 0.7559055118110236,
+          "recall": 0.9504950495049505,
+          "f1": 0.8421052631578947,
+          "false_positive_rate": 0.9393939393939394
+        },
+        "detection_seconds": [
+          0.25066370900003676,
+          0.24725816700004088
+        ],
+        "clear_seconds": [
+          5.628197920000048,
+          5.108470627999964
+        ]
+      },
+      "ack_delay": {
+        "network_label": {
+          "tp": 25,
+          "fp": 8,
+          "fn": 21,
+          "tn": 88,
+          "precision": 0.7575757575757576,
+          "recall": 0.5434782608695652,
+          "f1": 0.6329113924050633,
+          "false_positive_rate": 0.08333333333333333
+        },
+        "next_second_deadline": {
+          "tp": 33,
+          "fp": 0,
+          "fn": 68,
+          "tn": 33,
+          "precision": 1.0,
+          "recall": 0.32673267326732675,
+          "f1": 0.4925373134328358,
+          "false_positive_rate": 0.0
+        },
+        "detection_seconds": [
+          1.0150757919999478,
+          1.0105902920000744
+        ],
+        "clear_seconds": [
+          1.1045025840001017,
+          0.07846250000000055
+        ]
+      },
+      "delivery_deficit": {
+        "network_label": {
+          "tp": 46,
+          "fp": 31,
+          "fn": 0,
+          "tn": 65,
+          "precision": 0.5974025974025974,
+          "recall": 1.0,
+          "f1": 0.7479674796747967,
+          "false_positive_rate": 0.3229166666666667
+        },
+        "next_second_deadline": {
+          "tp": 70,
+          "fp": 6,
+          "fn": 31,
+          "tn": 27,
+          "precision": 0.9210526315789473,
+          "recall": 0.693069306930693,
+          "f1": 0.7909604519774012,
+          "false_positive_rate": 0.18181818181818182
+        },
+        "detection_seconds": [
+          0.25066370900003676,
+          0.24725816700004088
+        ],
+        "clear_seconds": [
+          1.8589792100000295,
+          1.589418625999997
+        ]
+      }
+    }
+  },
+  "controls_alarm_fraction": {
+    "clean-overload": {
+      "queue_age": 0.3870967741935484,
+      "queue_growth": 0.3548387096774194,
+      "rtt": 0.0,
+      "rtt_variance": 0.7096774193548387,
+      "packet_loss": 0.0,
+      "quic_buffer": 0.6774193548387096,
+      "app_unacked": 0.7096774193548387,
+      "ack_delay": 0.0,
+      "delivery_deficit": null
+    },
+    "receiver-slow": {
+      "queue_age": 0.5483870967741935,
+      "queue_growth": 0.0967741935483871,
+      "rtt": 0.0,
+      "rtt_variance": 0.06451612903225806,
+      "packet_loss": 0.0967741935483871,
+      "quic_buffer": 0.0,
+      "app_unacked": 0.41935483870967744,
+      "ack_delay": 1.0,
+      "delivery_deficit": null
+    },
+    "static-bandwidth": {
+      "queue_age": 0.967741935483871,
+      "queue_growth": 0.3225806451612903,
+      "rtt": 1.0,
+      "rtt_variance": 1.0,
+      "packet_loss": 0.0,
+      "quic_buffer": 0.7419354838709677,
+      "app_unacked": 0.9354838709677419,
+      "ack_delay": 0.5483870967741935,
+      "delivery_deficit": 1.0
+    },
+    "static-burst": {
+      "queue_age": 0.967741935483871,
+      "queue_growth": 0.3225806451612903,
+      "rtt": 0.0,
+      "rtt_variance": 0.0,
+      "packet_loss": 0.6451612903225806,
+      "quic_buffer": 0.7741935483870968,
+      "app_unacked": 1.0,
+      "ack_delay": 0.3870967741935484,
+      "delivery_deficit": 1.0
+    },
+    "static-clean": {
+      "queue_age": 0.0,
+      "queue_growth": 0.0967741935483871,
+      "rtt": 0.0,
+      "rtt_variance": 0.06451612903225806,
+      "packet_loss": 0.25806451612903225,
+      "quic_buffer": 0.8064516129032258,
+      "app_unacked": 0.8709677419354839,
+      "ack_delay": 0.0,
+      "delivery_deficit": 0.03225806451612903
+    },
+    "static-delay": {
+      "queue_age": 0.967741935483871,
+      "queue_growth": 0.4838709677419355,
+      "rtt": 0.0,
+      "rtt_variance": 0.9032258064516129,
+      "packet_loss": 0.0,
+      "quic_buffer": 0.8387096774193549,
+      "app_unacked": 0.9354838709677419,
+      "ack_delay": 0.9032258064516129,
+      "delivery_deficit": 1.0
+    },
+    "static-jitter": {
+      "queue_age": 0.967741935483871,
+      "queue_growth": 0.5161290322580645,
+      "rtt": 0.9354838709677419,
+      "rtt_variance": 1.0,
+      "packet_loss": 0.0,
+      "quic_buffer": 0.8709677419354839,
+      "app_unacked": 0.967741935483871,
+      "ack_delay": 0.9354838709677419,
+      "delivery_deficit": 1.0
+    },
+    "static-loss": {
+      "queue_age": 0.9354838709677419,
+      "queue_growth": 0.3548387096774194,
+      "rtt": 0.0,
+      "rtt_variance": 0.0,
+      "packet_loss": 0.9032258064516129,
+      "quic_buffer": 0.5161290322580645,
+      "app_unacked": 0.967741935483871,
+      "ack_delay": 0.8387096774193549,
+      "delivery_deficit": 1.0
+    },
+    "static-reorder": {
+      "queue_age": 0.967741935483871,
+      "queue_growth": 0.2903225806451613,
+      "rtt": 0.0,
+      "rtt_variance": 1.0,
+      "packet_loss": 0.5161290322580645,
+      "quic_buffer": 0.6774193548387096,
+      "app_unacked": 1.0,
+      "ack_delay": 0.5483870967741935,
+      "delivery_deficit": 1.0
+    }
+  },
+  "failures": [
+    {
+      "run": "real-burst",
+      "returncode": 1,
+      "error": "TimeoutError()"
+    }
+  ],
+  "runs": [
+    {
+      "policy": "composite",
+      "profile": "clean-overload",
+      "seed": 1,
+      "payload_kind": "synthetic byte load surrogate; not valid NTC",
+      "sequence": false,
+      "source_manifest": [
+        {
+          "name": "32768.bin",
+          "bytes": 32768,
+          "sha256": "730c6d5353afa53c71102b1cc4deaa13fc9c2abff7284fa22b0527bd0aead7b5"
+        },
+        {
+          "name": "131072.bin",
+          "bytes": 131072,
+          "sha256": "6a6c1147d034e6abf79fedad3322d5646077d1018c476d6d4062c2851875f098"
+        },
+        {
+          "name": "524288.bin",
+          "bytes": 524288,
+          "sha256": "b60a40f88f8045b2fac3f4575925dfe0ae52b5559b647cc609bc83195e9d23a3"
+        }
+      ],
+      "fps": 16.0,
+      "duration_s": 8.0,
+      "elapsed_s": 10.830839964000006,
+      "deadline_ms": 1000,
+      "queue_limit": 8,
+      "generated": 128,
+      "completed": 97,
+      "ontime": 78,
+      "ontime_bytes": 8650752,
+      "dropped": 31,
+      "incomplete": 0,
+      "p95_latency_ms": 1987.6880839999558,
+      "max_queue_bytes": 4456448,
+      "switches": 5,
+      "packets_sent": 14345,
+      "packets_declared_lost": 0,
+      "valid": true,
+      "failure": null,
+      "receiver_errors": [],
+      "receiver_delay_ms": 0,
+      "run": "clean-overload",
+      "netem_drops": 0
+    },
+    {
+      "policy": "composite",
+      "profile": "dynamic-1-composite",
+      "seed": 1,
+      "payload_kind": "synthetic byte load surrogate; not valid NTC",
+      "sequence": false,
+      "source_manifest": [
+        {
+          "name": "32768.bin",
+          "bytes": 32768,
+          "sha256": "730c6d5353afa53c71102b1cc4deaa13fc9c2abff7284fa22b0527bd0aead7b5"
+        },
+        {
+          "name": "131072.bin",
+          "bytes": 131072,
+          "sha256": "6a6c1147d034e6abf79fedad3322d5646077d1018c476d6d4062c2851875f098"
+        },
+        {
+          "name": "524288.bin",
+          "bytes": 524288,
+          "sha256": "b60a40f88f8045b2fac3f4575925dfe0ae52b5559b647cc609bc83195e9d23a3"
+        }
+      ],
+      "fps": 4,
+      "duration_s": 18.0,
+      "elapsed_s": 18.69844413300001,
+      "deadline_ms": 1000,
+      "queue_limit": 8,
+      "generated": 72,
+      "completed": 65,
+      "ontime": 48,
+      "ontime_bytes": 10813440,
+      "dropped": 7,
+      "incomplete": 0,
+      "p95_latency_ms": 3232.845334999979,
+      "max_queue_bytes": 1081344,
+      "switches": 6,
+      "packets_sent": 10655,
+      "packets_declared_lost": 25,
+      "valid": true,
+      "failure": null,
+      "receiver_errors": [],
+      "receiver_delay_ms": 0,
+      "run": "dynamic-1-composite",
+      "netem_drops": 25
+    },
+    {
+      "policy": "fixed-high",
+      "profile": "dynamic-1-fixed-high",
+      "seed": 1,
+      "payload_kind": "synthetic byte load surrogate; not valid NTC",
+      "sequence": false,
+      "source_manifest": [
+        {
+          "name": "32768.bin",
+          "bytes": 32768,
+          "sha256": "730c6d5353afa53c71102b1cc4deaa13fc9c2abff7284fa22b0527bd0aead7b5"
+        },
+        {
+          "name": "131072.bin",
+          "bytes": 131072,
+          "sha256": "6a6c1147d034e6abf79fedad3322d5646077d1018c476d6d4062c2851875f098"
+        },
+        {
+          "name": "524288.bin",
+          "bytes": 524288,
+          "sha256": "b60a40f88f8045b2fac3f4575925dfe0ae52b5559b647cc609bc83195e9d23a3"
+        }
+      ],
+      "fps": 4,
+      "duration_s": 18.0,
+      "elapsed_s": 20.643387801000017,
+      "deadline_ms": 1000,
+      "queue_limit": 8,
+      "generated": 72,
+      "completed": 51,
+      "ontime": 22,
+      "ontime_bytes": 11534336,
+      "dropped": 21,
+      "incomplete": 0,
+      "p95_latency_ms": 6994.834545999993,
+      "max_queue_bytes": 4718592,
+      "switches": 0,
+      "packets_sent": 24403,
+      "packets_declared_lost": 18,
+      "valid": true,
+      "failure": null,
+      "receiver_errors": [],
+      "receiver_delay_ms": 0,
+      "run": "dynamic-1-fixed-high",
+      "netem_drops": 27
+    },
+    {
+      "policy": "fixed-low",
+      "profile": "dynamic-1-fixed-low",
+      "seed": 1,
+      "payload_kind": "synthetic byte load surrogate; not valid NTC",
+      "sequence": false,
+      "source_manifest": [
+        {
+          "name": "32768.bin",
+          "bytes": 32768,
+          "sha256": "730c6d5353afa53c71102b1cc4deaa13fc9c2abff7284fa22b0527bd0aead7b5"
+        },
+        {
+          "name": "131072.bin",
+          "bytes": 131072,
+          "sha256": "6a6c1147d034e6abf79fedad3322d5646077d1018c476d6d4062c2851875f098"
+        },
+        {
+          "name": "524288.bin",
+          "bytes": 524288,
+          "sha256": "b60a40f88f8045b2fac3f4575925dfe0ae52b5559b647cc609bc83195e9d23a3"
+        }
+      ],
+      "fps": 4,
+      "duration_s": 18.0,
+      "elapsed_s": 18.048068633000014,
+      "deadline_ms": 1000,
+      "queue_limit": 8,
+      "generated": 72,
+      "completed": 72,
+      "ontime": 60,
+      "ontime_bytes": 1966080,
+      "dropped": 0,
+      "incomplete": 0,
+      "p95_latency_ms": 1584.2644159999963,
+      "max_queue_bytes": 262144,
+      "switches": 0,
+      "packets_sent": 2250,
+      "packets_declared_lost": 12,
+      "valid": true,
+      "failure": null,
+      "receiver_errors": [],
+      "receiver_delay_ms": 0,
+      "run": "dynamic-1-fixed-low",
+      "netem_drops": 17
+    },
+    {
+      "policy": "queue",
+      "profile": "dynamic-1-queue",
+      "seed": 1,
+      "payload_kind": "synthetic byte load surrogate; not valid NTC",
+      "sequence": false,
+      "source_manifest": [
+        {
+          "name": "32768.bin",
+          "bytes": 32768,
+          "sha256": "730c6d5353afa53c71102b1cc4deaa13fc9c2abff7284fa22b0527bd0aead7b5"
+        },
+        {
+          "name": "131072.bin",
+          "bytes": 131072,
+          "sha256": "6a6c1147d034e6abf79fedad3322d5646077d1018c476d6d4062c2851875f098"
+        },
+        {
+          "name": "524288.bin",
+          "bytes": 524288,
+          "sha256": "b60a40f88f8045b2fac3f4575925dfe0ae52b5559b647cc609bc83195e9d23a3"
+        }
+      ],
+      "fps": 4,
+      "duration_s": 18.0,
+      "elapsed_s": 18.772349841999983,
+      "deadline_ms": 1000,
+      "queue_limit": 8,
+      "generated": 72,
+      "completed": 67,
+      "ontime": 49,
+      "ontime_bytes": 12419072,
+      "dropped": 5,
+      "incomplete": 0,
+      "p95_latency_ms": 2785.6929589999595,
+      "max_queue_bytes": 1179648,
+      "switches": 6,
+      "packets_sent": 12047,
+      "packets_declared_lost": 11,
+      "valid": true,
+      "failure": null,
+      "receiver_errors": [],
+      "receiver_delay_ms": 0,
+      "run": "dynamic-1-queue",
+      "netem_drops": 19
+    },
+    {
+      "policy": "rtt",
+      "profile": "dynamic-1-rtt",
+      "seed": 1,
+      "payload_kind": "synthetic byte load surrogate; not valid NTC",
+      "sequence": false,
+      "source_manifest": [
+        {
+          "name": "32768.bin",
+          "bytes": 32768,
+          "sha256": "730c6d5353afa53c71102b1cc4deaa13fc9c2abff7284fa22b0527bd0aead7b5"
+        },
+        {
+          "name": "131072.bin",
+          "bytes": 131072,
+          "sha256": "6a6c1147d034e6abf79fedad3322d5646077d1018c476d6d4062c2851875f098"
+        },
+        {
+          "name": "524288.bin",
+          "bytes": 524288,
+          "sha256": "b60a40f88f8045b2fac3f4575925dfe0ae52b5559b647cc609bc83195e9d23a3"
+        }
+      ],
+      "fps": 4,
+      "duration_s": 18.0,
+      "elapsed_s": 18.846969841999965,
+      "deadline_ms": 1000,
+      "queue_limit": 8,
+      "generated": 72,
+      "completed": 52,
+      "ontime": 39,
+      "ontime_bytes": 16318464,
+      "dropped": 20,
+      "incomplete": 0,
+      "p95_latency_ms": 6911.395378000008,
+      "max_queue_bytes": 3571712,
+      "switches": 4,
+      "packets_sent": 18495,
+      "packets_declared_lost": 9,
+      "valid": true,
+      "failure": null,
+      "receiver_errors": [],
+      "receiver_delay_ms": 0,
+      "run": "dynamic-1-rtt",
+      "netem_drops": 19
+    },
+    {
+      "policy": "composite",
+      "profile": "dynamic-2-composite",
+      "seed": 2,
+      "payload_kind": "synthetic byte load surrogate; not valid NTC",
+      "sequence": false,
+      "source_manifest": [
+        {
+          "name": "32768.bin",
+          "bytes": 32768,
+          "sha256": "730c6d5353afa53c71102b1cc4deaa13fc9c2abff7284fa22b0527bd0aead7b5"
+        },
+        {
+          "name": "131072.bin",
+          "bytes": 131072,
+          "sha256": "6a6c1147d034e6abf79fedad3322d5646077d1018c476d6d4062c2851875f098"
+        },
+        {
+          "name": "524288.bin",
+          "bytes": 524288,
+          "sha256": "b60a40f88f8045b2fac3f4575925dfe0ae52b5559b647cc609bc83195e9d23a3"
+        }
+      ],
+      "fps": 4,
+      "duration_s": 18.0,
+      "elapsed_s": 18.808829508999906,
+      "deadline_ms": 1000,
+      "queue_limit": 8,
+      "generated": 72,
+      "completed": 69,
+      "ontime": 56,
+      "ontime_bytes": 14024704,
+      "dropped": 3,
+      "incomplete": 0,
+      "p95_latency_ms": 2340.52808499996,
+      "max_queue_bytes": 1310720,
+      "switches": 4,
+      "packets_sent": 13142,
+      "packets_declared_lost": 15,
+      "valid": true,
+      "failure": null,
+      "receiver_errors": [],
+      "receiver_delay_ms": 0,
+      "run": "dynamic-2-composite",
+      "netem_drops": 26
+    },
+    {
+      "policy": "fixed-high",
+      "profile": "dynamic-2-fixed-high",
+      "seed": 2,
+      "payload_kind": "synthetic byte load surrogate; not valid NTC",
+      "sequence": false,
+      "source_manifest": [
+        {
+          "name": "32768.bin",
+          "bytes": 32768,
+          "sha256": "730c6d5353afa53c71102b1cc4deaa13fc9c2abff7284fa22b0527bd0aead7b5"
+        },
+        {
+          "name": "131072.bin",
+          "bytes": 131072,
+          "sha256": "6a6c1147d034e6abf79fedad3322d5646077d1018c476d6d4062c2851875f098"
+        },
+        {
+          "name": "524288.bin",
+          "bytes": 524288,
+          "sha256": "b60a40f88f8045b2fac3f4575925dfe0ae52b5559b647cc609bc83195e9d23a3"
+        }
+      ],
+      "fps": 4,
+      "duration_s": 18.0,
+      "elapsed_s": 20.640116884999998,
+      "deadline_ms": 1000,
+      "queue_limit": 8,
+      "generated": 72,
+      "completed": 51,
+      "ontime": 22,
+      "ontime_bytes": 11534336,
+      "dropped": 21,
+      "incomplete": 0,
+      "p95_latency_ms": 7082.255960999987,
+      "max_queue_bytes": 4718592,
+      "switches": 0,
+      "packets_sent": 24434,
+      "packets_declared_lost": 23,
+      "valid": true,
+      "failure": null,
+      "receiver_errors": [],
+      "receiver_delay_ms": 0,
+      "run": "dynamic-2-fixed-high",
+      "netem_drops": 33
+    },
+    {
+      "policy": "fixed-low",
+      "profile": "dynamic-2-fixed-low",
+      "seed": 2,
+      "payload_kind": "synthetic byte load surrogate; not valid NTC",
+      "sequence": false,
+      "source_manifest": [
+        {
+          "name": "32768.bin",
+          "bytes": 32768,
+          "sha256": "730c6d5353afa53c71102b1cc4deaa13fc9c2abff7284fa22b0527bd0aead7b5"
+        },
+        {
+          "name": "131072.bin",
+          "bytes": 131072,
+          "sha256": "6a6c1147d034e6abf79fedad3322d5646077d1018c476d6d4062c2851875f098"
+        },
+        {
+          "name": "524288.bin",
+          "bytes": 524288,
+          "sha256": "b60a40f88f8045b2fac3f4575925dfe0ae52b5559b647cc609bc83195e9d23a3"
+        }
+      ],
+      "fps": 4,
+      "duration_s": 18.0,
+      "elapsed_s": 18.050341548999995,
+      "deadline_ms": 1000,
+      "queue_limit": 8,
+      "generated": 72,
+      "completed": 72,
+      "ontime": 63,
+      "ontime_bytes": 2064384,
+      "dropped": 0,
+      "incomplete": 0,
+      "p95_latency_ms": 1184.33029300013,
+      "max_queue_bytes": 196608,
+      "switches": 0,
+      "packets_sent": 2216,
+      "packets_declared_lost": 8,
+      "valid": true,
+      "failure": null,
+      "receiver_errors": [],
+      "receiver_delay_ms": 0,
+      "run": "dynamic-2-fixed-low",
+      "netem_drops": 18
+    },
+    {
+      "policy": "queue",
+      "profile": "dynamic-2-queue",
+      "seed": 2,
+      "payload_kind": "synthetic byte load surrogate; not valid NTC",
+      "sequence": false,
+      "source_manifest": [
+        {
+          "name": "32768.bin",
+          "bytes": 32768,
+          "sha256": "730c6d5353afa53c71102b1cc4deaa13fc9c2abff7284fa22b0527bd0aead7b5"
+        },
+        {
+          "name": "131072.bin",
+          "bytes": 131072,
+          "sha256": "6a6c1147d034e6abf79fedad3322d5646077d1018c476d6d4062c2851875f098"
+        },
+        {
+          "name": "524288.bin",
+          "bytes": 524288,
+          "sha256": "b60a40f88f8045b2fac3f4575925dfe0ae52b5559b647cc609bc83195e9d23a3"
+        }
+      ],
+      "fps": 4,
+      "duration_s": 18.0,
+      "elapsed_s": 18.525672091999922,
+      "deadline_ms": 1000,
+      "queue_limit": 8,
+      "generated": 72,
+      "completed": 54,
+      "ontime": 44,
+      "ontime_bytes": 15007744,
+      "dropped": 18,
+      "incomplete": 0,
+      "p95_latency_ms": 6174.601795000058,
+      "max_queue_bytes": 1441792,
+      "switches": 4,
+      "packets_sent": 14957,
+      "packets_declared_lost": 16,
+      "valid": true,
+      "failure": null,
+      "receiver_errors": [],
+      "receiver_delay_ms": 0,
+      "run": "dynamic-2-queue",
+      "netem_drops": 35
+    },
+    {
+      "policy": "rtt",
+      "profile": "dynamic-2-rtt",
+      "seed": 2,
+      "payload_kind": "synthetic byte load surrogate; not valid NTC",
+      "sequence": false,
+      "source_manifest": [
+        {
+          "name": "32768.bin",
+          "bytes": 32768,
+          "sha256": "730c6d5353afa53c71102b1cc4deaa13fc9c2abff7284fa22b0527bd0aead7b5"
+        },
+        {
+          "name": "131072.bin",
+          "bytes": 131072,
+          "sha256": "6a6c1147d034e6abf79fedad3322d5646077d1018c476d6d4062c2851875f098"
+        },
+        {
+          "name": "524288.bin",
+          "bytes": 524288,
+          "sha256": "b60a40f88f8045b2fac3f4575925dfe0ae52b5559b647cc609bc83195e9d23a3"
+        }
+      ],
+      "fps": 4,
+      "duration_s": 18.0,
+      "elapsed_s": 18.83183580000002,
+      "deadline_ms": 1000,
+      "queue_limit": 8,
+      "generated": 72,
+      "completed": 52,
+      "ontime": 39,
+      "ontime_bytes": 16809984,
+      "dropped": 20,
+      "incomplete": 0,
+      "p95_latency_ms": 6935.998211000083,
+      "max_queue_bytes": 3571712,
+      "switches": 4,
+      "packets_sent": 18899,
+      "packets_declared_lost": 20,
+      "valid": true,
+      "failure": null,
+      "receiver_errors": [],
+      "receiver_delay_ms": 0,
+      "run": "dynamic-2-rtt",
+      "netem_drops": 25
+    },
+    {
+      "policy": "composite",
+      "profile": "dynamic-3-composite",
+      "seed": 3,
+      "payload_kind": "synthetic byte load surrogate; not valid NTC",
+      "sequence": false,
+      "source_manifest": [
+        {
+          "name": "32768.bin",
+          "bytes": 32768,
+          "sha256": "730c6d5353afa53c71102b1cc4deaa13fc9c2abff7284fa22b0527bd0aead7b5"
+        },
+        {
+          "name": "131072.bin",
+          "bytes": 131072,
+          "sha256": "6a6c1147d034e6abf79fedad3322d5646077d1018c476d6d4062c2851875f098"
+        },
+        {
+          "name": "524288.bin",
+          "bytes": 524288,
+          "sha256": "b60a40f88f8045b2fac3f4575925dfe0ae52b5559b647cc609bc83195e9d23a3"
+        }
+      ],
+      "fps": 4,
+      "duration_s": 18.0,
+      "elapsed_s": 18.660184549000064,
+      "deadline_ms": 1000,
+      "queue_limit": 8,
+      "generated": 72,
+      "completed": 68,
+      "ontime": 47,
+      "ontime_bytes": 15695872,
+      "dropped": 4,
+      "incomplete": 0,
+      "p95_latency_ms": 2605.728041999896,
+      "max_queue_bytes": 917504,
+      "switches": 4,
+      "packets_sent": 15063,
+      "packets_declared_lost": 14,
+      "valid": true,
+      "failure": null,
+      "receiver_errors": [],
+      "receiver_delay_ms": 0,
+      "run": "dynamic-3-composite",
+      "netem_drops": 20
+    },
+    {
+      "policy": "fixed-high",
+      "profile": "dynamic-3-fixed-high",
+      "seed": 3,
+      "payload_kind": "synthetic byte load surrogate; not valid NTC",
+      "sequence": false,
+      "source_manifest": [
+        {
+          "name": "32768.bin",
+          "bytes": 32768,
+          "sha256": "730c6d5353afa53c71102b1cc4deaa13fc9c2abff7284fa22b0527bd0aead7b5"
+        },
+        {
+          "name": "131072.bin",
+          "bytes": 131072,
+          "sha256": "6a6c1147d034e6abf79fedad3322d5646077d1018c476d6d4062c2851875f098"
+        },
+        {
+          "name": "524288.bin",
+          "bytes": 524288,
+          "sha256": "b60a40f88f8045b2fac3f4575925dfe0ae52b5559b647cc609bc83195e9d23a3"
+        }
+      ],
+      "fps": 4,
+      "duration_s": 18.0,
+      "elapsed_s": 20.613336551999964,
+      "deadline_ms": 1000,
+      "queue_limit": 8,
+      "generated": 72,
+      "completed": 50,
+      "ontime": 21,
+      "ontime_bytes": 11010048,
+      "dropped": 22,
+      "incomplete": 0,
+      "p95_latency_ms": 7335.953335999989,
+      "max_queue_bytes": 4718592,
+      "switches": 0,
+      "packets_sent": 23985,
+      "packets_declared_lost": 15,
+      "valid": true,
+      "failure": null,
+      "receiver_errors": [],
+      "receiver_delay_ms": 0,
+      "run": "dynamic-3-fixed-high",
+      "netem_drops": 24
+    },
+    {
+      "policy": "fixed-low",
+      "profile": "dynamic-3-fixed-low",
+      "seed": 3,
+      "payload_kind": "synthetic byte load surrogate; not valid NTC",
+      "sequence": false,
+      "source_manifest": [
+        {
+          "name": "32768.bin",
+          "bytes": 32768,
+          "sha256": "730c6d5353afa53c71102b1cc4deaa13fc9c2abff7284fa22b0527bd0aead7b5"
+        },
+        {
+          "name": "131072.bin",
+          "bytes": 131072,
+          "sha256": "6a6c1147d034e6abf79fedad3322d5646077d1018c476d6d4062c2851875f098"
+        },
+        {
+          "name": "524288.bin",
+          "bytes": 524288,
+          "sha256": "b60a40f88f8045b2fac3f4575925dfe0ae52b5559b647cc609bc83195e9d23a3"
+        }
+      ],
+      "fps": 4,
+      "duration_s": 18.0,
+      "elapsed_s": 18.051932465999926,
+      "deadline_ms": 1000,
+      "queue_limit": 8,
+      "generated": 72,
+      "completed": 72,
+      "ontime": 61,
+      "ontime_bytes": 1998848,
+      "dropped": 0,
+      "incomplete": 0,
+      "p95_latency_ms": 1717.9699590000155,
+      "max_queue_bytes": 262144,
+      "switches": 0,
+      "packets_sent": 2232,
+      "packets_declared_lost": 11,
+      "valid": true,
+      "failure": null,
+      "receiver_errors": [],
+      "receiver_delay_ms": 0,
+      "run": "dynamic-3-fixed-low",
+      "netem_drops": 21
+    },
+    {
+      "policy": "queue",
+      "profile": "dynamic-3-queue",
+      "seed": 3,
+      "payload_kind": "synthetic byte load surrogate; not valid NTC",
+      "sequence": false,
+      "source_manifest": [
+        {
+          "name": "32768.bin",
+          "bytes": 32768,
+          "sha256": "730c6d5353afa53c71102b1cc4deaa13fc9c2abff7284fa22b0527bd0aead7b5"
+        },
+        {
+          "name": "131072.bin",
+          "bytes": 131072,
+          "sha256": "6a6c1147d034e6abf79fedad3322d5646077d1018c476d6d4062c2851875f098"
+        },
+        {
+          "name": "524288.bin",
+          "bytes": 524288,
+          "sha256": "b60a40f88f8045b2fac3f4575925dfe0ae52b5559b647cc609bc83195e9d23a3"
+        }
+      ],
+      "fps": 4,
+      "duration_s": 18.0,
+      "elapsed_s": 18.776068216999988,
+      "deadline_ms": 1000,
+      "queue_limit": 8,
+      "generated": 72,
+      "completed": 69,
+      "ontime": 53,
+      "ontime_bytes": 13926400,
+      "dropped": 3,
+      "incomplete": 0,
+      "p95_latency_ms": 2624.7778340000423,
+      "max_queue_bytes": 1310720,
+      "switches": 6,
+      "packets_sent": 13451,
+      "packets_declared_lost": 11,
+      "valid": true,
+      "failure": null,
+      "receiver_errors": [],
+      "receiver_delay_ms": 0,
+      "run": "dynamic-3-queue",
+      "netem_drops": 14
+    },
+    {
+      "policy": "rtt",
+      "profile": "dynamic-3-rtt",
+      "seed": 3,
+      "payload_kind": "synthetic byte load surrogate; not valid NTC",
+      "sequence": false,
+      "source_manifest": [
+        {
+          "name": "32768.bin",
+          "bytes": 32768,
+          "sha256": "730c6d5353afa53c71102b1cc4deaa13fc9c2abff7284fa22b0527bd0aead7b5"
+        },
+        {
+          "name": "131072.bin",
+          "bytes": 131072,
+          "sha256": "6a6c1147d034e6abf79fedad3322d5646077d1018c476d6d4062c2851875f098"
+        },
+        {
+          "name": "524288.bin",
+          "bytes": 524288,
+          "sha256": "b60a40f88f8045b2fac3f4575925dfe0ae52b5559b647cc609bc83195e9d23a3"
+        }
+      ],
+      "fps": 4,
+      "duration_s": 18.0,
+      "elapsed_s": 18.763624884000023,
+      "deadline_ms": 1000,
+      "queue_limit": 8,
+      "generated": 72,
+      "completed": 53,
+      "ontime": 41,
+      "ontime_bytes": 16384000,
+      "dropped": 19,
+      "incomplete": 0,
+      "p95_latency_ms": 6804.638503999854,
+      "max_queue_bytes": 3571712,
+      "switches": 4,
+      "packets_sent": 18597,
+      "packets_declared_lost": 19,
+      "valid": true,
+      "failure": null,
+      "receiver_errors": [],
+      "receiver_delay_ms": 0,
+      "run": "dynamic-3-rtt",
+      "netem_drops": 25
+    },
+    {
+      "policy": "fixed-high",
+      "profile": "real-burst",
+      "seed": 1,
+      "payload_kind": "whole supplied files; size levels do not imply visual quality",
+      "sequence": true,
+      "source_manifest": [
+        {
+          "name": "NTC_000001.pth",
+          "bytes": 7968015,
+          "sha256": "835bffc74f844856b148011fa974b27b585da3e903f30e8d744bb29e496359f3"
+        },
+        {
+          "name": "NTC_000000.pth",
+          "bytes": 7968015,
+          "sha256": "7465eb688a3524da736fc925ee7e152be558315887d6a4b4e66991afe1f8beb1"
+        }
+      ],
+      "fps": 0.2,
+      "duration_s": 10.0,
+      "elapsed_s": 16.70189875699998,
+      "deadline_ms": 8000.0,
+      "queue_limit": 8,
+      "generated": 2,
+      "completed": 0,
+      "ontime": 0,
+      "ontime_bytes": 0,
+      "dropped": 0,
+      "incomplete": 2,
+      "p95_latency_ms": null,
+      "max_queue_bytes": 15387166,
+      "switches": 0,
+      "packets_sent": 639,
+      "packets_declared_lost": 58,
+      "valid": false,
+      "failure": "TimeoutError()",
+      "receiver_errors": [],
+      "receiver_delay_ms": 0,
+      "run": "real-burst",
+      "netem_drops": 76
+    },
+    {
+      "policy": "fixed-high",
+      "profile": "real-good",
+      "seed": 1,
+      "payload_kind": "whole supplied files; size levels do not imply visual quality",
+      "sequence": true,
+      "source_manifest": [
+        {
+          "name": "NTC_000001.pth",
+          "bytes": 7968015,
+          "sha256": "835bffc74f844856b148011fa974b27b585da3e903f30e8d744bb29e496359f3"
+        },
+        {
+          "name": "NTC_000000.pth",
+          "bytes": 7968015,
+          "sha256": "7465eb688a3524da736fc925ee7e152be558315887d6a4b4e66991afe1f8beb1"
+        }
+      ],
+      "fps": 0.2,
+      "duration_s": 10.0,
+      "elapsed_s": 9.294071296000084,
+      "deadline_ms": 8000.0,
+      "queue_limit": 8,
+      "generated": 2,
+      "completed": 2,
+      "ontime": 2,
+      "ontime_bytes": 15936030,
+      "dropped": 0,
+      "incomplete": 0,
+      "p95_latency_ms": 3370.5295839999962,
+      "max_queue_bytes": 7968015,
+      "switches": 0,
+      "packets_sent": 14718,
+      "packets_declared_lost": 0,
+      "valid": true,
+      "failure": null,
+      "receiver_errors": [],
+      "receiver_delay_ms": 0,
+      "run": "real-good",
+      "netem_drops": 0
+    },
+    {
+      "policy": "fixed-high",
+      "profile": "real-loss",
+      "seed": 1,
+      "payload_kind": "whole supplied files; size levels do not imply visual quality",
+      "sequence": true,
+      "source_manifest": [
+        {
+          "name": "NTC_000001.pth",
+          "bytes": 7968015,
+          "sha256": "835bffc74f844856b148011fa974b27b585da3e903f30e8d744bb29e496359f3"
+        },
+        {
+          "name": "NTC_000000.pth",
+          "bytes": 7968015,
+          "sha256": "7465eb688a3524da736fc925ee7e152be558315887d6a4b4e66991afe1f8beb1"
+        }
+      ],
+      "fps": 0.2,
+      "duration_s": 10.0,
+      "elapsed_s": 53.63940227399996,
+      "deadline_ms": 8000.0,
+      "queue_limit": 8,
+      "generated": 2,
+      "completed": 2,
+      "ontime": 0,
+      "ontime_bytes": 0,
+      "dropped": 0,
+      "incomplete": 0,
+      "p95_latency_ms": 26926.872428000024,
+      "max_queue_bytes": 14207518,
+      "switches": 0,
+      "packets_sent": 17156,
+      "packets_declared_lost": 506,
+      "valid": true,
+      "failure": null,
+      "receiver_errors": [],
+      "receiver_delay_ms": 0,
+      "run": "real-loss",
+      "netem_drops": 774
+    },
+    {
+      "policy": "composite",
+      "profile": "receiver-slow",
+      "seed": 1,
+      "payload_kind": "synthetic byte load surrogate; not valid NTC",
+      "sequence": false,
+      "source_manifest": [
+        {
+          "name": "32768.bin",
+          "bytes": 32768,
+          "sha256": "730c6d5353afa53c71102b1cc4deaa13fc9c2abff7284fa22b0527bd0aead7b5"
+        },
+        {
+          "name": "131072.bin",
+          "bytes": 131072,
+          "sha256": "6a6c1147d034e6abf79fedad3322d5646077d1018c476d6d4062c2851875f098"
+        },
+        {
+          "name": "524288.bin",
+          "bytes": 524288,
+          "sha256": "b60a40f88f8045b2fac3f4575925dfe0ae52b5559b647cc609bc83195e9d23a3"
+        }
+      ],
+      "fps": 4,
+      "duration_s": 8.0,
+      "elapsed_s": 8.235717628999964,
+      "deadline_ms": 1000,
+      "queue_limit": 8,
+      "generated": 32,
+      "completed": 32,
+      "ontime": 21,
+      "ontime_bytes": 1671168,
+      "dropped": 0,
+      "incomplete": 0,
+      "p95_latency_ms": 1608.7299179999945,
+      "max_queue_bytes": 1310720,
+      "switches": 3,
+      "packets_sent": 2881,
+      "packets_declared_lost": 53,
+      "valid": true,
+      "failure": null,
+      "receiver_errors": [],
+      "receiver_delay_ms": 150.0,
+      "run": "receiver-slow",
+      "netem_drops": 0
+    },
+    {
+      "policy": "fixed-high",
+      "profile": "static-bandwidth",
+      "seed": 1,
+      "payload_kind": "synthetic byte load surrogate; not valid NTC",
+      "sequence": false,
+      "source_manifest": [
+        {
+          "name": "32768.bin",
+          "bytes": 32768,
+          "sha256": "730c6d5353afa53c71102b1cc4deaa13fc9c2abff7284fa22b0527bd0aead7b5"
+        },
+        {
+          "name": "131072.bin",
+          "bytes": 131072,
+          "sha256": "6a6c1147d034e6abf79fedad3322d5646077d1018c476d6d4062c2851875f098"
+        },
+        {
+          "name": "524288.bin",
+          "bytes": 524288,
+          "sha256": "b60a40f88f8045b2fac3f4575925dfe0ae52b5559b647cc609bc83195e9d23a3"
+        }
+      ],
+      "fps": 4,
+      "duration_s": 8.0,
+      "elapsed_s": 42.30499722700006,
+      "deadline_ms": 1000,
+      "queue_limit": 8,
+      "generated": 32,
+      "completed": 11,
+      "ontime": 0,
+      "ontime_bytes": 0,
+      "dropped": 21,
+      "incomplete": 0,
+      "p95_latency_ms": 29772.929095999985,
+      "max_queue_bytes": 4718592,
+      "switches": 0,
+      "packets_sent": 5414,
+      "packets_declared_lost": 0,
+      "valid": true,
+      "failure": null,
+      "receiver_errors": [],
+      "receiver_delay_ms": 0,
+      "run": "static-bandwidth",
+      "netem_drops": 0
+    },
+    {
+      "policy": "fixed-high",
+      "profile": "static-burst",
+      "seed": 1,
+      "payload_kind": "synthetic byte load surrogate; not valid NTC",
+      "sequence": false,
+      "source_manifest": [
+        {
+          "name": "32768.bin",
+          "bytes": 32768,
+          "sha256": "730c6d5353afa53c71102b1cc4deaa13fc9c2abff7284fa22b0527bd0aead7b5"
+        },
+        {
+          "name": "131072.bin",
+          "bytes": 131072,
+          "sha256": "6a6c1147d034e6abf79fedad3322d5646077d1018c476d6d4062c2851875f098"
+        },
+        {
+          "name": "524288.bin",
+          "bytes": 524288,
+          "sha256": "b60a40f88f8045b2fac3f4575925dfe0ae52b5559b647cc609bc83195e9d23a3"
+        }
+      ],
+      "fps": 4,
+      "duration_s": 8.0,
+      "elapsed_s": 33.416520182,
+      "deadline_ms": 1000,
+      "queue_limit": 8,
+      "generated": 32,
+      "completed": 11,
+      "ontime": 0,
+      "ontime_bytes": 0,
+      "dropped": 21,
+      "incomplete": 0,
+      "p95_latency_ms": 24812.924345000058,
+      "max_queue_bytes": 4718592,
+      "switches": 0,
+      "packets_sent": 6174,
+      "packets_declared_lost": 334,
+      "valid": true,
+      "failure": null,
+      "receiver_errors": [],
+      "receiver_delay_ms": 0,
+      "run": "static-burst",
+      "netem_drops": 475
+    },
+    {
+      "policy": "fixed-high",
+      "profile": "static-clean",
+      "seed": 1,
+      "payload_kind": "synthetic byte load surrogate; not valid NTC",
+      "sequence": false,
+      "source_manifest": [
+        {
+          "name": "32768.bin",
+          "bytes": 32768,
+          "sha256": "730c6d5353afa53c71102b1cc4deaa13fc9c2abff7284fa22b0527bd0aead7b5"
+        },
+        {
+          "name": "131072.bin",
+          "bytes": 131072,
+          "sha256": "6a6c1147d034e6abf79fedad3322d5646077d1018c476d6d4062c2851875f098"
+        },
+        {
+          "name": "524288.bin",
+          "bytes": 524288,
+          "sha256": "b60a40f88f8045b2fac3f4575925dfe0ae52b5559b647cc609bc83195e9d23a3"
+        }
+      ],
+      "fps": 4,
+      "duration_s": 8.0,
+      "elapsed_s": 8.21123833699994,
+      "deadline_ms": 1000,
+      "queue_limit": 8,
+      "generated": 32,
+      "completed": 32,
+      "ontime": 32,
+      "ontime_bytes": 16777216,
+      "dropped": 0,
+      "incomplete": 0,
+      "p95_latency_ms": 90.6387510000286,
+      "max_queue_bytes": 524288,
+      "switches": 0,
+      "packets_sent": 15741,
+      "packets_declared_lost": 98,
+      "valid": true,
+      "failure": null,
+      "receiver_errors": [],
+      "receiver_delay_ms": 0,
+      "run": "static-clean",
+      "netem_drops": 0
+    },
+    {
+      "policy": "fixed-high",
+      "profile": "static-delay",
+      "seed": 1,
+      "payload_kind": "synthetic byte load surrogate; not valid NTC",
+      "sequence": false,
+      "source_manifest": [
+        {
+          "name": "32768.bin",
+          "bytes": 32768,
+          "sha256": "730c6d5353afa53c71102b1cc4deaa13fc9c2abff7284fa22b0527bd0aead7b5"
+        },
+        {
+          "name": "131072.bin",
+          "bytes": 131072,
+          "sha256": "6a6c1147d034e6abf79fedad3322d5646077d1018c476d6d4062c2851875f098"
+        },
+        {
+          "name": "524288.bin",
+          "bytes": 524288,
+          "sha256": "b60a40f88f8045b2fac3f4575925dfe0ae52b5559b647cc609bc83195e9d23a3"
+        }
+      ],
+      "fps": 4,
+      "duration_s": 8.0,
+      "elapsed_s": 16.932009924,
+      "deadline_ms": 1000,
+      "queue_limit": 8,
+      "generated": 32,
+      "completed": 16,
+      "ontime": 0,
+      "ontime_bytes": 0,
+      "dropped": 16,
+      "incomplete": 0,
+      "p95_latency_ms": 8554.686044999926,
+      "max_queue_bytes": 4718592,
+      "switches": 0,
+      "packets_sent": 7655,
+      "packets_declared_lost": 0,
+      "valid": true,
+      "failure": null,
+      "receiver_errors": [],
+      "receiver_delay_ms": 0,
+      "run": "static-delay",
+      "netem_drops": 0
+    },
+    {
+      "policy": "fixed-high",
+      "profile": "static-jitter",
+      "seed": 1,
+      "payload_kind": "synthetic byte load surrogate; not valid NTC",
+      "sequence": false,
+      "source_manifest": [
+        {
+          "name": "32768.bin",
+          "bytes": 32768,
+          "sha256": "730c6d5353afa53c71102b1cc4deaa13fc9c2abff7284fa22b0527bd0aead7b5"
+        },
+        {
+          "name": "131072.bin",
+          "bytes": 131072,
+          "sha256": "6a6c1147d034e6abf79fedad3322d5646077d1018c476d6d4062c2851875f098"
+        },
+        {
+          "name": "524288.bin",
+          "bytes": 524288,
+          "sha256": "b60a40f88f8045b2fac3f4575925dfe0ae52b5559b647cc609bc83195e9d23a3"
+        }
+      ],
+      "fps": 4,
+      "duration_s": 8.0,
+      "elapsed_s": 16.075405299000067,
+      "deadline_ms": 1000,
+      "queue_limit": 8,
+      "generated": 32,
+      "completed": 17,
+      "ontime": 0,
+      "ontime_bytes": 0,
+      "dropped": 15,
+      "incomplete": 0,
+      "p95_latency_ms": 7383.1538360000195,
+      "max_queue_bytes": 4718592,
+      "switches": 0,
+      "packets_sent": 8105,
+      "packets_declared_lost": 0,
+      "valid": true,
+      "failure": null,
+      "receiver_errors": [],
+      "receiver_delay_ms": 0,
+      "run": "static-jitter",
+      "netem_drops": 0
+    },
+    {
+      "policy": "fixed-high",
+      "profile": "static-loss",
+      "seed": 1,
+      "payload_kind": "synthetic byte load surrogate; not valid NTC",
+      "sequence": false,
+      "source_manifest": [
+        {
+          "name": "32768.bin",
+          "bytes": 32768,
+          "sha256": "730c6d5353afa53c71102b1cc4deaa13fc9c2abff7284fa22b0527bd0aead7b5"
+        },
+        {
+          "name": "131072.bin",
+          "bytes": 131072,
+          "sha256": "6a6c1147d034e6abf79fedad3322d5646077d1018c476d6d4062c2851875f098"
+        },
+        {
+          "name": "524288.bin",
+          "bytes": 524288,
+          "sha256": "b60a40f88f8045b2fac3f4575925dfe0ae52b5559b647cc609bc83195e9d23a3"
+        }
+      ],
+      "fps": 4,
+      "duration_s": 8.0,
+      "elapsed_s": 24.132137510999996,
+      "deadline_ms": 1000,
+      "queue_limit": 8,
+      "generated": 32,
+      "completed": 13,
+      "ontime": 0,
+      "ontime_bytes": 0,
+      "dropped": 19,
+      "incomplete": 0,
+      "p95_latency_ms": 16472.270632000116,
+      "max_queue_bytes": 4718592,
+      "switches": 0,
+      "packets_sent": 7322,
+      "packets_declared_lost": 245,
+      "valid": true,
+      "failure": null,
+      "receiver_errors": [],
+      "receiver_delay_ms": 0,
+      "run": "static-loss",
+      "netem_drops": 356
+    },
+    {
+      "policy": "fixed-high",
+      "profile": "static-reorder",
+      "seed": 1,
+      "payload_kind": "synthetic byte load surrogate; not valid NTC",
+      "sequence": false,
+      "source_manifest": [
+        {
+          "name": "32768.bin",
+          "bytes": 32768,
+          "sha256": "730c6d5353afa53c71102b1cc4deaa13fc9c2abff7284fa22b0527bd0aead7b5"
+        },
+        {
+          "name": "131072.bin",
+          "bytes": 131072,
+          "sha256": "6a6c1147d034e6abf79fedad3322d5646077d1018c476d6d4062c2851875f098"
+        },
+        {
+          "name": "524288.bin",
+          "bytes": 524288,
+          "sha256": "b60a40f88f8045b2fac3f4575925dfe0ae52b5559b647cc609bc83195e9d23a3"
+        }
+      ],
+      "fps": 4,
+      "duration_s": 8.0,
+      "elapsed_s": 46.230943730000035,
+      "deadline_ms": 1000,
+      "queue_limit": 8,
+      "generated": 32,
+      "completed": 10,
+      "ontime": 0,
+      "ontime_bytes": 0,
+      "dropped": 22,
+      "incomplete": 0,
+      "p95_latency_ms": 38874.48155899995,
+      "max_queue_bytes": 4718592,
+      "switches": 0,
+      "packets_sent": 5877,
+      "packets_declared_lost": 459,
+      "valid": true,
+      "failure": null,
+      "receiver_errors": [],
+      "receiver_delay_ms": 0,
+      "run": "static-reorder",
+      "netem_drops": 0
+    }
+  ],
+  "caveats": [
+    "Detection/clear times are first matching samples after transition, not sustained state changes; an alarm may predate impairment.",
+    "Latency p95 uses the lower empirical order statistic at floor((n-1)*0.95); tiny real-file samples are not tail estimates.",
+    "Failed runs remain listed but are excluded from performance/predictor aggregates; coverage is explicit.",
+    "Delivery-deficit alarm omitted for adaptive negative controls because offered rate changes with policy.",
+    "Only original FP32 checkpoints available; exact Publio INT4/saliency assets requested.",
+    "Synthetic size adaptation does not imply valid NTC representations or measured visual quality.",
+    "Signal thresholds frozen before main runs; repeat 1 calibration, repeats 2/3 holdout. No statistical significance claim.",
+    "Netem modifies only container loopback, affecting both directions. Kernel random loss traces differ across runs.",
+    "Transition uses qdisc change preserving queue; no host qdisc changes.",
+    "Receiver deadline computed from complete file receipt; playback and GPU inference are not measured.",
+    "Queue pressure can mean application overload or slow receiver, not uniquely network impairment.",
+    "Congestion/RTT/buffer diagnostics access aioquic 1.7.2 internals. Loss is QUIC-declared loss, not exact wire drops.",
+    "All regular workload files priority P0: this experiment isolates load adaptation, not prioritization gains."
+  ]
+}

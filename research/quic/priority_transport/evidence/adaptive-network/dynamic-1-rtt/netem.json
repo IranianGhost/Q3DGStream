@@ -1,0 +1,197 @@
+{
+  "schedule": [
+    {
+      "t": 0,
+      "profile": "good"
+    },
+    {
+      "t": 6.016859002999979,
+      "profile": "bad"
+    },
+    {
+      "t": 12.017671629999995,
+      "profile": "good"
+    }
+  ],
+  "stats": [
+    [
+      {
+        "kind": "netem",
+        "handle": "801a:",
+        "root": true,
+        "refcnt": 2,
+        "options": {
+          "limit": 1000,
+          "delay": {
+            "delay": 0.01,
+            "jitter": 0,
+            "correlation": 0
+          },
+          "rate": {
+            "rate": 3000000,
+            "packetoverhead": 0,
+            "cellsize": 0,
+            "celloverhead": 0
+          },
+          "seed": 1454941072596891919,
+          "ecn": false,
+          "gap": 0
+        },
+        "bytes": 13161277,
+        "packets": 13645,
+        "drops": 0,
+        "overlimits": 0,
+        "requeues": 0,
+        "backlog": 46172,
+        "qlen": 58
+      }
+    ],
+    [
+      {
+        "kind": "netem",
+        "handle": "801a:",
+        "root": true,
+        "refcnt": 2,
+        "options": {
+          "limit": 1000,
+          "delay": {
+            "delay": 0.04,
+            "jitter": 0.01,
+            "correlation": 0
+          },
+          "loss-random": {
+            "loss": 0.02,
+            "correlation": 0
+          },
+          "rate": {
+            "rate": 187500,
+            "packetoverhead": 0,
+            "cellsize": 0,
+            "celloverhead": 0
+          },
+          "seed": 14473512364750816384,
+          "ecn": false,
+          "gap": 0
+        },
+        "bytes": 14182572,
+        "packets": 15269,
+        "drops": 19,
+        "overlimits": 0,
+        "requeues": 0,
+        "backlog": 19868,
+        "qlen": 27
+      }
+    ],
+    [
+      {
+        "kind": "netem",
+        "handle": "801a:",
+        "root": true,
+        "refcnt": 2,
+        "options": {
+          "limit": 1000,
+          "delay": {
+            "delay": 0.01,
+            "jitter": 0,
+            "correlation": 0
+          },
+          "rate": {
+            "rate": 3000000,
+            "packetoverhead": 0,
+            "cellsize": 0,
+            "celloverhead": 0
+          },
+          "seed": 9981881159349180687,
+          "ecn": false,
+          "gap": 0
+        },
+        "bytes": 23031474,
+        "packets": 24677,
+        "drops": 19,
+        "overlimits": 0,
+        "requeues": 0,
+        "backlog": 0,
+        "qlen": 0
+      }
+    ]
+  ],
+  "profiles": {
+    "good": [
+      "delay",
+      "10ms",
+      "0ms",
+      "loss",
+      "random",
+      "0%",
+      "rate",
+      "24mbit"
+    ],
+    "bad": [
+      "delay",
+      "40ms",
+      "10ms",
+      "distribution",
+      "normal",
+      "loss",
+      "random",
+      "2%",
+      "rate",
+      "1500kbit"
+    ],
+    "bandwidth": [
+      "delay",
+      "10ms",
+      "rate",
+      "1500kbit"
+    ],
+    "delay": [
+      "delay",
+      "80ms",
+      "rate",
+      "12mbit"
+    ],
+    "jitter": [
+      "delay",
+      "30ms",
+      "20ms",
+      "distribution",
+      "normal",
+      "rate",
+      "12mbit"
+    ],
+    "loss": [
+      "delay",
+      "10ms",
+      "loss",
+      "random",
+      "3%",
+      "rate",
+      "12mbit"
+    ],
+    "burst": [
+      "delay",
+      "10ms",
+      "loss",
+      "gemodel",
+      "2%",
+      "25%",
+      "80%",
+      "0.1%",
+      "rate",
+      "12mbit"
+    ],
+    "reorder": [
+      "delay",
+      "30ms",
+      "10ms",
+      "reorder",
+      "20%",
+      "50%",
+      "rate",
+      "12mbit"
+    ],
+    "clean": []
+  },
+  "returncode": 0,
+  "seed_note": "seed labels repeats; kernel netem randomness not fixed"
+}

@@ -1,0 +1,44 @@
+{
+  "policy": "fixed-high",
+  "profile": "dynamic-3-fixed-high",
+  "seed": 3,
+  "payload_kind": "synthetic byte load surrogate; not valid NTC",
+  "sequence": false,
+  "source_manifest": [
+    {
+      "name": "32768.bin",
+      "bytes": 32768,
+      "sha256": "730c6d5353afa53c71102b1cc4deaa13fc9c2abff7284fa22b0527bd0aead7b5"
+    },
+    {
+      "name": "131072.bin",
+      "bytes": 131072,
+      "sha256": "6a6c1147d034e6abf79fedad3322d5646077d1018c476d6d4062c2851875f098"
+    },
+    {
+      "name": "524288.bin",
+      "bytes": 524288,
+      "sha256": "b60a40f88f8045b2fac3f4575925dfe0ae52b5559b647cc609bc83195e9d23a3"
+    }
+  ],
+  "fps": 4,
+  "duration_s": 18.0,
+  "elapsed_s": 20.613336551999964,
+  "deadline_ms": 1000,
+  "queue_limit": 8,
+  "generated": 72,
+  "completed": 50,
+  "ontime": 21,
+  "ontime_bytes": 11010048,
+  "dropped": 22,
+  "incomplete": 0,
+  "p95_latency_ms": 7335.953335999989,
+  "max_queue_bytes": 4718592,
+  "switches": 0,
+  "packets_sent": 23985,
+  "packets_declared_lost": 15,
+  "valid": true,
+  "failure": null,
+  "receiver_errors": [],
+  "receiver_delay_ms": 0
+}

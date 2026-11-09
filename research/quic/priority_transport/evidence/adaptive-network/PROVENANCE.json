@@ -1,0 +1,11 @@
+{
+  "raw_local_directory": "/Users/ghost/Documents/ChatGPT/3D streaming research/Q3DGStream/data/outputs/adaptive-run-20261109-222015-71356",
+  "base_commit": "5fbf0afcaad268c5abedbe62077aed9bb661cc16",
+  "date": "2026-11-09",
+  "main_matrix_runs": 27,
+  "valid": 26,
+  "failed": [
+    "real-burst"
+  ],
+  "runtime_note": "After the matrix, failure cleanup/exit handling and atomic ready-file publication were hardened; transfer/controller success-path behavior is unchanged. Analysis excludes invalid runs from aggregates. Original qlogs and chunk events remain local with hashes here."
+}

@@ -1,0 +1,39 @@
+{
+  "policy": "fixed-high",
+  "profile": "real-loss",
+  "seed": 1,
+  "payload_kind": "whole supplied files; size levels do not imply visual quality",
+  "sequence": true,
+  "source_manifest": [
+    {
+      "name": "NTC_000001.pth",
+      "bytes": 7968015,
+      "sha256": "835bffc74f844856b148011fa974b27b585da3e903f30e8d744bb29e496359f3"
+    },
+    {
+      "name": "NTC_000000.pth",
+      "bytes": 7968015,
+      "sha256": "7465eb688a3524da736fc925ee7e152be558315887d6a4b4e66991afe1f8beb1"
+    }
+  ],
+  "fps": 0.2,
+  "duration_s": 10.0,
+  "elapsed_s": 53.63940227399996,
+  "deadline_ms": 8000.0,
+  "queue_limit": 8,
+  "generated": 2,
+  "completed": 2,
+  "ontime": 0,
+  "ontime_bytes": 0,
+  "dropped": 0,
+  "incomplete": 0,
+  "p95_latency_ms": 26926.872428000024,
+  "max_queue_bytes": 14207518,
+  "switches": 0,
+  "packets_sent": 17156,
+  "packets_declared_lost": 506,
+  "valid": true,
+  "failure": null,
+  "receiver_errors": [],
+  "receiver_delay_ms": 0
+}

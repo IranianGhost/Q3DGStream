@@ -30,12 +30,13 @@ def file_hash(path):
 
 
 class Receiver:
-    def __init__(self, cache, on_file=None):
+    def __init__(self, cache, on_file=None, processing_delay=0):
         self.assembler = FileAssembler(cache)
         self.on_file = on_file
         self.tasks = set()
         self.events = []
         self.errors = []
+        self.processing_delay = processing_delay
 
     def handler(self, reader, writer):
         t = asyncio.create_task(self.receive(reader, writer))
@@ -79,6 +80,9 @@ class Receiver:
                 payload = await asyncio.wait_for(reader.readexactly(h["size"]), 30)
                 if await asyncio.wait_for(reader.read(1), 30):
                     raise ValueError("unexpected trailing bytes")
+                processing_started = time.monotonic()
+                if self.processing_delay:
+                    await asyncio.sleep(self.processing_delay)
                 complete = self.assembler.accept(h, payload)
             if complete and self.on_file is not None:
                 await asyncio.to_thread(self.on_file, h["path"])
@@ -94,7 +98,9 @@ class Receiver:
             )
             writer.write(
                 (
-                    json.dumps(dict(ok=True, received=received, complete=complete))
+                    json.dumps(dict(ok=True, received=received, complete=complete,
+                                    processing_ms=(received - processing_started) * 1000
+                                    if not h.get("whole_file") else None))
                     + "\n"
                 ).encode()
             )
@@ -116,7 +122,7 @@ class Receiver:
         self.assembler.close()
 
 
-async def send_files(connection, jobs, *, policy="strict", max_inflight=16, timeout=30):
+async def send_files(connection, jobs, *, policy="strict", max_inflight=16, timeout=30, on_event=None):
     """Send file chunks. Completion means receiver validated and atomically committed files.
 
     Read files lazily per chunk. Inputs must remain unchanged during transfer.
@@ -172,11 +178,16 @@ async def send_files(connection, jobs, *, policy="strict", max_inflight=16, time
         row["submitted_ms"] = (time.monotonic() - started) * 1000
         writer.write(struct.pack("!I", len(encoded)) + encoded + payload)
         writer.write_eof()
+        if on_event:
+            on_event("submitted", dict(row))
         response = json.loads(await asyncio.wait_for(reader.readline(), timeout))
         if not response.get("ok"):
             raise RuntimeError(response.get("error", "receiver rejected chunk"))
         row["received_ms"] = (response["received"] - started) * 1000
         row["acked_ms"] = (time.monotonic() - started) * 1000
+        row["processing_ms"] = response.get("processing_ms")
+        if on_event:
+            on_event("acked", dict(row))
         if response["complete"]:
             completed.add(job.remote)
 

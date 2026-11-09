@@ -1,0 +1,127 @@
+{
+  "schedule": [
+    {
+      "t": 0,
+      "profile": "burst"
+    }
+  ],
+  "stats": [
+    [
+      {
+        "kind": "netem",
+        "handle": "802f:",
+        "root": true,
+        "refcnt": 2,
+        "options": {
+          "limit": 1000,
+          "delay": {
+            "delay": 0.01,
+            "jitter": 0,
+            "correlation": 0
+          },
+          "loss-gemodel": {
+            "p": 0.02,
+            "r": 0.25,
+            "1-h": 0.8,
+            "1-k": 0.001
+          },
+          "rate": {
+            "rate": 1500000,
+            "packetoverhead": 0,
+            "cellsize": 0,
+            "celloverhead": 0
+          },
+          "seed": 18393146508919812765,
+          "ecn": false,
+          "gap": 0
+        },
+        "bytes": 694662,
+        "packets": 868,
+        "drops": 76,
+        "overlimits": 0,
+        "requeues": 0,
+        "backlog": 0,
+        "qlen": 0
+      }
+    ]
+  ],
+  "profiles": {
+    "good": [
+      "delay",
+      "10ms",
+      "0ms",
+      "loss",
+      "random",
+      "0%",
+      "rate",
+      "24mbit"
+    ],
+    "bad": [
+      "delay",
+      "40ms",
+      "10ms",
+      "distribution",
+      "normal",
+      "loss",
+      "random",
+      "2%",
+      "rate",
+      "1500kbit"
+    ],
+    "bandwidth": [
+      "delay",
+      "10ms",
+      "rate",
+      "1500kbit"
+    ],
+    "delay": [
+      "delay",
+      "80ms",
+      "rate",
+      "12mbit"
+    ],
+    "jitter": [
+      "delay",
+      "30ms",
+      "20ms",
+      "distribution",
+      "normal",
+      "rate",
+      "12mbit"
+    ],
+    "loss": [
+      "delay",
+      "10ms",
+      "loss",
+      "random",
+      "3%",
+      "rate",
+      "12mbit"
+    ],
+    "burst": [
+      "delay",
+      "10ms",
+      "loss",
+      "gemodel",
+      "2%",
+      "25%",
+      "80%",
+      "0.1%",
+      "rate",
+      "12mbit"
+    ],
+    "reorder": [
+      "delay",
+      "30ms",
+      "10ms",
+      "reorder",
+      "20%",
+      "50%",
+      "rate",
+      "12mbit"
+    ],
+    "clean": []
+  },
+  "returncode": 1,
+  "seed_note": "seed labels repeats; kernel netem randomness not fixed"
+}
