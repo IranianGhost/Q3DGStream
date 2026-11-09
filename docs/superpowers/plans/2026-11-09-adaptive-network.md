@@ -40,6 +40,6 @@
 - Ruling: prior user delegation plus explicit implement request authorizes design choices without another approval round.
 
 - Main matrix: 27 attempted, 26 valid; real-burst failed with a 15 s chunk ACK timeout. Retained failure evidence.
-- Verification: 42 tests and 749 subtests pass in scoped suites; repository-wide collection fails in pre-existing progressive receiver test.
+- Verification: 42 tests and 755 subtests pass in scoped suites; repository-wide collection fails in pre-existing progressive receiver test.
 - Review fixes: preserve qdisc across transitions, cycle both real files, distinguish receiver commit/ACK time, bound readiness and guarantee cleanup, exclude failed runs from aggregates, omit invalid adaptive-control deficit comparisons.
 - Ruling: use existing feature branch as explicitly requested; no new worktree needed. Exact Publio compressed inputs remain external pending email.

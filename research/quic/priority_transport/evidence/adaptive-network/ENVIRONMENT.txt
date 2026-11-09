@@ -1,6 +1,6 @@
 Main matrix: Docker image q3dg-priority (existing pinned image)
 Python 3.12.16; Linux 6.12.54-linuxkit aarch64; glibc 2.41; aioquic 1.7.2
 Host unit tests: Python 3.14 virtualenv ../quic-priority-lab/.venv
-Final scoped suite: 42 passed, 749 subtests passed
+Final scoped suite: 42 passed, 755 subtests passed
 Final harness smoke: 3 second good/bad/good, exit 0; loopback qdisc restored to noqueue
 Main matrix source after-run changes: failure cleanup/exit propagation and atomic ready publication only; no controller/transport success-path change

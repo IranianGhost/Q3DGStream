@@ -81,7 +81,7 @@ per-frame outcomes, sampled metrics, netem counters, analysis and hashes of raw
 qlog/chunk artifacts. The full raw output remains at
 `data/outputs/adaptive-run-20261109-222015-71356/` locally.
 
-Targeted verification: **42 tests and 749 subtests passed** across `tests`, the
+Targeted verification: **42 tests and 755 subtests passed** across `tests`, the
 priority transport and FP32 reference suites. The full-repository collection
 failure is documented below. Startup cleanup and matrix nonzero exit propagation
 were hardened after the main run; successful transfer/control behavior was not
