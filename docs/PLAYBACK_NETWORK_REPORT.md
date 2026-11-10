@@ -144,3 +144,10 @@ The early main-matrix summary profile/seed labels retained CLI defaults; actual
 conditions and repeated trials are identified by run names and netem/schedule
 evidence. The runner now passes the profile label explicitly. No raw labels were
 rewritten to hide this metadata issue.
+
+## GPU follow-up
+
+Native QUIC-to-GPU inference and headless rasterization have since passed in a
+separate three-update smoke test. See docs/GPU_SERVER_REPORT.md and committed
+evidence/gpu-server. This does not convert the media-time simulations above into
+GPU playback/quality measurements.

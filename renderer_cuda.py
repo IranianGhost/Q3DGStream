@@ -20,6 +20,7 @@ from renderer_ogl import GaussianRenderBase
 from dataclasses import dataclass
 from cuda import cudart as cu
 from diff_gaussian_rasterization import GaussianRasterizationSettings, GaussianRasterizer
+from raster_compat import compatible_settings
 
 
 VERTEX_SHADER_SOURCE = """
@@ -668,7 +669,7 @@ class CUDARenderer(GaussianRenderBase):
         self.raster_settings["tanfovy"] = hfovy
 
     def _rasterize(self, rendered_gaussians: GaussianDataCUDA):
-        raster_settings = GaussianRasterizationSettings(**self.raster_settings)
+        raster_settings = compatible_settings(GaussianRasterizationSettings, self.raster_settings)
         rasterizer = GaussianRasterizer(raster_settings=raster_settings)
 
         out = rasterizer(

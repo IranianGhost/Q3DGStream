@@ -30,4 +30,24 @@ sensitivity analysis. No host network changes; isolated Docker netem only.
 
 18 retained experiments (19 physical including a superseded baseline), 17 completed
 transfers and one deliberate timeout reproduction. All results/failures retained.
-Playback is media-time simulation with initial scene assumed available, not GPU validation.
+The 18 playback experiments are media-time simulations with initial scene assumed available. Separate native GPU validation is recorded below.
+
+## GPU server validation
+
+- [x] Verify SSH key authentication to gpu1.itec.aau.at.
+- [x] Inventory available GPUs: RTX 8000 (48 GiB), GV100 (32 GiB); driver 535.183.01.
+- [x] Create isolated scratch environments; leave system packages unchanged.
+- [x] Transfer initial Gaussian scene, config, first three NTCs and matching additions.
+- [x] Finish Python 3.12 / PyTorch CUDA 12.1 and native CUDA extension setup.
+- [x] Run real QUIC reception through original CUDA NTC/player providers.
+- [x] Produce nonblank headless images with native Gaussian rasterizer and verify motion.
+- [x] Retrieve artifacts, record reproducible environment and update GPU evidence.
+
+The old Linux setup hardcodes compute capability 8.9 and CUDA 12.6; gpu1 requires
+hardware/version detection instead (RTX 8000 capability 7.5; driver 535).
+
+GPU result: 6,518 real QUIC chunks, 3 original NTC updates (1,991,680 parameters),
+4 nonblack distinct CUDA-rendered frames, exact weights/bounds, nonzero motion;
+peak allocated CUDA memory 149.92 MiB. 50 scoped tests passed on the server.
+Interactive OpenGL, concurrent streaming/playback and compressed-model quality
+remain outside the GPU smoke validation. See docs/GPU_SERVER_REPORT.md.

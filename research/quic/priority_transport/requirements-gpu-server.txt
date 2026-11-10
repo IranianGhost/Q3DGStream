@@ -1,0 +1,13 @@
+# First install torch==2.5.1 from https://download.pytorch.org/whl/cu121.
+# Requires a CUDA 12.1 compiler/development headers and native extensions; see GPU_SERVER_REPORT.
+aioquic==1.7.2
+numpy==2.5.4
+plyfile==1.1.5
+pillow==13.0.0
+PyOpenGL==3.1.10
+PyGLM==2.8.3
+cuda-python==12.6.2.post1
+ninja==1.13.2
+setuptools==78.1.0
+packaging==26.3
+pytest==9.2.0

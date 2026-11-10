@@ -1,0 +1,100 @@
+{
+  "camera": {
+    "position": [
+      -1.5576372146606445,
+      -1.3485183715820312,
+      -12.789637565612793
+    ],
+    "target": [
+      -1.5576372146606445,
+      -1.3485183715820312,
+      12.01130199432373
+    ],
+    "fovy": 1.5707963267948966,
+    "width": 640,
+    "height": 480
+  },
+  "sources": [
+    {
+      "path": "NTCs/NTC_000000.pth",
+      "sha256": "7465eb688a3524da736fc925ee7e152be558315887d6a4b4e66991afe1f8beb1"
+    },
+    {
+      "path": "NTCs/NTC_000001.pth",
+      "sha256": "835bffc74f844856b148011fa974b27b585da3e903f30e8d744bb29e496359f3"
+    },
+    {
+      "path": "NTCs/NTC_000002.pth",
+      "sha256": "04dc2d70a5047568491a906727b0858b3775dba56bebebf06c575c427f6f2ee0"
+    },
+    {
+      "path": "NTCs/config.json",
+      "sha256": "d63c9cb23673623ebcd1aba9bc0465e08227e84437c7a99f8be6b3fd848aa60b"
+    },
+    {
+      "path": "additional_3dgs/additions_000000.ply",
+      "sha256": "8323d6dea546cd83525217238ba287682a8661d186917b193d367e739116ce5b"
+    },
+    {
+      "path": "additional_3dgs/additions_000001.ply",
+      "sha256": "54f1d8eacb155be60929601b9c9eeda58b2c509214366314fa8be42978a6ab27"
+    },
+    {
+      "path": "additional_3dgs/additions_000002.ply",
+      "sha256": "ad0cadc0303ac1c2eae0fcf1d3cf1e989e3904a627f7c17d061ee06cb9bebdcf"
+    },
+    {
+      "path": "init_3dgs.ply",
+      "sha256": "1e33d48bf4df0073d9329ead05df52582a90075b7e9b5edd521e7ff2c794a5cb"
+    }
+  ],
+  "gpu": "Quadro RTX 8000",
+  "torch": "2.5.1+cu121",
+  "cuda": "12.1",
+  "renderer_settings": {
+    "translation_scale": 0.42,
+    "rotation_mode": "none"
+  },
+  "updates": 3,
+  "chunks": 6518,
+  "max_play": 3,
+  "frames": [
+    {
+      "frame": 0,
+      "gaussians": 280768,
+      "motion_max": 0.0,
+      "visible": 280768,
+      "diagnostic_step_wall_ms": 97.78649406507611,
+      "image_sha256": "26388f8450a89ec4510c7f993167118bbea2ded55263534594ba8708bea68146"
+    },
+    {
+      "frame": 1,
+      "gaussians": 281379,
+      "motion_max": 0.024241488426923752,
+      "visible": 281379,
+      "diagnostic_step_wall_ms": 447.2384098917246,
+      "image_sha256": "7afe2c35b9a18173c522cce56a12ce35bb2ac4667bcbe55c34bbd8e8788af5e6"
+    },
+    {
+      "frame": 2,
+      "gaussians": 281669,
+      "motion_max": 0.01681351847946644,
+      "visible": 281669,
+      "diagnostic_step_wall_ms": 86.0293386504054,
+      "image_sha256": "631c9b0e4f12505fd419af111324b4c62ce3341b954ad5ed30212e0315ef8867"
+    },
+    {
+      "frame": 3,
+      "gaussians": 281690,
+      "motion_max": 0.022421183064579964,
+      "visible": 281690,
+      "diagnostic_step_wall_ms": 83.21753703057766,
+      "image_sha256": "c0a43afa9a82c74c0d725f7f91636a35aa205db69f0323c70dcd70589119b2c1"
+    }
+  ],
+  "peak_cuda_mib": 149.923828125,
+  "ntc_parameters": 1991680,
+  "parameter_dtype": "torch.float32",
+  "verified": "Post-transfer integration: real QUIC, native lazy CUDA NTC providers, weight parity, original NTC wrapper, native renderer Gaussian motion/additions/rasterization, nonblack finite PNG output",
+  "unverified": "Concurrent network/playback, interactive OpenGL presentation, camera equivalence to original capture, image quality metrics, compressed Publio assets"
+}

@@ -211,3 +211,10 @@ Reproduction and metric definitions are in
 `research/quic/priority_transport/README.md`. Run the matrix with
 `sh research/quic/priority_transport/run_adaptive_tests.sh`, then analyze its
 output directory using `python -m research.quic.priority_transport.adaptive_analyze`.
+
+## GPU follow-up
+
+Native QUIC-to-GPU inference and headless rasterization have since passed in a
+separate three-update smoke test. See docs/GPU_SERVER_REPORT.md and committed
+evidence/gpu-server. This does not convert the media-time simulations above into
+GPU playback/quality measurements.
