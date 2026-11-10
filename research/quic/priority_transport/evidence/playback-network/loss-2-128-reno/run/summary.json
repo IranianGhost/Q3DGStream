@@ -1,0 +1,76 @@
+{
+  "playback": [
+    {
+      "buffer_seconds": 0.0,
+      "startup_seconds": 27.113391261999993,
+      "stall_count": 1,
+      "stall_seconds": 26.570236471999976,
+      "played_seconds": 2.0,
+      "finished": true,
+      "prebuffer_seconds": 1,
+      "stall_measurement_censored": false
+    },
+    {
+      "buffer_seconds": 0.0,
+      "startup_seconds": 54.68362773399997,
+      "stall_count": 0,
+      "stall_seconds": 0.0,
+      "played_seconds": 2.0,
+      "finished": true,
+      "prebuffer_seconds": 2,
+      "stall_measurement_censored": false
+    },
+    {
+      "buffer_seconds": 0.0,
+      "startup_seconds": 54.68362773399997,
+      "stall_count": 0,
+      "stall_seconds": 0.0,
+      "played_seconds": 2.0,
+      "finished": true,
+      "prebuffer_seconds": 4,
+      "stall_measurement_censored": false
+    }
+  ],
+  "max_inflight": 128,
+  "cc": "reno",
+  "chunk_timeout": 120.0,
+  "prebuffer": 2,
+  "vod": false,
+  "policy": "composite",
+  "profile": "clean",
+  "seed": 1,
+  "payload_kind": "whole supplied files; size levels do not imply visual quality",
+  "sequence": true,
+  "source_manifest": [
+    {
+      "name": "NTC_000001.pth",
+      "bytes": 7968015,
+      "sha256": "835bffc74f844856b148011fa974b27b585da3e903f30e8d744bb29e496359f3"
+    },
+    {
+      "name": "NTC_000000.pth",
+      "bytes": 7968015,
+      "sha256": "7465eb688a3524da736fc925ee7e152be558315887d6a4b4e66991afe1f8beb1"
+    }
+  ],
+  "fps": 1.0,
+  "duration_s": 2.0,
+  "elapsed_s": 54.982777483999996,
+  "deadline_ms": 1000,
+  "queue_limit": 8,
+  "generated": 2,
+  "completed": 2,
+  "ontime": 0,
+  "ontime_bytes": 0,
+  "dropped": 0,
+  "incomplete": 0,
+  "p95_latency_ms": 27113.216012000008,
+  "max_queue_bytes": 15936030,
+  "switches": 1,
+  "packets_sent": 16905,
+  "packets_declared_lost": 500,
+  "valid": true,
+  "failure": null,
+  "receiver_errors": [],
+  "receiver_delay_ms": 0
+}

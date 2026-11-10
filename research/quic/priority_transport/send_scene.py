@@ -35,7 +35,7 @@ def collect_scene(scene, updates):
     return init, config, frames, additions
 
 
-async def send_scene(connection, scene, updates=3, mode="chunked", max_inflight=16):
+async def send_scene(connection, scene, updates=3, mode="chunked", max_inflight=128):
     init, config, frames, additions = collect_scene(scene, updates)
     all_rows = []
 
@@ -91,7 +91,7 @@ async def send_scene(connection, scene, updates=3, mode="chunked", max_inflight=
 
 async def run(args):
     conf = QuicConfiguration(
-        is_client=True, alpn_protocols=ALPN, server_name="localhost"
+        is_client=True, alpn_protocols=ALPN, server_name="localhost", congestion_control_algorithm=args.cc, max_datagram_size=args.datagram_size
     )
     conf.load_verify_locations(args.cert)
     async with connect("127.0.0.1", args.port, configuration=conf) as connection:
@@ -110,6 +110,8 @@ if __name__ == "__main__":
     p.add_argument("--port", type=int, default=5003)
     p.add_argument("--updates", type=int, default=3)
     p.add_argument("--mode", choices=["whole", "chunked"], default="chunked")
-    p.add_argument("--max-inflight", type=int, default=16)
+    p.add_argument("--max-inflight", type=int, default=128)
+    p.add_argument("--cc",choices=["reno","cubic"],default="cubic")
+    p.add_argument("--datagram-size",type=int,default=1400)
     p.add_argument("--log", type=Path)
     asyncio.run(run(p.parse_args()))

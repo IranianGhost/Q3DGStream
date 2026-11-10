@@ -119,7 +119,7 @@ def storage_check(args, nbytes):
 async def send_priority_scene(proto, init, config, boundfile, frames, args):
     """Opt-in chunk scheduler. Keep metadata/additions/frame dependencies intact."""
     from research.quic.priority_transport.transport import FileJob, send_files
-    options = dict(policy=args.policy, max_inflight=args.max_inflight)
+    options = dict(policy=args.policy, max_inflight=args.max_inflight, timeout=getattr(args,"chunk_timeout",120))
     rows = []
     async def batch(jobs, phase):
         result = await send_files(proto, jobs, **options)
@@ -156,6 +156,8 @@ async def transfer(args, scene_data):
     }
     conf = QuicConfiguration(is_client=True, alpn_protocols=ALPN)
     if args.transport == 'priority':
+        conf.congestion_control_algorithm=args.cc
+        conf.max_datagram_size=args.datagram_size
         conf.load_verify_locations(str(args.cert))
     else:
         conf.verify_mode = ssl.CERT_NONE    # existing legacy loopback behavior
@@ -203,7 +205,10 @@ def main():
     p.add_argument('--preflight-only', action='store_true')
     p.add_argument('--transport', choices=['legacy', 'priority'], default='legacy')
     p.add_argument('--policy', choices=['fifo', 'strict', 'weighted'], default='strict')
-    p.add_argument('--max-inflight', type=int, default=16)
+    p.add_argument('--max-inflight', type=int, default=128)
+    p.add_argument('--cc',choices=['reno','cubic'],default='cubic')
+    p.add_argument('--datagram-size',type=int,default=1400)
+    p.add_argument('--chunk-timeout',type=float,default=120)
     p.add_argument('--cert', type=Path, help='trusted localhost certificate for priority transport')
     p.add_argument('--transport-log', type=Path)
     a = p.parse_args()

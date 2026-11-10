@@ -1,0 +1,17 @@
+[
+  {
+    "id": 0,
+    "release_s": 0.00022591600003352141,
+    "nominal_release_s": 0.0,
+    "level": 0,
+    "bytes": 7968015,
+    "status": "complete",
+    "source": "NTC_000001.pth",
+    "started_s": 0.006175666000046931,
+    "completed_s": 57.49853219300002,
+    "ack_latency_ms": 57498.30627699998,
+    "received_s": 57.48623606700011,
+    "latency_ms": 57486.010151000075,
+    "deadline_missed": true
+  }
+]

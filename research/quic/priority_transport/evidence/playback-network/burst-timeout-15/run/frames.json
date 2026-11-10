@@ -1,0 +1,12 @@
+[
+  {
+    "id": 0,
+    "release_s": 0.0009687909999911426,
+    "nominal_release_s": 0.0,
+    "level": 0,
+    "bytes": 7968015,
+    "status": "sending",
+    "source": "NTC_000001.pth",
+    "started_s": 0.007904708000012306
+  }
+]

@@ -192,3 +192,32 @@ calibration inspection and repeats 2–3 held out. No thresholds are fitted on t
 runs. Samples are correlated and the sample confusion counts do not establish
 statistical significance. Static cases and negative controls are diagnostics,
 not randomized comparative trials.
+
+## Playback buffering and loss diagnostics (10 November)
+
+Current sender admission default is 128 chunks (1 MiB payload), configurable down
+to 1. It is a ceiling, not a throughput guarantee. The priority adapter and scene
+sender expose `--cc reno|cubic` and `--datagram-size` (local test default 1400).
+Use 1200 for conservative path compatibility; 1400 assumes a suitable path MTU.
+Chunk ACK recovery budget is 120 s, independently of playback deadlines.
+
+`experiment --policy buffer --prebuffer 2 --playback-buffers 1 2 4` implements
+contiguous media-time playback, stalls and refills. `--vod` enables finite-video
+prefetch with backpressure; otherwise media jobs are generated over time.
+The buffer controller uses receiver buffer seconds plus acknowledged payload
+rate to choose future sizes; queued VOD jobs can be resized before admission.
+The simulation assumes initial scene/decoder state is already available. It does
+not run GPU decoding or model visual dependencies beyond contiguous intervals.
+
+Documented byte scales are 62,296 / 66,741 / 7,968,015, corresponding to indexed
+keep05 stages, packed keep05 and original FP32. These are different representations
+and formats, not a measured quality ladder. Only FP32 asset bytes are available.
+Use `--sizes` to choose synthetic loads and `--payload-dir --sequence` to preserve
+real files. Never substitute a different time's checkpoint as a quality level.
+
+Run `sh research/quic/priority_transport/demo_playback.sh` for a native clean-path
+demo. For netem comparisons use `run_playback_tests.sh` (Docker required). The
+additional `playback_followup` module runs continuous-generation feedback and MTU
+diagnostics inside the same isolated Docker image. Analyze output with
+`python -m research.quic.priority_transport.playback_analyze OUTPUT --output REPORT`.
+Playback CSV/JSON and English results are committed under `evidence/playback-network`.

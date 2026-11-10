@@ -1,0 +1,7 @@
+18 retained trials: 17 successful and one deliberate 15 s burst-timeout reproduction.
+An earlier 1200-byte VOD baseline was replaced by a matching 1400-byte rerun; original retained locally in data/outputs/playback-legacy. Total physical trials:19.
+Window/CC ablation and burst: 1200-byte datagrams. VOD/follow-up:1400.
+Online receiver callback timestamps and offline playback agree for VOD/follow-up.
+Loss/burst fixed sequence has no feedback-controlled payload selection.
+Qlogs/events retained locally under data/outputs/playback-final.
+Early main-matrix summary profile/seed fields kept defaults; authoritative network conditions are directory names, schedule.json and actual netem.json. Follow-up metadata is explicit. Future runner now passes profile name.

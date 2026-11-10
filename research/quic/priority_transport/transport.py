@@ -122,7 +122,7 @@ class Receiver:
         self.assembler.close()
 
 
-async def send_files(connection, jobs, *, policy="strict", max_inflight=16, timeout=30, on_event=None):
+async def send_files(connection, jobs, *, policy="strict", max_inflight=128, timeout=120, on_event=None):
     """Send file chunks. Completion means receiver validated and atomically committed files.
 
     Read files lazily per chunk. Inputs must remain unchanged during transfer.
