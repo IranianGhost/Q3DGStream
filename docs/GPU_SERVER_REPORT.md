@@ -112,3 +112,12 @@ playback stalls under GPU load, full-sequence stability, GUI/OpenGL presentation
 capture-camera equivalence and objective image-quality metrics remain unverified.
 The exact compressed NTC assets from Publio are still external and unavailable.
 The earlier synthetic media-time adaptation results remain separate evidence.
+
+## Interactive GUI follow-up
+
+The native main.py GUI has now also run successfully with live QUIC reception
+and 30 original updates, using user-local TurboVNC/VirtualGL with GLFW EGL.
+Camera rotation, Reset/Step and Play/Pause were exercised from Chrome on the Mac.
+This extends the earlier headless evidence; the desktop stream and server-loopback
+QUIC connection remain separate paths. See docs/REMOTE_GPU_PLAYER.md and the
+remote-desktop evidence directory for exact scope and reproduction.

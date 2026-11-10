@@ -51,3 +51,17 @@ GPU result: 6,518 real QUIC chunks, 3 original NTC updates (1,991,680 parameters
 peak allocated CUDA memory 149.92 MiB. 50 scoped tests passed on the server.
 Interactive OpenGL, concurrent streaming/playback and compressed-model quality
 remain outside the GPU smoke validation. See docs/GPU_SERVER_REPORT.md.
+
+## Interactive remote player
+
+- [x] Install user-local TurboVNC, VirtualGL, Openbox and noVNC without sudo.
+- [x] Verify RTX 8000 OpenGL and native CUDA texture register/map/unmap through EGL.
+- [x] Run the original main.py GUI with a live QUIC listener and fresh cache.
+- [x] Transfer and verify 30 original NTCs, 30 additions, initial scene and config.
+- [x] Connect Chrome on the Mac through a localhost-only SSH tunnel.
+- [x] Verify camera rotation, Reset, Step, Play and Pause through the remote GUI.
+- [x] Add restart guards, regression tests, operational guide and compact evidence.
+
+The working Chrome session remains available. The Mac locked during final screenshot
+capture; its screen must be unlocked manually to continue interacting. The server
+session and SSH tunnel do not require an unlocked Mac display to remain active.

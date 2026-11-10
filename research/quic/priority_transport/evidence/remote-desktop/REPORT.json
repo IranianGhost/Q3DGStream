@@ -1,0 +1,331 @@
+{
+  "run": "live.uQJjl1",
+  "transport": "real aioquic loopback on server; desktop to Mac is separate",
+  "chunks": 33148,
+  "files": 63,
+  "total_bytes": 271325109,
+  "updates": 30,
+  "priorities": [
+    0
+  ],
+  "asset_hashes": [
+    {
+      "path": "NTCs/NTC_000000.pth",
+      "size": 7968015,
+      "sha256": "7465eb688a3524da736fc925ee7e152be558315887d6a4b4e66991afe1f8beb1"
+    },
+    {
+      "path": "NTCs/NTC_000001.pth",
+      "size": 7968015,
+      "sha256": "835bffc74f844856b148011fa974b27b585da3e903f30e8d744bb29e496359f3"
+    },
+    {
+      "path": "NTCs/NTC_000002.pth",
+      "size": 7968015,
+      "sha256": "04dc2d70a5047568491a906727b0858b3775dba56bebebf06c575c427f6f2ee0"
+    },
+    {
+      "path": "NTCs/NTC_000003.pth",
+      "size": 7968015,
+      "sha256": "a3b3521a6ae9c23470343e25ed954491f72d7998d688d69a7af2883175688b3b"
+    },
+    {
+      "path": "NTCs/NTC_000004.pth",
+      "size": 7968015,
+      "sha256": "e2b6f844e85a868db71599fed9854939975ffb7b246e064885cffa5e535a4a67"
+    },
+    {
+      "path": "NTCs/NTC_000005.pth",
+      "size": 7968015,
+      "sha256": "9d5947875ad5b7050e1385736592b9df043e0bf6e20145e1d5c4544f3235fd7d"
+    },
+    {
+      "path": "NTCs/NTC_000006.pth",
+      "size": 7968015,
+      "sha256": "fdb7182987b0b36ae858fcbb1ab50f056e29a862a08406dfdc7cab1293cbfd19"
+    },
+    {
+      "path": "NTCs/NTC_000007.pth",
+      "size": 7968015,
+      "sha256": "4dacacab17af0dc01b5879452e851b0be2ef19c1294cb08a95053f16e05ffdea"
+    },
+    {
+      "path": "NTCs/NTC_000008.pth",
+      "size": 7968015,
+      "sha256": "f1981f057d4054e63989c33769f5ae683b73bc251ac6ce3500d72fef1114da52"
+    },
+    {
+      "path": "NTCs/NTC_000009.pth",
+      "size": 7968015,
+      "sha256": "22f5cc9db382d24ad796c1967f9070f23b1b6ca5dab5328205aab032862b9cd1"
+    },
+    {
+      "path": "NTCs/NTC_000010.pth",
+      "size": 7968015,
+      "sha256": "484e40c80591f6401021cca6c63dd518eff6b652e4b71bf18922e38fa7bc32be"
+    },
+    {
+      "path": "NTCs/NTC_000011.pth",
+      "size": 7968015,
+      "sha256": "b7b447f93104879abf480ac854c47f88c31bda41c61b96c548fbcdb13f1c47a5"
+    },
+    {
+      "path": "NTCs/NTC_000012.pth",
+      "size": 7968015,
+      "sha256": "12220a125fe37ff99f25a3af1f1ca2ccb0273ff91ea4175a804a13daa0053019"
+    },
+    {
+      "path": "NTCs/NTC_000013.pth",
+      "size": 7968015,
+      "sha256": "59b18a6398d28c01efb00901a44b450316569cc5faafdc5451dcbe07170dfbc9"
+    },
+    {
+      "path": "NTCs/NTC_000014.pth",
+      "size": 7968015,
+      "sha256": "372bfc407f1dc0d9273fc525cce85b9d60a0efde7f9529306cd70b9577010607"
+    },
+    {
+      "path": "NTCs/NTC_000015.pth",
+      "size": 7968015,
+      "sha256": "df83c5dd6facedb92b3ec897d7be7a4bb03c07c6c7252bc974cf92d7db92a209"
+    },
+    {
+      "path": "NTCs/NTC_000016.pth",
+      "size": 7968015,
+      "sha256": "abef6b4fd952c47e0892cfab3c06174c533d4b9fc8207f886d92c99c0978a69e"
+    },
+    {
+      "path": "NTCs/NTC_000017.pth",
+      "size": 7968015,
+      "sha256": "cb9d69f83a3d6429e83929327469831895b6f1cd49ac9474fbb181a8fa10d3df"
+    },
+    {
+      "path": "NTCs/NTC_000018.pth",
+      "size": 7968015,
+      "sha256": "493cc91c94471d9e8a5e6a0c65ad02dce120fda5dc0b261b7912db21c335f73f"
+    },
+    {
+      "path": "NTCs/NTC_000019.pth",
+      "size": 7968015,
+      "sha256": "2603f5bfed116688f3235c54bbd2c31aba1f638b9d2ef55030b951f56994653e"
+    },
+    {
+      "path": "NTCs/NTC_000020.pth",
+      "size": 7968015,
+      "sha256": "7a2791214905cc6068db19f30e8b72a529a275b7e7658908ebc07bb493e88543"
+    },
+    {
+      "path": "NTCs/NTC_000021.pth",
+      "size": 7968015,
+      "sha256": "b6b3d95203b2853ca4f8d380095b8c20fd32e8fb563a3754c23da1e14d2b51bb"
+    },
+    {
+      "path": "NTCs/NTC_000022.pth",
+      "size": 7968015,
+      "sha256": "778108cfdd93be80a3937282fa17ceff9cbb68582898f6452f654f29b8edfd0d"
+    },
+    {
+      "path": "NTCs/NTC_000023.pth",
+      "size": 7968015,
+      "sha256": "872a09660bd0e3a85ef3e480a3e9b45a1f1427396e8e8bcb893aa5de5a5d3fde"
+    },
+    {
+      "path": "NTCs/NTC_000024.pth",
+      "size": 7968015,
+      "sha256": "2a76da91e96be4712957c75aabdddbbe7de2caaf64c7c7941b6869822f65f1ed"
+    },
+    {
+      "path": "NTCs/NTC_000025.pth",
+      "size": 7968015,
+      "sha256": "185443dda1e180d315a456fc2f7a2bed52be982eb0148700963242725a3e7543"
+    },
+    {
+      "path": "NTCs/NTC_000026.pth",
+      "size": 7968015,
+      "sha256": "0a6e3d7ce5200745c9b3d9e332853127d7eebd4b73217d657b884e5463f00745"
+    },
+    {
+      "path": "NTCs/NTC_000027.pth",
+      "size": 7968015,
+      "sha256": "8a2844c7a552fd476668f4191fc0df8ba0e99a3172761347ec968f5c50858b24"
+    },
+    {
+      "path": "NTCs/NTC_000028.pth",
+      "size": 7968015,
+      "sha256": "c41048bba8c7198fb48eafef99360baec09f71684051d550fecb49d7489ded39"
+    },
+    {
+      "path": "NTCs/NTC_000029.pth",
+      "size": 7968015,
+      "sha256": "59d8b5c69732ce3b8f51122c086aa3ce118c24e153289212790c7549bef44b1d"
+    },
+    {
+      "path": "NTCs/config.json",
+      "size": 493,
+      "sha256": "d63c9cb23673623ebcd1aba9bc0465e08227e84437c7a99f8be6b3fd848aa60b"
+    },
+    {
+      "path": "additional_3dgs/additions_000000.ply",
+      "size": 64173,
+      "sha256": "8323d6dea546cd83525217238ba287682a8661d186917b193d367e739116ce5b"
+    },
+    {
+      "path": "additional_3dgs/additions_000001.ply",
+      "size": 94333,
+      "sha256": "54f1d8eacb155be60929601b9c9eeda58b2c509214366314fa8be42978a6ab27"
+    },
+    {
+      "path": "additional_3dgs/additions_000002.ply",
+      "size": 96517,
+      "sha256": "ad0cadc0303ac1c2eae0fcf1d3cf1e989e3904a627f7c17d061ee06cb9bebdcf"
+    },
+    {
+      "path": "additional_3dgs/additions_000003.ply",
+      "size": 125430,
+      "sha256": "b2f2f495c3783dda9ed1d1ac4afad560d30b74a3ed2b17a999c28121e5a27754"
+    },
+    {
+      "path": "additional_3dgs/additions_000004.ply",
+      "size": 107230,
+      "sha256": "f657178736b379f465f879d44a97cb55ac8b57233012d522a43baf5e5b03a64b"
+    },
+    {
+      "path": "additional_3dgs/additions_000005.ply",
+      "size": 72701,
+      "sha256": "54adbff88606544447e8ced087af303fc6cb104747b2f0dd95e24f692f27bd7a"
+    },
+    {
+      "path": "additional_3dgs/additions_000006.ply",
+      "size": 82789,
+      "sha256": "1de7464c25dedfea980a373c10e7e8c05495dd5c1fdfb26afb8672f6e1d977c0"
+    },
+    {
+      "path": "additional_3dgs/additions_000007.ply",
+      "size": 90381,
+      "sha256": "e0ab51085ee3129e6223dbdd8fc90b22e8714dc72bac7512b3e8297f75acb1c8"
+    },
+    {
+      "path": "additional_3dgs/additions_000008.ply",
+      "size": 96621,
+      "sha256": "03d8c71246db9781d694aef1243d0d1c871aac770def684591e81d95c96cb352"
+    },
+    {
+      "path": "additional_3dgs/additions_000009.ply",
+      "size": 119190,
+      "sha256": "ac9cde387b42340cec4369dd9f8145af3fd5f9afc77117233eab6acdfc57ed3f"
+    },
+    {
+      "path": "additional_3dgs/additions_000010.ply",
+      "size": 86221,
+      "sha256": "b59b8b47f91536f14314bab8d83a2dc515f3e5df6f4bcee60275a891b3ac54d1"
+    },
+    {
+      "path": "additional_3dgs/additions_000011.ply",
+      "size": 95685,
+      "sha256": "0d7d0cbf4fb499d795b5a62927b13154bdf2ea973616a3ec59edb0953cb611cc"
+    },
+    {
+      "path": "additional_3dgs/additions_000012.ply",
+      "size": 108374,
+      "sha256": "b1690b2ec919066c96ceb4efa8f8396cffca86c906875721a78fdb7329a1b145"
+    },
+    {
+      "path": "additional_3dgs/additions_000013.ply",
+      "size": 102133,
+      "sha256": "c7181c971415180786f29e69ff54296059915d2a57ad9d63440364806a35b6d8"
+    },
+    {
+      "path": "additional_3dgs/additions_000014.ply",
+      "size": 109830,
+      "sha256": "88a8d0b5dfa025410ca6a0c327acddda112665f099bbe6eafd022d8fb10d153d"
+    },
+    {
+      "path": "additional_3dgs/additions_000015.ply",
+      "size": 111598,
+      "sha256": "51ab40b3cb9fd2e93ba4885a6df1b9073008625ce9353730dfbef919242df87a"
+    },
+    {
+      "path": "additional_3dgs/additions_000016.ply",
+      "size": 128446,
+      "sha256": "8ba42a521ad5e751e396f375d5643d539bf830ab9832fe253c9812f86a9f7005"
+    },
+    {
+      "path": "additional_3dgs/additions_000017.ply",
+      "size": 76029,
+      "sha256": "cabf689fb7b625230cd597123f208cc78901fa166822056cb7cc640851609bbf"
+    },
+    {
+      "path": "additional_3dgs/additions_000018.ply",
+      "size": 94541,
+      "sha256": "60146dee4d78826b3d276409b3359a282426ab73702d2b5846dc8693785a6130"
+    },
+    {
+      "path": "additional_3dgs/additions_000019.ply",
+      "size": 81333,
+      "sha256": "da183268d3e72e25af8800179b2de6edc839238c3b74f664bca6fdac868c466d"
+    },
+    {
+      "path": "additional_3dgs/additions_000020.ply",
+      "size": 102237,
+      "sha256": "1dc769b0e08649021f787fb744997067ed039027e6286d961f855770e5f405aa"
+    },
+    {
+      "path": "additional_3dgs/additions_000021.ply",
+      "size": 78005,
+      "sha256": "e6acca607b676728780d1cdc5b870a0a66b4208ea7cbea8c54694b87d52f5917"
+    },
+    {
+      "path": "additional_3dgs/additions_000022.ply",
+      "size": 109414,
+      "sha256": "0df14ebcbc88a4cb17d6ba0239d6ae749c33fe61b6a465a0075bfc1b4f836e5e"
+    },
+    {
+      "path": "additional_3dgs/additions_000023.ply",
+      "size": 110246,
+      "sha256": "7d8b3bc979bc19368207bfcb6881749a69618904bd9a43d4389baa8d0256a2fe"
+    },
+    {
+      "path": "additional_3dgs/additions_000024.ply",
+      "size": 104005,
+      "sha256": "1e8695cf6885cd21554a872e29cfaf577e9fe36ff7abb07f9b8f3a99d81f4c59"
+    },
+    {
+      "path": "additional_3dgs/additions_000025.ply",
+      "size": 128134,
+      "sha256": "bea7a9700e38bdc6b02ae249dd3d6eec2414ff0737239d6691035808fa02da4f"
+    },
+    {
+      "path": "additional_3dgs/additions_000026.ply",
+      "size": 153926,
+      "sha256": "7c98154f913348c1a901a350e327820ea06bff7aea5ba4d11223bd70d2ef554d"
+    },
+    {
+      "path": "additional_3dgs/additions_000027.ply",
+      "size": 137494,
+      "sha256": "f1e8041d61e2ff476597759c876108f4861e691796deb806508943df6ed81ccb"
+    },
+    {
+      "path": "additional_3dgs/additions_000028.ply",
+      "size": 107334,
+      "sha256": "c894c5d1a84dcba5fced8b48744f0fae3b61641b9a6f600574c3aec517a29e1b"
+    },
+    {
+      "path": "additional_3dgs/additions_000029.ply",
+      "size": 109206,
+      "sha256": "b516c8bb45b7ddc36080df82feff6ce723d5c20ea98ec006e6deb8929fb5877b"
+    },
+    {
+      "path": "init_3dgs.ply",
+      "size": 29200504,
+      "sha256": "1e33d48bf4df0073d9329ead05df52582a90075b7e9b5edd521e7ff2c794a5cb"
+    },
+    {
+      "path": "priority_manifest.json",
+      "size": 106,
+      "sha256": "6fa7f7e89a708f2080c0deee9952a3edecf72036db4faab8b8d17d471fa5bc37"
+    }
+  ],
+  "novnc_commit": "e8b5024d4603587b29ffede4fbd28b1fa2939829",
+  "gui_verified": "Native main.py window; NVIDIA RTX8000 EGL context; native CUDA/GL register/map/unmap; live QUIC receive; camera rotate; Reset to0; Step to1",
+  "limits": "First30 FP32 NTCs; no compressed variants; no WAN QUIC or objective quality benchmark; required-asset sender uses priority0, so this is not a priority-order comparison"
+}

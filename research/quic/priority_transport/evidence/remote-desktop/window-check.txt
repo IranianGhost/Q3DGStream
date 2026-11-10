@@ -1,0 +1,2 @@
+Detect torch cuda installed, will use torch as sorting backend
+{"gl_vendor": "NVIDIA Corporation", "gl_renderer": "Quadro RTX 8000/PCIe/SSE2", "gl_version": "4.3.0 NVIDIA 535.183.01", "cuda_device": "Quadro RTX 8000", "texture_registered": true, "context_api": "egl"}

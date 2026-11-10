@@ -270,6 +270,10 @@ def impl_glfw_init():
     glfw.window_hint(glfw.CONTEXT_VERSION_MAJOR, 4)
     glfw.window_hint(glfw.CONTEXT_VERSION_MINOR, 3)
     glfw.window_hint(glfw.OPENGL_PROFILE, glfw.OPENGL_CORE_PROFILE)
+    # VirtualGL's headless EGL backend supports CUDA texture interop when GLFW
+    # creates an EGL context rather than an emulated GLX context.
+    if os.environ.get("Q3DG_GLFW_CONTEXT_API", "native").lower() == "egl":
+        glfw.window_hint(glfw.CONTEXT_CREATION_API, glfw.EGL_CONTEXT_API)
 
     global window
     window = glfw.create_window(g_camera.w, g_camera.h, window_name, None, None)
