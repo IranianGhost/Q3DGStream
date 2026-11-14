@@ -65,3 +65,14 @@ remain outside the GPU smoke validation. See docs/GPU_SERVER_REPORT.md.
 The working Chrome session remains available. The Mac locked during final screenshot
 capture; its screen must be unlocked manually to continue interacting. The server
 session and SSH tunnel do not require an unlocked Mac display to remain active.
+
+## Native network trials on gpu1 — 14 November 2026
+
+- [x] Instrument real playback startup, buffer stalls and late readiness.
+- [x] Run clean, jitter, 1% loss and 3% loss trials in a private network namespace.
+- [x] Connect sender optional-load selection to live viewer buffer and delivery feedback.
+- [x] Compare fixed optional load, adaptive optional load and required-only traffic.
+- [x] Retain completed runs and timeout results, and document the limits.
+
+See [the native playback report](NATIVE_PLAYBACK_NETWORK_REPORT.md).
+Sustained recovery under random loss and real compressed-model adaptation remain open.

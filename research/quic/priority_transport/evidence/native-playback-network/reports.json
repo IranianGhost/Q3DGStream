@@ -1,0 +1,3426 @@
+{
+  "clean": {
+    "profile": "clean",
+    "policy": "none",
+    "cc": "cubic",
+    "mode": "chunked",
+    "fps": 30,
+    "updates": 8,
+    "prebuffer": 0.1,
+    "optional_limit_bytes": 4194304,
+    "frames_transferred": 8,
+    "optional_bytes": 0,
+    "required_update_bytes": 64477674,
+    "network": [
+      {
+        "frame": 0,
+        "before": [
+          {
+            "kind": "noqueue",
+            "handle": "0:",
+            "root": true,
+            "refcnt": 2,
+            "options": {},
+            "bytes": 0,
+            "packets": 0,
+            "drops": 0,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 0,
+            "qlen": 0
+          }
+        ]
+      },
+      {
+        "final": [
+          {
+            "kind": "noqueue",
+            "handle": "0:",
+            "root": true,
+            "refcnt": 2,
+            "options": {},
+            "bytes": 0,
+            "packets": 0,
+            "drops": 0,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 0,
+            "qlen": 0
+          }
+        ]
+      }
+    ],
+    "error": null,
+    "playback": {
+      "frames_presented": 9,
+      "planned_frames": 9,
+      "finished": true,
+      "startup_seconds": 13.519901637919247,
+      "elapsed_seconds": 24.616049424745142,
+      "stall_count": 2,
+      "stall_seconds": 9.601051483303308,
+      "stalls_seconds": [
+        [
+          14.47056658193469,
+          20.59350907150656
+        ],
+        [
+          20.8293434381485,
+          24.307452431879938
+        ]
+      ],
+      "late_or_missing_to_initial_schedule": 5,
+      "presentations_seconds": [
+        13.519901637919247,
+        14.217738268896937,
+        14.32928682398051,
+        14.437233248725533,
+        20.59350907150656,
+        20.68486509192735,
+        20.79601010493934,
+        24.307452431879938,
+        24.370846872217953
+      ],
+      "readiness_seconds": {
+        "1": 9.621780232526362,
+        "2": 11.53004206623882,
+        "3": 13.51197782997042,
+        "4": 16.660462179221213,
+        "5": 18.605744434520602,
+        "6": 20.497663846239448,
+        "7": 22.414202191866934,
+        "8": 24.28115357272327
+      }
+    },
+    "sender_updates": [
+      {
+        "index": 0,
+        "required_bytes": 8032188,
+        "optional_bytes": 0,
+        "started_seconds": 7.567120153456926,
+        "finished_seconds": 9.624683269299567,
+        "chunks": 981,
+        "feedback": {
+          "at": 4410393.999857789,
+          "port": 60130,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 233.91491768423163,
+          "frame": null,
+          "ready": 0,
+          "stalled": false
+        }
+      },
+      {
+        "index": 1,
+        "required_bytes": 8062348,
+        "optional_bytes": 0,
+        "started_seconds": 9.62547869142145,
+        "finished_seconds": 11.522868136875331,
+        "chunks": 985,
+        "feedback": {
+          "at": 4410396.046382178,
+          "port": 60130,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 14268339.122176746,
+          "frame": null,
+          "ready": 0,
+          "stalled": false
+        }
+      },
+      {
+        "index": 2,
+        "required_bytes": 8064532,
+        "optional_bytes": 0,
+        "started_seconds": 11.523619495332241,
+        "finished_seconds": 13.50015002861619,
+        "chunks": 985,
+        "feedback": {
+          "at": 4410397.951644564,
+          "port": 60130,
+          "buffer_seconds": 0.03333333333333333,
+          "committed_Bps": 3986281.5049988097,
+          "frame": null,
+          "ready": 1,
+          "stalled": false
+        }
+      },
+      {
+        "index": 3,
+        "required_bytes": 8093445,
+        "optional_bytes": 0,
+        "started_seconds": 13.500708205625415,
+        "finished_seconds": 16.64933193102479,
+        "chunks": 989,
+        "feedback": {
+          "at": 4410399.891510054,
+          "port": 60130,
+          "buffer_seconds": 0.06666666666666667,
+          "committed_Bps": 3941508.903056475,
+          "frame": null,
+          "ready": 2,
+          "stalled": false
+        }
+      },
+      {
+        "index": 4,
+        "required_bytes": 8075245,
+        "optional_bytes": 0,
+        "started_seconds": 16.649919542483985,
+        "finished_seconds": 18.59573747124523,
+        "chunks": 987,
+        "feedback": {
+          "at": 4410403.071995099,
+          "port": 60130,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 0.0,
+          "frame": 3,
+          "ready": 3,
+          "stalled": true
+        }
+      },
+      {
+        "index": 5,
+        "required_bytes": 8040716,
+        "optional_bytes": 0,
+        "started_seconds": 18.596238249912858,
+        "finished_seconds": 20.482766184024513,
+        "chunks": 982,
+        "feedback": {
+          "at": 4410405.037036035,
+          "port": 60130,
+          "buffer_seconds": 0.03333333333333333,
+          "committed_Bps": 3890331.772607805,
+          "frame": 3,
+          "ready": 4,
+          "stalled": true
+        }
+      },
+      {
+        "index": 6,
+        "required_bytes": 8050804,
+        "optional_bytes": 0,
+        "started_seconds": 20.48336150404066,
+        "finished_seconds": 22.413229348137975,
+        "chunks": 984,
+        "feedback": {
+          "at": 4410406.913073886,
+          "port": 60130,
+          "buffer_seconds": 0.06666666666666667,
+          "committed_Bps": 3806316.7992093726,
+          "frame": 3,
+          "ready": 5,
+          "stalled": true
+        }
+      },
+      {
+        "index": 7,
+        "required_bytes": 8058396,
+        "optional_bytes": 0,
+        "started_seconds": 22.413790952414274,
+        "finished_seconds": 24.27895211521536,
+        "chunks": 985,
+        "feedback": {
+          "at": 4410408.857100638,
+          "port": 60130,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 3889797.237642879,
+          "frame": 6,
+          "ready": 6,
+          "stalled": true
+        }
+      }
+    ]
+  },
+  "clean-repeat": {
+    "profile": "clean",
+    "policy": "none",
+    "cc": "cubic",
+    "mode": "chunked",
+    "fps": 30,
+    "updates": 8,
+    "prebuffer": 0.1,
+    "optional_limit_bytes": 4194304,
+    "frames_transferred": 8,
+    "optional_bytes": 0,
+    "required_update_bytes": 64477674,
+    "network": [
+      {
+        "frame": 0,
+        "before": [
+          {
+            "kind": "noqueue",
+            "handle": "0:",
+            "root": true,
+            "refcnt": 2,
+            "options": {},
+            "bytes": 0,
+            "packets": 0,
+            "drops": 0,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 0,
+            "qlen": 0
+          }
+        ]
+      },
+      {
+        "final": [
+          {
+            "kind": "noqueue",
+            "handle": "0:",
+            "root": true,
+            "refcnt": 2,
+            "options": {},
+            "bytes": 0,
+            "packets": 0,
+            "drops": 0,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 0,
+            "qlen": 0
+          }
+        ]
+      }
+    ],
+    "error": null,
+    "metadata": {
+      "finished_seconds": 6.837350503541529,
+      "chunks": 3567,
+      "bytes": 29201102
+    },
+    "playback": {
+      "frames_presented": 9,
+      "planned_frames": 9,
+      "finished": true,
+      "startup_seconds": 12.356560731306672,
+      "elapsed_seconds": 22.49951860960573,
+      "stall_count": 2,
+      "stall_seconds": 8.728235731832683,
+      "stalls_seconds": [
+        [
+          13.248832060955465,
+          18.61428164690733
+        ],
+        [
+          18.865445516072214,
+          22.228231661953032
+        ]
+      ],
+      "late_or_missing_to_initial_schedule": 5,
+      "presentations_seconds": [
+        12.356560731306672,
+        12.993065604008734,
+        13.090792056173086,
+        13.215498727746308,
+        18.61428164690733,
+        18.75404010899365,
+        18.832112182863057,
+        22.228231661953032,
+        22.289325330406427
+      ],
+      "readiness_seconds": {
+        "1": 8.591800811700523,
+        "2": 10.37369504570961,
+        "3": 12.280352846719325,
+        "4": 14.992150332778692,
+        "5": 16.80055073928088,
+        "6": 18.590492374263704,
+        "7": 20.3962009139359,
+        "8": 22.210046684369445
+      },
+      "exact_ntc_uses": 8,
+      "missing_ntc_uses": 0
+    },
+    "sender_updates": [
+      {
+        "index": 0,
+        "required_bytes": 8032188,
+        "optional_bytes": 0,
+        "started_seconds": 6.840439887717366,
+        "finished_seconds": 8.583211489021778,
+        "chunks": 981,
+        "feedback": {
+          "at": 4411301.582607236,
+          "port": 38171,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 239.17587421504328,
+          "frame": null,
+          "ready": 0,
+          "stalled": false
+        }
+      },
+      {
+        "index": 1,
+        "required_bytes": 8062348,
+        "optional_bytes": 0,
+        "started_seconds": 8.583457074128091,
+        "finished_seconds": 10.361719701439142,
+        "chunks": 985,
+        "feedback": {
+          "at": 4411303.339478616,
+          "port": 38171,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 13947103.360895282,
+          "frame": null,
+          "ready": 0,
+          "stalled": false
+        }
+      },
+      {
+        "index": 2,
+        "required_bytes": 8064532,
+        "optional_bytes": 0,
+        "started_seconds": 10.362098635174334,
+        "finished_seconds": 12.279510822147131,
+        "chunks": 985,
+        "feedback": {
+          "at": 4411305.118437147,
+          "port": 38171,
+          "buffer_seconds": 0.03333333333333333,
+          "committed_Bps": 3997336.2446932793,
+          "frame": null,
+          "ready": 1,
+          "stalled": false
+        }
+      },
+      {
+        "index": 3,
+        "required_bytes": 8093445,
+        "optional_bytes": 0,
+        "started_seconds": 12.279860716313124,
+        "finished_seconds": 14.976587194018066,
+        "chunks": 989,
+        "feedback": {
+          "at": 4411307.059279431,
+          "port": 38171,
+          "buffer_seconds": 0.06666666666666667,
+          "committed_Bps": 3924228.395722874,
+          "frame": null,
+          "ready": 2,
+          "stalled": false
+        }
+      },
+      {
+        "index": 4,
+        "required_bytes": 8075245,
+        "optional_bytes": 0,
+        "started_seconds": 14.976990016177297,
+        "finished_seconds": 16.787565312348306,
+        "chunks": 987,
+        "feedback": {
+          "at": 4411309.746311884,
+          "port": 38171,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 0.0,
+          "frame": 3,
+          "ready": 3,
+          "stalled": true
+        }
+      },
+      {
+        "index": 5,
+        "required_bytes": 8040716,
+        "optional_bytes": 0,
+        "started_seconds": 16.78791720047593,
+        "finished_seconds": 18.585408844053745,
+        "chunks": 982,
+        "feedback": {
+          "at": 4411311.574271336,
+          "port": 38171,
+          "buffer_seconds": 0.03333333333333333,
+          "committed_Bps": 3886243.403465248,
+          "frame": 3,
+          "ready": 4,
+          "stalled": true
+        }
+      },
+      {
+        "index": 6,
+        "required_bytes": 8050804,
+        "optional_bytes": 0,
+        "started_seconds": 18.585933847352862,
+        "finished_seconds": 20.387621506117284,
+        "chunks": 984,
+        "feedback": {
+          "at": 4411313.366223044,
+          "port": 38171,
+          "buffer_seconds": 0.06666666666666667,
+          "committed_Bps": 4012271.085556416,
+          "frame": 3,
+          "ready": 5,
+          "stalled": true
+        }
+      },
+      {
+        "index": 7,
+        "required_bytes": 8058396,
+        "optional_bytes": 0,
+        "started_seconds": 20.38803852070123,
+        "finished_seconds": 22.195837798528373,
+        "chunks": 985,
+        "feedback": {
+          "at": 4411315.172587794,
+          "port": 38171,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 3960310.5103020407,
+          "frame": 6,
+          "ready": 6,
+          "stalled": true
+        }
+      }
+    ]
+  },
+  "dynamic-adaptive": {
+    "profile": "dynamic",
+    "policy": "adaptive",
+    "cc": "cubic",
+    "mode": "chunked",
+    "fps": 0.25,
+    "updates": 9,
+    "prebuffer": 4.0,
+    "optional_limit_bytes": 4194304,
+    "frames_transferred": 9,
+    "optional_bytes": 12395310,
+    "required_update_bytes": 72542310,
+    "network": [
+      {
+        "frame": 0,
+        "before": [
+          {
+            "kind": "netem",
+            "handle": "8007:",
+            "root": true,
+            "refcnt": 2,
+            "options": {
+              "limit": 4096,
+              "ecn": false,
+              "gap": 0
+            },
+            "bytes": 0,
+            "packets": 0,
+            "drops": 0,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 0,
+            "qlen": 0
+          }
+        ]
+      },
+      {
+        "frame": 3,
+        "before": [
+          {
+            "kind": "netem",
+            "handle": "8007:",
+            "root": true,
+            "refcnt": 2,
+            "options": {
+              "limit": 4096,
+              "ecn": false,
+              "gap": 0
+            },
+            "bytes": 65083673,
+            "packets": 61364,
+            "drops": 0,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 0,
+            "qlen": 0
+          }
+        ],
+        "at": 15.595682421699166
+      },
+      {
+        "frame": 6,
+        "before": [
+          {
+            "kind": "netem",
+            "handle": "8007:",
+            "root": true,
+            "refcnt": 2,
+            "options": {
+              "limit": 4096,
+              "delay": {
+                "delay": 0.01,
+                "jitter": 0,
+                "correlation": 0
+              },
+              "loss-random": {
+                "loss": 0.01,
+                "correlation": 0
+              },
+              "rate": {
+                "rate": 7500000,
+                "packetoverhead": 0,
+                "cellsize": 0,
+                "celloverhead": 0
+              },
+              "ecn": false,
+              "gap": 0
+            },
+            "bytes": 102522577,
+            "packets": 107073,
+            "drops": 443,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 77,
+            "qlen": 1
+          }
+        ],
+        "at": 57.302534031681716
+      },
+      {
+        "final": [
+          {
+            "kind": "netem",
+            "handle": "8007:",
+            "root": true,
+            "refcnt": 2,
+            "options": {
+              "limit": 4096,
+              "rate": {
+                "rate": 7500000,
+                "packetoverhead": 0,
+                "cellsize": 0,
+                "celloverhead": 0
+              },
+              "ecn": false,
+              "gap": 0
+            },
+            "bytes": 129862799,
+            "packets": 133001,
+            "drops": 443,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 0,
+            "qlen": 0
+          }
+        ]
+      }
+    ],
+    "error": null,
+    "playback": {
+      "frames_presented": 10,
+      "planned_frames": 10,
+      "finished": true,
+      "startup_seconds": 9.647305147722363,
+      "elapsed_seconds": 67.6381358364597,
+      "stall_count": 3,
+      "stall_seconds": 21.0849593244493,
+      "stalls_seconds": [
+        [
+          30.49252931959927,
+          41.12217425275594
+        ],
+        [
+          45.12217425275594,
+          53.33945086877793
+        ],
+        [
+          57.33945086877793,
+          59.57748864404857
+        ]
+      ],
+      "late_or_missing_to_initial_schedule": 6,
+      "presentations_seconds": [
+        9.647305147722363,
+        14.30881644319743,
+        18.364783857949078,
+        22.432960554026067,
+        26.49252931959927,
+        41.12217425275594,
+        53.33945086877793,
+        59.57748864404857,
+        63.6082779224962,
+        67.6381358364597
+      ],
+      "readiness_seconds": {
+        "1": 9.636558284983039,
+        "2": 11.570087268017232,
+        "3": 14.678395371884108,
+        "4": 26.00787838920951,
+        "5": 41.09133951924741,
+        "6": 53.30606574378908,
+        "7": 59.55123007018119,
+        "8": 61.4651249460876,
+        "9": 63.269882122054696
+      }
+    },
+    "sender_updates": [
+      {
+        "index": 0,
+        "required_bytes": 8032188,
+        "optional_bytes": 0,
+        "started_seconds": 7.214878317900002,
+        "finished_seconds": 9.635166375897825,
+        "chunks": 981,
+        "feedback": {
+          "at": 4411034.812871864,
+          "port": 44503,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 241.124001266606,
+          "frame": null,
+          "ready": 0,
+          "stalled": false
+        }
+      },
+      {
+        "index": 1,
+        "required_bytes": 8062348,
+        "optional_bytes": 0,
+        "started_seconds": 9.63549595233053,
+        "finished_seconds": 11.562360202893615,
+        "chunks": 985,
+        "feedback": {
+          "at": 4411037.302330691,
+          "port": 44503,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 31818.28614799901,
+          "frame": null,
+          "ready": 0,
+          "stalled": false
+        }
+      },
+      {
+        "index": 2,
+        "required_bytes": 8064532,
+        "optional_bytes": 4194304,
+        "started_seconds": 11.562846766784787,
+        "finished_seconds": 15.594712018035352,
+        "chunks": 1497,
+        "feedback": {
+          "at": 4411039.205390333,
+          "port": 44503,
+          "buffer_seconds": 4.0,
+          "committed_Bps": 3982712.399356306,
+          "frame": 0,
+          "ready": 1,
+          "stalled": false
+        }
+      },
+      {
+        "index": 3,
+        "required_bytes": 8093445,
+        "optional_bytes": 4006702,
+        "started_seconds": 15.595682421699166,
+        "finished_seconds": 30.46088322252035,
+        "chunks": 1479,
+        "feedback": {
+          "at": 4411043.25502917,
+          "port": 44503,
+          "buffer_seconds": 8.0,
+          "committed_Bps": 3781296.19267296,
+          "frame": 1,
+          "ready": 3,
+          "stalled": false
+        }
+      },
+      {
+        "index": 4,
+        "required_bytes": 8075245,
+        "optional_bytes": 0,
+        "started_seconds": 30.462429355829954,
+        "finished_seconds": 41.09332849923521,
+        "chunks": 987,
+        "feedback": {
+          "at": 4411058.118326931,
+          "port": 44503,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 0.0,
+          "frame": 4,
+          "ready": 4,
+          "stalled": false
+        }
+      },
+      {
+        "index": 5,
+        "required_bytes": 8040716,
+        "optional_bytes": 4194304,
+        "started_seconds": 41.09396164212376,
+        "finished_seconds": 57.301489238627255,
+        "chunks": 1494,
+        "feedback": {
+          "at": 4411068.778779267,
+          "port": 44503,
+          "buffer_seconds": 4.0,
+          "committed_Bps": 3972253.2833755147,
+          "frame": 4,
+          "ready": 5,
+          "stalled": true
+        }
+      },
+      {
+        "index": 6,
+        "required_bytes": 8050804,
+        "optional_bytes": 0,
+        "started_seconds": 57.302534031681716,
+        "finished_seconds": 59.550212770700455,
+        "chunks": 984,
+        "feedback": {
+          "at": 4411084.957703028,
+          "port": 44503,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 0.0,
+          "frame": 6,
+          "ready": 6,
+          "stalled": false
+        }
+      },
+      {
+        "index": 7,
+        "required_bytes": 8058396,
+        "optional_bytes": 0,
+        "started_seconds": 59.550661116838455,
+        "finished_seconds": 61.45149591565132,
+        "chunks": 985,
+        "feedback": {
+          "at": 4411087.13610055,
+          "port": 44503,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 0.0,
+          "frame": 6,
+          "ready": 6,
+          "stalled": true
+        }
+      },
+      {
+        "index": 8,
+        "required_bytes": 8064636,
+        "optional_bytes": 0,
+        "started_seconds": 61.45206590555608,
+        "finished_seconds": 63.2661462072283,
+        "chunks": 985,
+        "feedback": {
+          "at": 4411089.129515616,
+          "port": 44503,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 3837428.0764502953,
+          "frame": 7,
+          "ready": 7,
+          "stalled": false
+        }
+      }
+    ]
+  },
+  "dynamic-adaptive-repeat": {
+    "profile": "dynamic",
+    "policy": "adaptive",
+    "cc": "cubic",
+    "mode": "chunked",
+    "fps": 0.25,
+    "updates": 9,
+    "prebuffer": 4.0,
+    "optional_limit_bytes": 4194304,
+    "frames_transferred": 9,
+    "optional_bytes": 8381282,
+    "required_update_bytes": 72542310,
+    "network": [
+      {
+        "frame": 0,
+        "before": [
+          {
+            "kind": "netem",
+            "handle": "8008:",
+            "root": true,
+            "refcnt": 2,
+            "options": {
+              "limit": 4096,
+              "ecn": false,
+              "gap": 0
+            },
+            "bytes": 0,
+            "packets": 0,
+            "drops": 0,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 0,
+            "qlen": 0
+          }
+        ]
+      },
+      {
+        "frame": 3,
+        "before": [
+          {
+            "kind": "netem",
+            "handle": "8008:",
+            "root": true,
+            "refcnt": 2,
+            "options": {
+              "limit": 4096,
+              "ecn": false,
+              "gap": 0
+            },
+            "bytes": 64841539,
+            "packets": 59772,
+            "drops": 0,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 0,
+            "qlen": 0
+          }
+        ],
+        "at": 13.172026101499796
+      },
+      {
+        "frame": 6,
+        "before": [
+          {
+            "kind": "netem",
+            "handle": "8008:",
+            "root": true,
+            "refcnt": 2,
+            "options": {
+              "limit": 4096,
+              "delay": {
+                "delay": 0.01,
+                "jitter": 0,
+                "correlation": 0
+              },
+              "loss-random": {
+                "loss": 0.01,
+                "correlation": 0
+              },
+              "rate": {
+                "rate": 7500000,
+                "packetoverhead": 0,
+                "cellsize": 0,
+                "celloverhead": 0
+              },
+              "ecn": false,
+              "gap": 0
+            },
+            "bytes": 97645348,
+            "packets": 99893,
+            "drops": 387,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 78,
+            "qlen": 1
+          }
+        ],
+        "at": 50.14229611773044
+      },
+      {
+        "final": [
+          {
+            "kind": "netem",
+            "handle": "8008:",
+            "root": true,
+            "refcnt": 2,
+            "options": {
+              "limit": 4096,
+              "rate": {
+                "rate": 7500000,
+                "packetoverhead": 0,
+                "cellsize": 0,
+                "celloverhead": 0
+              },
+              "ecn": false,
+              "gap": 0
+            },
+            "bytes": 124979333,
+            "packets": 125762,
+            "drops": 387,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 0,
+            "qlen": 0
+          }
+        ]
+      }
+    ],
+    "error": null,
+    "metadata": {
+      "finished_seconds": 6.415802302770317,
+      "chunks": 3567,
+      "bytes": 29201102
+    },
+    "playback": {
+      "frames_presented": 10,
+      "planned_frames": 10,
+      "finished": true,
+      "startup_seconds": 8.288117621093988,
+      "elapsed_seconds": 62.28167121112347,
+      "stall_count": 2,
+      "stall_seconds": 17.1924435980618,
+      "stalls_seconds": [
+        [
+          28.98520404007286,
+          38.95952085405588
+        ],
+        [
+          42.95952085405588,
+          50.17764763813466
+        ]
+      ],
+      "late_or_missing_to_initial_schedule": 6,
+      "presentations_seconds": [
+        8.288117621093988,
+        12.836590054444969,
+        16.881622778251767,
+        20.92614086251706,
+        24.98520404007286,
+        38.95952085405588,
+        50.17764763813466,
+        54.239498337730765,
+        58.26354936230928,
+        62.28167121112347
+      ],
+      "readiness_seconds": {
+        "1": 8.186832750216126,
+        "2": 9.985535570420325,
+        "3": 11.914891792461276,
+        "4": 24.38128298148513,
+        "5": 38.9263318348676,
+        "6": 50.14548794180155,
+        "7": 52.593346532434225,
+        "8": 54.48406581301242,
+        "9": 56.33034513797611
+      },
+      "exact_ntc_uses": 9,
+      "missing_ntc_uses": 0
+    },
+    "sender_updates": [
+      {
+        "index": 0,
+        "required_bytes": 8032188,
+        "optional_bytes": 0,
+        "started_seconds": 6.41819223202765,
+        "finished_seconds": 8.184168011881411,
+        "chunks": 981,
+        "feedback": {
+          "at": 4411327.193615735,
+          "port": 56676,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 237.93205989370637,
+          "frame": null,
+          "ready": 0,
+          "stalled": false
+        }
+      },
+      {
+        "index": 1,
+        "required_bytes": 8062348,
+        "optional_bytes": 0,
+        "started_seconds": 8.18449558597058,
+        "finished_seconds": 9.984531536698341,
+        "chunks": 985,
+        "feedback": {
+          "at": 4411328.922389733,
+          "port": 56676,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 14087092.603185162,
+          "frame": null,
+          "ready": 0,
+          "stalled": false
+        }
+      },
+      {
+        "index": 2,
+        "required_bytes": 8064532,
+        "optional_bytes": 4194304,
+        "started_seconds": 9.984858436509967,
+        "finished_seconds": 13.171322734095156,
+        "chunks": 1497,
+        "feedback": {
+          "at": 4411330.791884411,
+          "port": 56676,
+          "buffer_seconds": 4.0,
+          "committed_Bps": 3842168.071821254,
+          "frame": 0,
+          "ready": 1,
+          "stalled": false
+        }
+      },
+      {
+        "index": 3,
+        "required_bytes": 8093445,
+        "optional_bytes": 4186978,
+        "started_seconds": 13.172026101499796,
+        "finished_seconds": 28.82511109020561,
+        "chunks": 1501,
+        "feedback": {
+          "at": 4411333.931849006,
+          "port": 56676,
+          "buffer_seconds": 8.0,
+          "committed_Bps": 3837632.2701448957,
+          "frame": 1,
+          "ready": 3,
+          "stalled": false
+        }
+      },
+      {
+        "index": 4,
+        "required_bytes": 8075245,
+        "optional_bytes": 0,
+        "started_seconds": 28.825994681566954,
+        "finished_seconds": 38.93429155740887,
+        "chunks": 987,
+        "feedback": {
+          "at": 4411349.599678969,
+          "port": 56676,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 0.0,
+          "frame": 4,
+          "ready": 4,
+          "stalled": false
+        }
+      },
+      {
+        "index": 5,
+        "required_bytes": 8040716,
+        "optional_bytes": 0,
+        "started_seconds": 38.93544350285083,
+        "finished_seconds": 50.141660316847265,
+        "chunks": 982,
+        "feedback": {
+          "at": 4411359.713601549,
+          "port": 56676,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 0.0,
+          "frame": 4,
+          "ready": 4,
+          "stalled": true
+        }
+      },
+      {
+        "index": 6,
+        "required_bytes": 8050804,
+        "optional_bytes": 0,
+        "started_seconds": 50.14229611773044,
+        "finished_seconds": 52.588620238006115,
+        "chunks": 984,
+        "feedback": {
+          "at": 4411370.927866877,
+          "port": 56676,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 35802.67971816964,
+          "frame": 5,
+          "ready": 5,
+          "stalled": true
+        }
+      },
+      {
+        "index": 7,
+        "required_bytes": 8058396,
+        "optional_bytes": 0,
+        "started_seconds": 52.58920302707702,
+        "finished_seconds": 54.47889066953212,
+        "chunks": 985,
+        "feedback": {
+          "at": 4411373.368353786,
+          "port": 56676,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 0.0,
+          "frame": 6,
+          "ready": 6,
+          "stalled": false
+        }
+      },
+      {
+        "index": 8,
+        "required_bytes": 8064636,
+        "optional_bytes": 0,
+        "started_seconds": 54.479343792423606,
+        "finished_seconds": 56.32507258467376,
+        "chunks": 985,
+        "feedback": {
+          "at": 4411375.257434208,
+          "port": 56676,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 3973251.6563928677,
+          "frame": 7,
+          "ready": 7,
+          "stalled": false
+        }
+      }
+    ]
+  },
+  "dynamic-fixed": {
+    "profile": "dynamic",
+    "policy": "fixed",
+    "cc": "cubic",
+    "mode": "chunked",
+    "fps": 0.25,
+    "updates": 9,
+    "prebuffer": 4.0,
+    "optional_limit_bytes": 4194304,
+    "frames_transferred": 9,
+    "optional_bytes": 37748736,
+    "required_update_bytes": 72542310,
+    "network": [
+      {
+        "frame": 0,
+        "before": [
+          {
+            "kind": "netem",
+            "handle": "8006:",
+            "root": true,
+            "refcnt": 2,
+            "options": {
+              "limit": 4096,
+              "ecn": false,
+              "gap": 0
+            },
+            "bytes": 0,
+            "packets": 0,
+            "drops": 0,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 0,
+            "qlen": 0
+          }
+        ]
+      },
+      {
+        "frame": 3,
+        "before": [
+          {
+            "kind": "netem",
+            "handle": "8006:",
+            "root": true,
+            "refcnt": 2,
+            "options": {
+              "limit": 4096,
+              "ecn": false,
+              "gap": 0
+            },
+            "bytes": 74505332,
+            "packets": 70651,
+            "drops": 0,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 0,
+            "qlen": 0
+          }
+        ],
+        "at": 19.02721987850964
+      },
+      {
+        "frame": 6,
+        "before": [
+          {
+            "kind": "netem",
+            "handle": "8006:",
+            "root": true,
+            "refcnt": 2,
+            "options": {
+              "limit": 4096,
+              "delay": {
+                "delay": 0.01,
+                "jitter": 0,
+                "correlation": 0
+              },
+              "loss-random": {
+                "loss": 0.01,
+                "correlation": 0
+              },
+              "rate": {
+                "rate": 7500000,
+                "packetoverhead": 0,
+                "cellsize": 0,
+                "celloverhead": 0
+              },
+              "ecn": false,
+              "gap": 0
+            },
+            "bytes": 117004320,
+            "packets": 122448,
+            "drops": 503,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 0,
+            "qlen": 0
+          }
+        ],
+        "at": 67.67141143511981
+      },
+      {
+        "final": [
+          {
+            "kind": "netem",
+            "handle": "8006:",
+            "root": true,
+            "refcnt": 2,
+            "options": {
+              "limit": 4096,
+              "rate": {
+                "rate": 7500000,
+                "packetoverhead": 0,
+                "cellsize": 0,
+                "celloverhead": 0
+              },
+              "ecn": false,
+              "gap": 0
+            },
+            "bytes": 158669424,
+            "packets": 162069,
+            "drops": 503,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 0,
+            "qlen": 0
+          }
+        ]
+      }
+    ],
+    "error": null,
+    "playback": {
+      "frames_presented": 10,
+      "planned_frames": 10,
+      "finished": true,
+      "startup_seconds": 10.556482360698283,
+      "elapsed_seconds": 78.38581819739193,
+      "stall_count": 4,
+      "stall_seconds": 31.04215792939067,
+      "stalls_seconds": [
+        [
+          27.21466523874551,
+          31.466875369660556
+        ],
+        [
+          35.466875369660556,
+          47.68182940594852
+        ],
+        [
+          51.68182940594852,
+          62.886190504767
+        ],
+        [
+          66.886190504767,
+          70.25682316813618
+        ]
+      ],
+      "late_or_missing_to_initial_schedule": 6,
+      "presentations_seconds": [
+        10.556482360698283,
+        15.153825684450567,
+        19.178305262699723,
+        23.21466523874551,
+        31.466875369660556,
+        47.68182940594852,
+        62.886190504767,
+        70.25682316813618,
+        74.35300676338375,
+        78.38581819739193
+      ],
+      "readiness_seconds": {
+        "1": 10.521422524005175,
+        "2": 14.321717232465744,
+        "3": 18.22156464960426,
+        "4": 31.430337683297694,
+        "5": 47.63705741800368,
+        "6": 62.84322625771165,
+        "7": 70.18152945116162,
+        "8": 73.54017137549818,
+        "9": 76.71646283194423
+      }
+    },
+    "sender_updates": [
+      {
+        "index": 0,
+        "required_bytes": 8032188,
+        "optional_bytes": 4194304,
+        "started_seconds": 8.14046330563724,
+        "finished_seconds": 11.510903673246503,
+        "chunks": 1493,
+        "feedback": {
+          "at": 4410953.030844314,
+          "port": 43600,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 244.2004003670813,
+          "frame": null,
+          "ready": 0,
+          "stalled": false
+        }
+      },
+      {
+        "index": 1,
+        "required_bytes": 8062348,
+        "optional_bytes": 4194304,
+        "started_seconds": 11.511423204094172,
+        "finished_seconds": 15.751488937065005,
+        "chunks": 1497,
+        "feedback": {
+          "at": 4410956.399684499,
+          "port": 43600,
+          "buffer_seconds": 4.0,
+          "committed_Bps": 3897719.3845309746,
+          "frame": 0,
+          "ready": 1,
+          "stalled": false
+        }
+      },
+      {
+        "index": 2,
+        "required_bytes": 8064532,
+        "optional_bytes": 4194304,
+        "started_seconds": 15.751921551302075,
+        "finished_seconds": 19.02679747156799,
+        "chunks": 1497,
+        "feedback": {
+          "at": 4410960.651014934,
+          "port": 43600,
+          "buffer_seconds": 4.0,
+          "committed_Bps": 3955707.023318465,
+          "frame": 1,
+          "ready": 2,
+          "stalled": false
+        }
+      },
+      {
+        "index": 3,
+        "required_bytes": 8093445,
+        "optional_bytes": 4194304,
+        "started_seconds": 19.02721987850964,
+        "finished_seconds": 35.32123064342886,
+        "chunks": 1501,
+        "feedback": {
+          "at": 4410963.944896668,
+          "port": 43600,
+          "buffer_seconds": 8.0,
+          "committed_Bps": 4000344.211625193,
+          "frame": 1,
+          "ready": 3,
+          "stalled": false
+        }
+      },
+      {
+        "index": 4,
+        "required_bytes": 8075245,
+        "optional_bytes": 4194304,
+        "started_seconds": 35.3222463382408,
+        "finished_seconds": 52.31593701336533,
+        "chunks": 1499,
+        "feedback": {
+          "at": 4410980.238100036,
+          "port": 43600,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 0.0,
+          "frame": 4,
+          "ready": 4,
+          "stalled": false
+        }
+      },
+      {
+        "index": 5,
+        "required_bytes": 8040716,
+        "optional_bytes": 4194304,
+        "started_seconds": 52.31698705628514,
+        "finished_seconds": 67.67057074513286,
+        "chunks": 1494,
+        "feedback": {
+          "at": 4410997.227413884,
+          "port": 43600,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 0.0,
+          "frame": 5,
+          "ready": 5,
+          "stalled": true
+        }
+      },
+      {
+        "index": 6,
+        "required_bytes": 8050804,
+        "optional_bytes": 4194304,
+        "started_seconds": 67.67141143511981,
+        "finished_seconds": 71.00435108691454,
+        "chunks": 1496,
+        "feedback": {
+          "at": 4411012.546888068,
+          "port": 43600,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 2078918.7284159584,
+          "frame": 6,
+          "ready": 6,
+          "stalled": true
+        }
+      },
+      {
+        "index": 7,
+        "required_bytes": 8058396,
+        "optional_bytes": 4194304,
+        "started_seconds": 71.00485924910754,
+        "finished_seconds": 74.44030410423875,
+        "chunks": 1497,
+        "feedback": {
+          "at": 4411015.894168919,
+          "port": 43600,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 3851056.1154858703,
+          "frame": 7,
+          "ready": 7,
+          "stalled": false
+        }
+      },
+      {
+        "index": 8,
+        "required_bytes": 8064636,
+        "optional_bytes": 4194304,
+        "started_seconds": 74.44088638294488,
+        "finished_seconds": 77.52109108120203,
+        "chunks": 1497,
+        "feedback": {
+          "at": 4411019.346441625,
+          "port": 43600,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 4028233.6700942265,
+          "frame": 8,
+          "ready": 8,
+          "stalled": false
+        }
+      }
+    ]
+  },
+  "dynamic-fixed-repeat": {
+    "profile": "dynamic",
+    "policy": "fixed",
+    "cc": "cubic",
+    "mode": "chunked",
+    "fps": 0.25,
+    "updates": 9,
+    "prebuffer": 4.0,
+    "optional_limit_bytes": 4194304,
+    "frames_transferred": 9,
+    "optional_bytes": 37748736,
+    "required_update_bytes": 72542310,
+    "network": [
+      {
+        "frame": 0,
+        "before": [
+          {
+            "kind": "netem",
+            "handle": "8009:",
+            "root": true,
+            "refcnt": 2,
+            "options": {
+              "limit": 4096,
+              "ecn": false,
+              "gap": 0
+            },
+            "bytes": 0,
+            "packets": 0,
+            "drops": 0,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 0,
+            "qlen": 0
+          }
+        ]
+      },
+      {
+        "frame": 3,
+        "before": [
+          {
+            "kind": "netem",
+            "handle": "8009:",
+            "root": true,
+            "refcnt": 2,
+            "options": {
+              "limit": 4096,
+              "ecn": false,
+              "gap": 0
+            },
+            "bytes": 74382786,
+            "packets": 68603,
+            "drops": 0,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 0,
+            "qlen": 0
+          }
+        ],
+        "at": 15.574768141843379
+      },
+      {
+        "frame": 6,
+        "before": [
+          {
+            "kind": "netem",
+            "handle": "8009:",
+            "root": true,
+            "refcnt": 2,
+            "options": {
+              "limit": 4096,
+              "delay": {
+                "delay": 0.01,
+                "jitter": 0,
+                "correlation": 0
+              },
+              "loss-random": {
+                "loss": 0.01,
+                "correlation": 0
+              },
+              "rate": {
+                "rate": 7500000,
+                "packetoverhead": 0,
+                "cellsize": 0,
+                "celloverhead": 0
+              },
+              "ecn": false,
+              "gap": 0
+            },
+            "bytes": 116911846,
+            "packets": 120787,
+            "drops": 537,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 77,
+            "qlen": 1
+          }
+        ],
+        "at": 64.84708889760077
+      },
+      {
+        "final": [
+          {
+            "kind": "netem",
+            "handle": "8009:",
+            "root": true,
+            "refcnt": 2,
+            "options": {
+              "limit": 4096,
+              "rate": {
+                "rate": 7500000,
+                "packetoverhead": 0,
+                "cellsize": 0,
+                "celloverhead": 0
+              },
+              "ecn": false,
+              "gap": 0
+            },
+            "bytes": 158599558,
+            "packets": 160078,
+            "drops": 537,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 0,
+            "qlen": 0
+          }
+        ]
+      }
+    ],
+    "error": null,
+    "metadata": {
+      "finished_seconds": 6.413165529258549,
+      "chunks": 3567,
+      "bytes": 29201102
+    },
+    "playback": {
+      "frames_presented": 10,
+      "planned_frames": 10,
+      "finished": true,
+      "startup_seconds": 8.56445389520377,
+      "elapsed_seconds": 75.48808255884796,
+      "stall_count": 4,
+      "stall_seconds": 30.182777893729508,
+      "stalls_seconds": [
+        [
+          25.227734913118184,
+          28.91030076891184
+        ],
+        [
+          32.91030076891184,
+          44.5906766531989
+        ],
+        [
+          48.5906766531989,
+          60.45672781020403
+        ],
+        [
+          64.45672781020403,
+          67.41051280684769
+        ]
+      ],
+      "late_or_missing_to_initial_schedule": 6,
+      "presentations_seconds": [
+        8.56445389520377,
+        13.126626617275178,
+        17.19867457356304,
+        21.227734913118184,
+        28.91030076891184,
+        44.5906766531989,
+        60.45672781020403,
+        67.41051280684769,
+        71.4618932986632,
+        75.48808255884796
+      ],
+      "readiness_seconds": {
+        "1": 8.493300542235374,
+        "2": 11.299655512906611,
+        "3": 14.847631794400513,
+        "4": 28.854537163861096,
+        "5": 44.54658239893615,
+        "6": 60.412937212735415,
+        "7": 67.32788706943393,
+        "8": 70.13540590088814,
+        "9": 72.8655377002433
+      },
+      "exact_ntc_uses": 9,
+      "missing_ntc_uses": 0
+    },
+    "sender_updates": [
+      {
+        "index": 0,
+        "required_bytes": 8032188,
+        "optional_bytes": 4194304,
+        "started_seconds": 6.415415132418275,
+        "finished_seconds": 9.252275383099914,
+        "chunks": 1493,
+        "feedback": {
+          "at": 4411392.831572521,
+          "port": 36566,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 243.33629798225112,
+          "frame": null,
+          "ready": 0,
+          "stalled": false
+        }
+      },
+      {
+        "index": 1,
+        "required_bytes": 8062348,
+        "optional_bytes": 4194304,
+        "started_seconds": 9.25257988832891,
+        "finished_seconds": 12.04745829757303,
+        "chunks": 1497,
+        "feedback": {
+          "at": 4411395.651795779,
+          "port": 36566,
+          "buffer_seconds": 4.0,
+          "committed_Bps": 3887881.282754422,
+          "frame": 0,
+          "ready": 1,
+          "stalled": false
+        }
+      },
+      {
+        "index": 2,
+        "required_bytes": 8064532,
+        "optional_bytes": 4194304,
+        "started_seconds": 12.047841776162386,
+        "finished_seconds": 15.574335969053209,
+        "chunks": 1497,
+        "feedback": {
+          "at": 4411398.474262227,
+          "port": 36566,
+          "buffer_seconds": 8.0,
+          "committed_Bps": 3914037.3876585546,
+          "frame": 0,
+          "ready": 2,
+          "stalled": false
+        }
+      },
+      {
+        "index": 3,
+        "required_bytes": 8093445,
+        "optional_bytes": 4194304,
+        "started_seconds": 15.574768141843379,
+        "finished_seconds": 33.353334456682205,
+        "chunks": 1501,
+        "feedback": {
+          "at": 4411402.068017462,
+          "port": 36566,
+          "buffer_seconds": 8.0,
+          "committed_Bps": 6032419.796662945,
+          "frame": 1,
+          "ready": 3,
+          "stalled": false
+        }
+      },
+      {
+        "index": 4,
+        "required_bytes": 8075245,
+        "optional_bytes": 4194304,
+        "started_seconds": 33.354136996902525,
+        "finished_seconds": 49.06880349852145,
+        "chunks": 1499,
+        "feedback": {
+          "at": 4411419.799569734,
+          "port": 36566,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 0.0,
+          "frame": 4,
+          "ready": 4,
+          "stalled": true
+        }
+      },
+      {
+        "index": 5,
+        "required_bytes": 8040716,
+        "optional_bytes": 4194304,
+        "started_seconds": 49.06979691889137,
+        "finished_seconds": 64.8462349427864,
+        "chunks": 1494,
+        "feedback": {
+          "at": 4411435.498206688,
+          "port": 36566,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 0.0,
+          "frame": 5,
+          "ready": 5,
+          "stalled": true
+        }
+      },
+      {
+        "index": 6,
+        "required_bytes": 8050804,
+        "optional_bytes": 4194304,
+        "started_seconds": 64.84708889760077,
+        "finished_seconds": 68.14354483503848,
+        "chunks": 1496,
+        "feedback": {
+          "at": 4411451.287868917,
+          "port": 36566,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 0.0,
+          "frame": 6,
+          "ready": 6,
+          "stalled": true
+        }
+      },
+      {
+        "index": 7,
+        "required_bytes": 8058396,
+        "optional_bytes": 4194304,
+        "started_seconds": 68.14392670430243,
+        "finished_seconds": 70.85785054508597,
+        "chunks": 1497,
+        "feedback": {
+          "at": 4411454.591528363,
+          "port": 36566,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 3788729.7879872895,
+          "frame": 7,
+          "ready": 7,
+          "stalled": false
+        }
+      },
+      {
+        "index": 8,
+        "required_bytes": 8064636,
+        "optional_bytes": 4194304,
+        "started_seconds": 70.85817917529494,
+        "finished_seconds": 73.64246767666191,
+        "chunks": 1497,
+        "feedback": {
+          "at": 4411457.338048289,
+          "port": 36566,
+          "buffer_seconds": 4.0,
+          "committed_Bps": 3987360.4977591187,
+          "frame": 7,
+          "ready": 8,
+          "stalled": false
+        }
+      }
+    ]
+  },
+  "dynamic-required-only": {
+    "profile": "dynamic",
+    "policy": "none",
+    "cc": "cubic",
+    "mode": "chunked",
+    "fps": 0.25,
+    "updates": 9,
+    "prebuffer": 4.0,
+    "optional_limit_bytes": 4194304,
+    "frames_transferred": 9,
+    "optional_bytes": 0,
+    "required_update_bytes": 72542310,
+    "network": [
+      {
+        "frame": 0,
+        "before": [
+          {
+            "kind": "netem",
+            "handle": "800a:",
+            "root": true,
+            "refcnt": 2,
+            "options": {
+              "limit": 4096,
+              "ecn": false,
+              "gap": 0
+            },
+            "bytes": 0,
+            "packets": 0,
+            "drops": 0,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 0,
+            "qlen": 0
+          }
+        ]
+      },
+      {
+        "frame": 3,
+        "before": [
+          {
+            "kind": "netem",
+            "handle": "800a:",
+            "root": true,
+            "refcnt": 2,
+            "options": {
+              "limit": 4096,
+              "ecn": false,
+              "gap": 0
+            },
+            "bytes": 60162849,
+            "packets": 55374,
+            "drops": 0,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 0,
+            "qlen": 0
+          }
+        ],
+        "at": 12.337122996337712
+      },
+      {
+        "frame": 6,
+        "before": [
+          {
+            "kind": "netem",
+            "handle": "800a:",
+            "root": true,
+            "refcnt": 2,
+            "options": {
+              "limit": 4096,
+              "delay": {
+                "delay": 0.01,
+                "jitter": 0,
+                "correlation": 0
+              },
+              "loss-random": {
+                "loss": 0.01,
+                "correlation": 0
+              },
+              "rate": {
+                "rate": 7500000,
+                "packetoverhead": 0,
+                "cellsize": 0,
+                "celloverhead": 0
+              },
+              "ecn": false,
+              "gap": 0
+            },
+            "bytes": 88138942,
+            "packets": 89752,
+            "drops": 363,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 78,
+            "qlen": 1
+          }
+        ],
+        "at": 46.2361771678552
+      },
+      {
+        "final": [
+          {
+            "kind": "netem",
+            "handle": "800a:",
+            "root": true,
+            "refcnt": 2,
+            "options": {
+              "limit": 4096,
+              "rate": {
+                "rate": 7500000,
+                "packetoverhead": 0,
+                "cellsize": 0,
+                "celloverhead": 0
+              },
+              "ecn": false,
+              "gap": 0
+            },
+            "bytes": 115459840,
+            "packets": 115743,
+            "drops": 363,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 0,
+            "qlen": 0
+          }
+        ]
+      }
+    ],
+    "error": null,
+    "metadata": {
+      "finished_seconds": 6.743197862058878,
+      "chunks": 3567,
+      "bytes": 29201102
+    },
+    "playback": {
+      "frames_presented": 10,
+      "planned_frames": 10,
+      "finished": true,
+      "startup_seconds": 8.564912452362478,
+      "elapsed_seconds": 58.36857217270881,
+      "stall_count": 2,
+      "stall_seconds": 12.9633404687047,
+      "stalls_seconds": [
+        [
+          29.300088483840227,
+          34.78701035678387
+        ],
+        [
+          38.78701035678387,
+          46.26342895254493
+        ]
+      ],
+      "late_or_missing_to_initial_schedule": 5,
+      "presentations_seconds": [
+        8.564912452362478,
+        13.136754889972508,
+        17.22626865748316,
+        21.266799248754978,
+        25.300088483840227,
+        34.78701035678387,
+        46.26342895254493,
+        50.31046489160508,
+        54.33875336498022,
+        58.36857217270881
+      ],
+      "readiness_seconds": {
+        "1": 8.484052460640669,
+        "2": 10.358216194435954,
+        "3": 12.352050791494548,
+        "4": 22.91144056431949,
+        "5": 34.75397352129221,
+        "6": 46.22723929584026,
+        "7": 48.73372747935355,
+        "8": 50.505337595008314,
+        "9": 52.33081239182502
+      },
+      "exact_ntc_uses": 9,
+      "missing_ntc_uses": 0
+    },
+    "sender_updates": [
+      {
+        "index": 0,
+        "required_bytes": 8032188,
+        "optional_bytes": 0,
+        "started_seconds": 6.746071804314852,
+        "finished_seconds": 8.48038773983717,
+        "chunks": 981,
+        "feedback": {
+          "at": 4411472.080876407,
+          "port": 53153,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 236.43311850579403,
+          "frame": null,
+          "ready": 0,
+          "stalled": false
+        }
+      },
+      {
+        "index": 1,
+        "required_bytes": 8062348,
+        "optional_bytes": 0,
+        "started_seconds": 8.480638867244124,
+        "finished_seconds": 10.347260545007885,
+        "chunks": 985,
+        "feedback": {
+          "at": 4411473.803071412,
+          "port": 53153,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 14030490.624395922,
+          "frame": null,
+          "ready": 0,
+          "stalled": false
+        }
+      },
+      {
+        "index": 2,
+        "required_bytes": 8064532,
+        "optional_bytes": 0,
+        "started_seconds": 10.347698860801756,
+        "finished_seconds": 12.336734642274678,
+        "chunks": 985,
+        "feedback": {
+          "at": 4411475.644062876,
+          "port": 53153,
+          "buffer_seconds": 4.0,
+          "committed_Bps": 3882092.026188197,
+          "frame": 0,
+          "ready": 1,
+          "stalled": false
+        }
+      },
+      {
+        "index": 3,
+        "required_bytes": 8093445,
+        "optional_bytes": 0,
+        "started_seconds": 12.337122996337712,
+        "finished_seconds": 22.90207483060658,
+        "chunks": 989,
+        "feedback": {
+          "at": 4411477.641646316,
+          "port": 53153,
+          "buffer_seconds": 8.0,
+          "committed_Bps": 3822082.665929212,
+          "frame": 0,
+          "ready": 2,
+          "stalled": false
+        }
+      },
+      {
+        "index": 4,
+        "required_bytes": 8075245,
+        "optional_bytes": 0,
+        "started_seconds": 22.903067688457668,
+        "finished_seconds": 34.76128401141614,
+        "chunks": 987,
+        "feedback": {
+          "at": 4411488.245603471,
+          "port": 53153,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 3839462.8313564863,
+          "frame": 3,
+          "ready": 3,
+          "stalled": false
+        }
+      },
+      {
+        "index": 5,
+        "required_bytes": 8040716,
+        "optional_bytes": 0,
+        "started_seconds": 34.7623375384137,
+        "finished_seconds": 46.23538050893694,
+        "chunks": 982,
+        "feedback": {
+          "at": 4411500.012070643,
+          "port": 53153,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 0.0,
+          "frame": 4,
+          "ready": 4,
+          "stalled": true
+        }
+      },
+      {
+        "index": 6,
+        "required_bytes": 8050804,
+        "optional_bytes": 0,
+        "started_seconds": 46.2361771678552,
+        "finished_seconds": 48.71386538352817,
+        "chunks": 984,
+        "feedback": {
+          "at": 4411511.506904685,
+          "port": 53153,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 0.0,
+          "frame": 5,
+          "ready": 5,
+          "stalled": true
+        }
+      },
+      {
+        "index": 7,
+        "required_bytes": 8058396,
+        "optional_bytes": 0,
+        "started_seconds": 48.71430329233408,
+        "finished_seconds": 50.501999313011765,
+        "chunks": 985,
+        "feedback": {
+          "at": 4411514.009915747,
+          "port": 53153,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 0.0,
+          "frame": 6,
+          "ready": 6,
+          "stalled": false
+        }
+      },
+      {
+        "index": 8,
+        "required_bytes": 8064636,
+        "optional_bytes": 0,
+        "started_seconds": 50.502547641284764,
+        "finished_seconds": 52.311477372422814,
+        "chunks": 985,
+        "feedback": {
+          "at": 4411515.752249545,
+          "port": 53153,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 3823968.271285281,
+          "frame": 7,
+          "ready": 7,
+          "stalled": false
+        }
+      }
+    ]
+  },
+  "jitter": {
+    "profile": "jitter",
+    "policy": "none",
+    "cc": "cubic",
+    "mode": "chunked",
+    "fps": 30,
+    "updates": 8,
+    "prebuffer": 0.1,
+    "optional_limit_bytes": 4194304,
+    "frames_transferred": 8,
+    "optional_bytes": 0,
+    "required_update_bytes": 64477674,
+    "network": [
+      {
+        "frame": 0,
+        "before": [
+          {
+            "kind": "netem",
+            "handle": "8002:",
+            "root": true,
+            "refcnt": 2,
+            "options": {
+              "limit": 4096,
+              "delay": {
+                "delay": 0.015,
+                "jitter": 0.005,
+                "correlation": 0
+              },
+              "rate": {
+                "rate": 7500000,
+                "packetoverhead": 0,
+                "cellsize": 0,
+                "celloverhead": 0
+              },
+              "ecn": false,
+              "gap": 0
+            },
+            "bytes": 0,
+            "packets": 0,
+            "drops": 0,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 0,
+            "qlen": 0
+          }
+        ]
+      },
+      {
+        "final": [
+          {
+            "kind": "netem",
+            "handle": "8002:",
+            "root": true,
+            "refcnt": 2,
+            "options": {
+              "limit": 4096,
+              "delay": {
+                "delay": 0.015,
+                "jitter": 0.005,
+                "correlation": 0
+              },
+              "rate": {
+                "rate": 7500000,
+                "packetoverhead": 0,
+                "cellsize": 0,
+                "celloverhead": 0
+              },
+              "ecn": false,
+              "gap": 0
+            },
+            "bytes": 105998043,
+            "packets": 103987,
+            "drops": 0,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 0,
+            "qlen": 0
+          }
+        ]
+      }
+    ],
+    "error": null,
+    "playback": {
+      "frames_presented": 9,
+      "planned_frames": 9,
+      "finished": true,
+      "startup_seconds": 24.98762339167297,
+      "elapsed_seconds": 45.53494675364345,
+      "stall_count": 2,
+      "stall_seconds": 18.603760081343353,
+      "stalls_seconds": [
+        [
+          25.784915876574814,
+          38.19692476838827
+        ],
+        [
+          38.46228729374707,
+          44.65403848327696
+        ]
+      ],
+      "late_or_missing_to_initial_schedule": 5,
+      "presentations_seconds": [
+        24.98762339167297,
+        25.621260528452694,
+        25.686912024393678,
+        25.751582543365657,
+        38.19692476838827,
+        38.261143416166306,
+        38.42895396053791,
+        44.65403848327696,
+        44.714257097803056
+      ],
+      "readiness_seconds": {
+        "1": 15.438355574384332,
+        "2": 20.557813403196633,
+        "3": 24.98103460483253,
+        "4": 29.93722466658801,
+        "5": 34.378093022853136,
+        "6": 38.17742053326219,
+        "7": 41.49678224418312,
+        "8": 44.63555881381035
+      }
+    },
+    "sender_updates": [
+      {
+        "index": 0,
+        "required_bytes": 8032188,
+        "optional_bytes": 0,
+        "started_seconds": 10.817085348069668,
+        "finished_seconds": 15.457819732837379,
+        "chunks": 981,
+        "feedback": {
+          "at": 4410425.512208804,
+          "port": 42932,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 244.9171545820757,
+          "frame": null,
+          "ready": 0,
+          "stalled": false
+        }
+      },
+      {
+        "index": 1,
+        "required_bytes": 8062348,
+        "optional_bytes": 0,
+        "started_seconds": 15.458420228213072,
+        "finished_seconds": 20.57483000215143,
+        "chunks": 985,
+        "feedback": {
+          "at": 4410430.161584844,
+          "port": 42932,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 0.0,
+          "frame": null,
+          "ready": 0,
+          "stalled": false
+        }
+      },
+      {
+        "index": 2,
+        "required_bytes": 8064532,
+        "optional_bytes": 0,
+        "started_seconds": 20.575857329182327,
+        "finished_seconds": 24.990328793413937,
+        "chunks": 985,
+        "feedback": {
+          "at": 4410435.23445332,
+          "port": 42932,
+          "buffer_seconds": 0.03333333333333333,
+          "committed_Bps": 0.0,
+          "frame": null,
+          "ready": 1,
+          "stalled": false
+        }
+      },
+      {
+        "index": 3,
+        "required_bytes": 8093445,
+        "optional_bytes": 0,
+        "started_seconds": 24.990814356133342,
+        "finished_seconds": 29.94281078223139,
+        "chunks": 989,
+        "feedback": {
+          "at": 4410439.677717861,
+          "port": 42932,
+          "buffer_seconds": 0.06666666666666667,
+          "committed_Bps": 0.0,
+          "frame": null,
+          "ready": 2,
+          "stalled": false
+        }
+      },
+      {
+        "index": 4,
+        "required_bytes": 8075245,
+        "optional_bytes": 0,
+        "started_seconds": 29.943595881573856,
+        "finished_seconds": 34.39919276814908,
+        "chunks": 987,
+        "feedback": {
+          "at": 4410444.646502412,
+          "port": 42932,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 0.0,
+          "frame": 3,
+          "ready": 3,
+          "stalled": true
+        }
+      },
+      {
+        "index": 5,
+        "required_bytes": 8040716,
+        "optional_bytes": 0,
+        "started_seconds": 34.40046002715826,
+        "finished_seconds": 38.176037467084825,
+        "chunks": 982,
+        "feedback": {
+          "at": 4410449.133990507,
+          "port": 42932,
+          "buffer_seconds": 0.06666666666666667,
+          "committed_Bps": 4033375.906008186,
+          "frame": 3,
+          "ready": 5,
+          "stalled": true
+        }
+      },
+      {
+        "index": 6,
+        "required_bytes": 8050804,
+        "optional_bytes": 0,
+        "started_seconds": 38.177099864929914,
+        "finished_seconds": 41.50969672203064,
+        "chunks": 984,
+        "feedback": {
+          "at": 4410452.889103138,
+          "port": 42932,
+          "buffer_seconds": 0.06666666666666667,
+          "committed_Bps": 0.0,
+          "frame": 3,
+          "ready": 5,
+          "stalled": true
+        }
+      },
+      {
+        "index": 7,
+        "required_bytes": 8058396,
+        "optional_bytes": 0,
+        "started_seconds": 41.51059364899993,
+        "finished_seconds": 44.6436005756259,
+        "chunks": 985,
+        "feedback": {
+          "at": 4410456.202314039,
+          "port": 42932,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 0.0,
+          "frame": 6,
+          "ready": 6,
+          "stalled": true
+        }
+      }
+    ]
+  },
+  "loss1": {
+    "profile": "loss1",
+    "policy": "none",
+    "cc": "cubic",
+    "mode": "chunked",
+    "fps": 30,
+    "updates": 8,
+    "prebuffer": 0.1,
+    "optional_limit_bytes": 4194304,
+    "frames_transferred": 8,
+    "optional_bytes": 0,
+    "required_update_bytes": 64477674,
+    "network": [
+      {
+        "frame": 0,
+        "before": [
+          {
+            "kind": "netem",
+            "handle": "8003:",
+            "root": true,
+            "refcnt": 2,
+            "options": {
+              "limit": 4096,
+              "delay": {
+                "delay": 0.01,
+                "jitter": 0,
+                "correlation": 0
+              },
+              "loss-random": {
+                "loss": 0.01,
+                "correlation": 0
+              },
+              "rate": {
+                "rate": 7500000,
+                "packetoverhead": 0,
+                "cellsize": 0,
+                "celloverhead": 0
+              },
+              "ecn": false,
+              "gap": 0
+            },
+            "bytes": 0,
+            "packets": 0,
+            "drops": 0,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 0,
+            "qlen": 0
+          }
+        ]
+      },
+      {
+        "final": [
+          {
+            "kind": "netem",
+            "handle": "8003:",
+            "root": true,
+            "refcnt": 2,
+            "options": {
+              "limit": 4096,
+              "delay": {
+                "delay": 0.01,
+                "jitter": 0,
+                "correlation": 0
+              },
+              "loss-random": {
+                "loss": 0.01,
+                "correlation": 0
+              },
+              "rate": {
+                "rate": 7500000,
+                "packetoverhead": 0,
+                "cellsize": 0,
+                "celloverhead": 0
+              },
+              "ecn": false,
+              "gap": 0
+            },
+            "bytes": 108158625,
+            "packets": 133039,
+            "drops": 1372,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 0,
+            "qlen": 0
+          }
+        ]
+      }
+    ],
+    "error": null,
+    "playback": {
+      "frames_presented": 9,
+      "planned_frames": 9,
+      "finished": true,
+      "startup_seconds": 71.10587733890861,
+      "elapsed_seconds": 129.02427727915347,
+      "stall_count": 2,
+      "stall_seconds": 56.655966345220804,
+      "stalls_seconds": [
+        [
+          71.83748362958431,
+          106.26970809232444
+        ],
+        [
+          106.44846471492201,
+          128.6722065974027
+        ]
+      ],
+      "late_or_missing_to_initial_schedule": 5,
+      "presentations_seconds": [
+        71.10587733890861,
+        71.6593019515276,
+        71.73205154575408,
+        71.80415029637516,
+        106.26970809232444,
+        106.34617410041392,
+        106.41513138171285,
+        128.6722065974027,
+        128.7324115894735
+      ],
+      "readiness_seconds": {
+        "1": 47.96811234392226,
+        "2": 59.31482497416437,
+        "3": 71.09782212413847,
+        "4": 82.680056668818,
+        "5": 94.34361968934536,
+        "6": 106.24900726694614,
+        "7": 116.97823771461844,
+        "8": 128.65226850192994
+      }
+    },
+    "sender_updates": [
+      {
+        "index": 0,
+        "required_bytes": 8032188,
+        "optional_bytes": 0,
+        "started_seconds": 36.18909779470414,
+        "finished_seconds": 47.975721791386604,
+        "chunks": 981,
+        "feedback": {
+          "at": 4410501.063019438,
+          "port": 44963,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 234.6841891520482,
+          "frame": null,
+          "ready": 0,
+          "stalled": false
+        }
+      },
+      {
+        "index": 1,
+        "required_bytes": 8062348,
+        "optional_bytes": 0,
+        "started_seconds": 47.976627423428,
+        "finished_seconds": 59.32207615952939,
+        "chunks": 985,
+        "feedback": {
+          "at": 4410512.827926535,
+          "port": 44963,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 0.0,
+          "frame": null,
+          "ready": 0,
+          "stalled": false
+        }
+      },
+      {
+        "index": 2,
+        "required_bytes": 8064532,
+        "optional_bytes": 0,
+        "started_seconds": 59.32309405691922,
+        "finished_seconds": 71.10813015792519,
+        "chunks": 985,
+        "feedback": {
+          "at": 4410524.184927443,
+          "port": 44963,
+          "buffer_seconds": 0.03333333333333333,
+          "committed_Bps": 0.0,
+          "frame": null,
+          "ready": 1,
+          "stalled": false
+        }
+      },
+      {
+        "index": 3,
+        "required_bytes": 8093445,
+        "optional_bytes": 0,
+        "started_seconds": 71.10912228561938,
+        "finished_seconds": 82.68239258881658,
+        "chunks": 989,
+        "feedback": {
+          "at": 4410536.012566338,
+          "port": 44963,
+          "buffer_seconds": 0.06666666666666667,
+          "committed_Bps": 0.0,
+          "frame": null,
+          "ready": 2,
+          "stalled": false
+        }
+      },
+      {
+        "index": 4,
+        "required_bytes": 8075245,
+        "optional_bytes": 0,
+        "started_seconds": 82.6834920719266,
+        "finished_seconds": 94.33732776809484,
+        "chunks": 987,
+        "feedback": {
+          "at": 4410547.57460868,
+          "port": 44963,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 59667.24277118386,
+          "frame": 3,
+          "ready": 3,
+          "stalled": true
+        }
+      },
+      {
+        "index": 5,
+        "required_bytes": 8040716,
+        "optional_bytes": 0,
+        "started_seconds": 94.33825702685863,
+        "finished_seconds": 106.243160109967,
+        "chunks": 982,
+        "feedback": {
+          "at": 4410559.23795786,
+          "port": 44963,
+          "buffer_seconds": 0.03333333333333333,
+          "committed_Bps": 0.0,
+          "frame": 3,
+          "ready": 4,
+          "stalled": true
+        }
+      },
+      {
+        "index": 6,
+        "required_bytes": 8050804,
+        "optional_bytes": 0,
+        "started_seconds": 106.24378568120301,
+        "finished_seconds": 116.98637497983873,
+        "chunks": 984,
+        "feedback": {
+          "at": 4410571.084323443,
+          "port": 44963,
+          "buffer_seconds": 0.06666666666666667,
+          "committed_Bps": 0.0,
+          "frame": 3,
+          "ready": 5,
+          "stalled": true
+        }
+      },
+      {
+        "index": 7,
+        "required_bytes": 8058396,
+        "optional_bytes": 0,
+        "started_seconds": 116.98744239937514,
+        "finished_seconds": 128.64997157920152,
+        "chunks": 985,
+        "feedback": {
+          "at": 4410581.819495609,
+          "port": 44963,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 0.0,
+          "frame": 6,
+          "ready": 6,
+          "stalled": true
+        }
+      }
+    ]
+  },
+  "loss3-cubic": {
+    "profile": "loss3",
+    "policy": "none",
+    "cc": "cubic",
+    "mode": "chunked",
+    "fps": 30,
+    "updates": 6,
+    "prebuffer": 0.1,
+    "optional_limit_bytes": 4194304,
+    "frames_transferred": 5,
+    "optional_bytes": 0,
+    "required_update_bytes": 40327758,
+    "network": [
+      {
+        "frame": 0,
+        "before": [
+          {
+            "kind": "netem",
+            "handle": "8004:",
+            "root": true,
+            "refcnt": 2,
+            "options": {
+              "limit": 4096,
+              "delay": {
+                "delay": 0.01,
+                "jitter": 0,
+                "correlation": 0
+              },
+              "loss-random": {
+                "loss": 0.03,
+                "correlation": 0
+              },
+              "rate": {
+                "rate": 7500000,
+                "packetoverhead": 0,
+                "cellsize": 0,
+                "celloverhead": 0
+              },
+              "ecn": false,
+              "gap": 0
+            },
+            "bytes": 0,
+            "packets": 0,
+            "drops": 0,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 0,
+            "qlen": 0
+          }
+        ]
+      },
+      {
+        "final": [
+          {
+            "kind": "netem",
+            "handle": "8004:",
+            "root": true,
+            "refcnt": 2,
+            "options": {
+              "limit": 4096,
+              "delay": {
+                "delay": 0.01,
+                "jitter": 0,
+                "correlation": 0
+              },
+              "loss-random": {
+                "loss": 0.03,
+                "correlation": 0
+              },
+              "rate": {
+                "rate": 7500000,
+                "packetoverhead": 0,
+                "cellsize": 0,
+                "celloverhead": 0
+              },
+              "ecn": false,
+              "gap": 0
+            },
+            "bytes": 82971362,
+            "packets": 107670,
+            "drops": 3279,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 0,
+            "qlen": 0
+          }
+        ]
+      }
+    ],
+    "error": "TimeoutError()",
+    "playback": {
+      "frames_presented": 4,
+      "planned_frames": 7,
+      "finished": false,
+      "startup_seconds": 128.746665709652,
+      "elapsed_seconds": 170.01557364035398,
+      "stall_count": 1,
+      "stall_seconds": 40.560665195807815,
+      "stalls_seconds": [
+        [
+          129.45490844454616,
+          170.01557364035398
+        ]
+      ],
+      "late_or_missing_to_initial_schedule": 3,
+      "presentations_seconds": [
+        128.746665709652,
+        129.3036183528602,
+        129.36193913873285,
+        129.421575111337
+      ],
+      "readiness_seconds": {
+        "1": 88.92575284466147,
+        "2": 109.24929720908403,
+        "3": 128.7396517926827,
+        "4": 147.6248573474586,
+        "5": 165.80373979266733
+      }
+    },
+    "sender_updates": [
+      {
+        "index": 0,
+        "required_bytes": 8032188,
+        "optional_bytes": 0,
+        "started_seconds": 69.38063159119338,
+        "finished_seconds": 88.93979257065803,
+        "chunks": 981,
+        "feedback": {
+          "at": 4410666.974413238,
+          "port": 43528,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 238.58141896501175,
+          "frame": null,
+          "ready": 0,
+          "stalled": false
+        }
+      },
+      {
+        "index": 1,
+        "required_bytes": 8062348,
+        "optional_bytes": 0,
+        "started_seconds": 88.94048020616174,
+        "finished_seconds": 109.24782055709511,
+        "chunks": 985,
+        "feedback": {
+          "at": 4410686.567453188,
+          "port": 43528,
+          "buffer_seconds": 0.03333333333333333,
+          "committed_Bps": 3904398.9585378272,
+          "frame": null,
+          "ready": 1,
+          "stalled": false
+        }
+      },
+      {
+        "index": 2,
+        "required_bytes": 8064532,
+        "optional_bytes": 0,
+        "started_seconds": 109.2488200571388,
+        "finished_seconds": 128.7451981753111,
+        "chunks": 985,
+        "feedback": {
+          "at": 4410706.799526134,
+          "port": 43528,
+          "buffer_seconds": 0.03333333333333333,
+          "committed_Bps": 0.0,
+          "frame": null,
+          "ready": 1,
+          "stalled": false
+        }
+      },
+      {
+        "index": 3,
+        "required_bytes": 8093445,
+        "optional_bytes": 0,
+        "started_seconds": 128.7459314847365,
+        "finished_seconds": 147.62833698187023,
+        "chunks": 989,
+        "feedback": {
+          "at": 4410726.31304847,
+          "port": 43528,
+          "buffer_seconds": 0.06666666666666667,
+          "committed_Bps": 0.0,
+          "frame": null,
+          "ready": 2,
+          "stalled": false
+        }
+      },
+      {
+        "index": 4,
+        "required_bytes": 8075245,
+        "optional_bytes": 0,
+        "started_seconds": 147.62908278405666,
+        "finished_seconds": 165.80953869223595,
+        "chunks": 987,
+        "feedback": {
+          "at": 4410745.167820628,
+          "port": 43528,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 0.0,
+          "frame": 3,
+          "ready": 3,
+          "stalled": true
+        }
+      }
+    ]
+  },
+  "loss3-reno": {
+    "profile": "loss3",
+    "policy": "none",
+    "cc": "reno",
+    "mode": "chunked",
+    "fps": 30,
+    "updates": 6,
+    "prebuffer": 0.1,
+    "optional_limit_bytes": 4194304,
+    "frames_transferred": 4,
+    "optional_bytes": 0,
+    "required_update_bytes": 32252513,
+    "network": [
+      {
+        "frame": 0,
+        "before": [
+          {
+            "kind": "netem",
+            "handle": "8005:",
+            "root": true,
+            "refcnt": 2,
+            "options": {
+              "limit": 4096,
+              "delay": {
+                "delay": 0.01,
+                "jitter": 0,
+                "correlation": 0
+              },
+              "loss-random": {
+                "loss": 0.03,
+                "correlation": 0
+              },
+              "rate": {
+                "rate": 7500000,
+                "packetoverhead": 0,
+                "cellsize": 0,
+                "celloverhead": 0
+              },
+              "ecn": false,
+              "gap": 0
+            },
+            "bytes": 0,
+            "packets": 0,
+            "drops": 0,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 0,
+            "qlen": 0
+          }
+        ]
+      },
+      {
+        "final": [
+          {
+            "kind": "netem",
+            "handle": "8005:",
+            "root": true,
+            "refcnt": 2,
+            "options": {
+              "limit": 4096,
+              "delay": {
+                "delay": 0.01,
+                "jitter": 0,
+                "correlation": 0
+              },
+              "loss-random": {
+                "loss": 0.03,
+                "correlation": 0
+              },
+              "rate": {
+                "rate": 7500000,
+                "packetoverhead": 0,
+                "cellsize": 0,
+                "celloverhead": 0
+              },
+              "ecn": false,
+              "gap": 0
+            },
+            "bytes": 71188773,
+            "packets": 85292,
+            "drops": 2533,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 0,
+            "qlen": 0
+          }
+        ]
+      }
+    ],
+    "error": "TimeoutError()",
+    "playback": {
+      "frames_presented": 4,
+      "planned_frames": 7,
+      "finished": false,
+      "startup_seconds": 146.604461918585,
+      "elapsed_seconds": 170.01021531503648,
+      "stall_count": 1,
+      "stall_seconds": 22.656736123375595,
+      "stalls_seconds": [
+        [
+          147.35347919166088,
+          170.01021531503648
+        ]
+      ],
+      "late_or_missing_to_initial_schedule": 3,
+      "presentations_seconds": [
+        146.604461918585,
+        147.1808265177533,
+        147.24923630524427,
+        147.32014585845172
+      ],
+      "readiness_seconds": {
+        "1": 101.82715132832527,
+        "2": 124.88420456368476,
+        "3": 146.5966603010893,
+        "4": 168.46579148620367
+      }
+    },
+    "sender_updates": [
+      {
+        "index": 0,
+        "required_bytes": 8032188,
+        "optional_bytes": 0,
+        "started_seconds": 80.0999447396025,
+        "finished_seconds": 101.84696335811168,
+        "chunks": 981,
+        "feedback": {
+          "at": 4410851.13811801,
+          "port": 47146,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 239.72232589985157,
+          "frame": null,
+          "ready": 0,
+          "stalled": false
+        }
+      },
+      {
+        "index": 1,
+        "required_bytes": 8062348,
+        "optional_bytes": 0,
+        "started_seconds": 101.84774582646787,
+        "finished_seconds": 124.88245542068034,
+        "chunks": 985,
+        "feedback": {
+          "at": 4410872.814263695,
+          "port": 47146,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 0.0,
+          "frame": null,
+          "ready": 0,
+          "stalled": false
+        }
+      },
+      {
+        "index": 2,
+        "required_bytes": 8064532,
+        "optional_bytes": 0,
+        "started_seconds": 124.88347162585706,
+        "finished_seconds": 147.03014928568155,
+        "chunks": 985,
+        "feedback": {
+          "at": 4410895.906813154,
+          "port": 47146,
+          "buffer_seconds": 0.03333333333333333,
+          "committed_Bps": 0.0,
+          "frame": null,
+          "ready": 1,
+          "stalled": false
+        }
+      },
+      {
+        "index": 3,
+        "required_bytes": 8093445,
+        "optional_bytes": 0,
+        "started_seconds": 147.0312757510692,
+        "finished_seconds": 168.4673407068476,
+        "chunks": 989,
+        "feedback": {
+          "at": 4410917.696414497,
+          "port": 47146,
+          "buffer_seconds": 0.1,
+          "committed_Bps": 3840582.4134786935,
+          "frame": 0,
+          "ready": 3,
+          "stalled": false
+        }
+      }
+    ]
+  },
+  "loss3-whole-cubic": {
+    "profile": "loss3",
+    "policy": "none",
+    "cc": "cubic",
+    "mode": "whole",
+    "fps": 30,
+    "updates": 6,
+    "prebuffer": 0.1,
+    "optional_limit_bytes": 4194304,
+    "frames_transferred": 6,
+    "optional_bytes": 0,
+    "required_update_bytes": 48368474,
+    "network": [
+      {
+        "frame": 0,
+        "before": [
+          {
+            "kind": "netem",
+            "handle": "800b:",
+            "root": true,
+            "refcnt": 2,
+            "options": {
+              "limit": 4096,
+              "delay": {
+                "delay": 0.01,
+                "jitter": 0,
+                "correlation": 0
+              },
+              "loss-random": {
+                "loss": 0.03,
+                "correlation": 0
+              },
+              "rate": {
+                "rate": 7500000,
+                "packetoverhead": 0,
+                "cellsize": 0,
+                "celloverhead": 0
+              },
+              "ecn": false,
+              "gap": 0
+            },
+            "bytes": 0,
+            "packets": 0,
+            "drops": 0,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 0,
+            "qlen": 0
+          }
+        ]
+      },
+      {
+        "final": [
+          {
+            "kind": "netem",
+            "handle": "800b:",
+            "root": true,
+            "refcnt": 2,
+            "options": {
+              "limit": 4096,
+              "delay": {
+                "delay": 0.01,
+                "jitter": 0,
+                "correlation": 0
+              },
+              "loss-random": {
+                "loss": 0.03,
+                "correlation": 0
+              },
+              "rate": {
+                "rate": 7500000,
+                "packetoverhead": 0,
+                "cellsize": 0,
+                "celloverhead": 0
+              },
+              "ecn": false,
+              "gap": 0
+            },
+            "bytes": 86001732,
+            "packets": 108494,
+            "drops": 3388,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 0,
+            "qlen": 0
+          }
+        ]
+      }
+    ],
+    "error": null,
+    "metadata": {
+      "finished_seconds": 63.322263170965016,
+      "chunks": 3,
+      "bytes": 29201102
+    },
+    "playback": {
+      "frames_presented": 7,
+      "planned_frames": 7,
+      "finished": true,
+      "startup_seconds": 115.6408602586016,
+      "elapsed_seconds": 169.88898641709238,
+      "stall_count": 1,
+      "stall_seconds": 53.4216162096709,
+      "stalls_seconds": [
+        [
+          116.31058455072343,
+          169.73220076039433
+        ]
+      ],
+      "late_or_missing_to_initial_schedule": 3,
+      "presentations_seconds": [
+        115.6408602586016,
+        116.15812035370618,
+        116.22042249608785,
+        116.27725121751428,
+        169.73220076039433,
+        169.79279361944646,
+        169.8531349580735
+      ],
+      "readiness_seconds": {
+        "1": 79.66568874567747,
+        "2": 97.0802588807419,
+        "3": 115.59532289672643,
+        "4": 134.17057803925127,
+        "5": 151.82399991806597,
+        "6": 169.712154856883
+      },
+      "exact_ntc_uses": 6,
+      "missing_ntc_uses": 0
+    },
+    "sender_updates": [
+      {
+        "index": 0,
+        "required_bytes": 8032188,
+        "optional_bytes": 0,
+        "started_seconds": 63.32285980600864,
+        "finished_seconds": 79.67209873534739,
+        "chunks": 2,
+        "feedback": {
+          "at": 4411590.42927981,
+          "port": 50132,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 0.0,
+          "frame": null,
+          "ready": 0,
+          "stalled": false
+        }
+      },
+      {
+        "index": 1,
+        "required_bytes": 8062348,
+        "optional_bytes": 0,
+        "started_seconds": 79.67266155406833,
+        "finished_seconds": 97.08758154511452,
+        "chunks": 2,
+        "feedback": {
+          "at": 4411606.879042899,
+          "port": 50132,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 3971775.662055797,
+          "frame": null,
+          "ready": 0,
+          "stalled": false
+        }
+      },
+      {
+        "index": 2,
+        "required_bytes": 8064532,
+        "optional_bytes": 0,
+        "started_seconds": 97.08826345205307,
+        "finished_seconds": 115.59589303843677,
+        "chunks": 2,
+        "feedback": {
+          "at": 4411624.260554429,
+          "port": 50132,
+          "buffer_seconds": 0.03333333333333333,
+          "committed_Bps": 3975932.0806949995,
+          "frame": null,
+          "ready": 1,
+          "stalled": false
+        }
+      },
+      {
+        "index": 3,
+        "required_bytes": 8093445,
+        "optional_bytes": 0,
+        "started_seconds": 115.59655505884439,
+        "finished_seconds": 134.1767625324428,
+        "chunks": 2,
+        "feedback": {
+          "at": 4411642.82083424,
+          "port": 50132,
+          "buffer_seconds": 0.06666666666666667,
+          "committed_Bps": 3973648.7211998543,
+          "frame": null,
+          "ready": 2,
+          "stalled": false
+        }
+      },
+      {
+        "index": 4,
+        "required_bytes": 8075245,
+        "optional_bytes": 0,
+        "started_seconds": 134.1776533368975,
+        "finished_seconds": 151.81681845337152,
+        "chunks": 2,
+        "feedback": {
+          "at": 4411661.369297094,
+          "port": 50132,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 3797784.1358396076,
+          "frame": 3,
+          "ready": 3,
+          "stalled": true
+        }
+      },
+      {
+        "index": 5,
+        "required_bytes": 8040716,
+        "optional_bytes": 0,
+        "started_seconds": 151.8175706686452,
+        "finished_seconds": 169.7150660790503,
+        "chunks": 2,
+        "feedback": {
+          "at": 4411678.950289814,
+          "port": 50132,
+          "buffer_seconds": 0.03333333333333333,
+          "committed_Bps": 3883081.0185397267,
+          "frame": 3,
+          "ready": 4,
+          "stalled": true
+        }
+      }
+    ]
+  },
+  "smoke": {
+    "profile": "clean",
+    "policy": "none",
+    "cc": "cubic",
+    "mode": "chunked",
+    "fps": 30,
+    "updates": 2,
+    "prebuffer": 0.1,
+    "optional_limit_bytes": 4194304,
+    "frames_transferred": 2,
+    "optional_bytes": 0,
+    "required_update_bytes": 16094536,
+    "network": [
+      {
+        "frame": 0,
+        "before": [
+          {
+            "kind": "noqueue",
+            "handle": "0:",
+            "root": true,
+            "refcnt": 2,
+            "options": {},
+            "bytes": 0,
+            "packets": 0,
+            "drops": 0,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 0,
+            "qlen": 0
+          }
+        ]
+      },
+      {
+        "final": [
+          {
+            "kind": "noqueue",
+            "handle": "0:",
+            "root": true,
+            "refcnt": 2,
+            "options": {},
+            "bytes": 0,
+            "packets": 0,
+            "drops": 0,
+            "overlimits": 0,
+            "requeues": 0,
+            "backlog": 0,
+            "qlen": 0
+          }
+        ]
+      }
+    ],
+    "error": null,
+    "playback": {
+      "frames_presented": 3,
+      "planned_frames": 3,
+      "finished": true,
+      "startup_seconds": 11.888892822898924,
+      "elapsed_seconds": 12.664683716371655,
+      "stall_count": 0,
+      "stall_seconds": 0,
+      "stalls_seconds": [],
+      "late_or_missing_to_initial_schedule": 0,
+      "presentations_seconds": [
+        11.888892822898924,
+        12.546062336303294,
+        12.601109675131738
+      ],
+      "readiness_seconds": {
+        "1": 9.575750865973532,
+        "2": 11.881907406263053
+      }
+    },
+    "sender_updates": [
+      {
+        "index": 0,
+        "required_bytes": 8032188,
+        "optional_bytes": 0,
+        "started_seconds": 7.4198156371712685,
+        "finished_seconds": 9.576584146358073,
+        "chunks": 981,
+        "feedback": {
+          "at": 4410288.451666121,
+          "port": 38112,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 239.57536544192013,
+          "frame": null,
+          "ready": 0,
+          "stalled": false
+        }
+      },
+      {
+        "index": 1,
+        "required_bytes": 8062348,
+        "optional_bytes": 0,
+        "started_seconds": 9.57714681327343,
+        "finished_seconds": 11.882134432904422,
+        "chunks": 985,
+        "feedback": {
+          "at": 4410290.648169277,
+          "port": 38112,
+          "buffer_seconds": 0.0,
+          "committed_Bps": 13323302.960827451,
+          "frame": null,
+          "ready": 0,
+          "stalled": false
+        }
+      }
+    ]
+  }
+}
