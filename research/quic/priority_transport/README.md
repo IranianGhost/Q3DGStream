@@ -9,8 +9,17 @@ Run the commands below from `research/quic/priority_transport`.
 You'll need Python 3.10+, NumPy, Rust/Cargo, and the compressed INT4 NTCs
 with their P0–P3 ordering files. The default data paths point to our Ubuntu
 test machine. On another machine, supply `--wire-dir` and `--priority-dir`.
+The files should be named `wire/NTC_000000.pth` and
+`orders/NTC_000000.npz`, continuing through `NTC_000298`.
 For the shaped network tests, install `iproute2` and allow `sudo` to create
 network namespaces. Add `--no-netns` for a quick loopback check.
+
+For example, with the files unpacked under `/data/ntcs`:
+
+```bash
+python3 run.py p0-first --frames 5 \
+  --wire-dir /data/ntcs/wire --priority-dir /data/ntcs/orders
+```
 
 Before running the experiments:
 
