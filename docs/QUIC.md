@@ -17,6 +17,10 @@ The sender and evaluation code are available in Git. The most recent CUDA viewer
 
 The [GPU validation guide](GPU_VALIDATION.md) covers a read-only source preview, safe integration into a separate checkout, CUDA inference tests, and live receiver tests.
 
+The [NTC prefetch code](../research/quic/async_preparation/README.md) used
+in the Quinn tests is also available here. It is not yet wired into this
+repository's live viewer.
+
 ## Receiver behavior
 
 A `.qblk` file contains quantized NTC weights, **not rendered geometry**. On reception, the client reconstructs the available parameter blocks and evaluates the NTC to obtain a candidate Gaussian update.

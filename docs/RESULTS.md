@@ -36,6 +36,27 @@ A representative checkpoint occupies 66,741 bytes when stored in the compressed 
 
 The difference reflects the file formats. These payload sizes exclude the initial Gaussian model, per-frame additions, connection and QUIC overhead, and any untransmitted metadata.
 
+## Asynchronous NTC preparation
+
+The Quinn receiver was tested with 120 NTC updates per run, three runs per
+method. Every run used concurrent-priority submission, fixed P0+P1 weights,
+30 FPS, 15 Mbps, 1% loss, about 20 ms RTT, and a 150 ms playout buffer.
+
+| Preparation | GPU tick overruns / 360 ↓ | Median GPU time per tick |
+| --- | ---: | ---: |
+| On tick | 57 | 19.61–23.54 ms |
+| CPU prefetch | 75 | 22.52–23.53 ms |
+| Synchronous GPU prefetch | 67 | 19.84–23.87 ms |
+| **Async GPU prefetch** | **15** | **10.63–11.14 ms** |
+
+The time ranges are the median from each run. All 360 updates were applied
+in every method, with no stale playback ticks. Async prefetch reduced tick
+overruns by 74% compared with on-tick preparation. It moved dequantization
+ahead of playback; it did not make the CUDA kernels themselves faster.
+
+The [prefetch module](../research/quic/async_preparation/README.md) is kept
+separate from the older QUIC viewer.
+
 ## Image-quality evaluations
 
 Earlier Flame Steak results used a 50-frame rendering protocol and reported an FP32 reference of **33.938 dB PSNR**, **0.9591 SSIM**, and **0.0776 LPIPS**. A later 299-update experiment used a different renderer protocol and an approximately **30.612 dB FP32 reference**. Those numbers belong to different evaluations and should remain separate in comparisons.
