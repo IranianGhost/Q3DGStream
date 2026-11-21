@@ -36,6 +36,30 @@ A representative checkpoint occupies 66,741 bytes when stored in the compressed 
 
 The difference reflects the file formats. These payload sizes exclude the initial Gaussian model, per-frame additions, connection and QUIC overhead, and any untransmitted metadata.
 
+## Asynchronous NTC preparation
+
+We compared four receiver preparation modes using real INT4 P0+P1 weights with
+Quinn transport: 120 updates × 3 runs per mode, 30 FPS, 15 Mbps, 20 ms RTT,
+1% packet loss and a 150 ms playout buffer.
+
+| Mode | Applied NTCs | GPU tick overruns (lower is better) | Median GPU work per tick |
+| --- | ---: | ---: | ---: |
+| No preparation | 360/360 | 57 | 19.61–23.54 ms |
+| CPU cache | 360/360 | 75 | 22.52–23.53 ms |
+| Synchronous GPU preparation | 360/360 | 67 | 19.84–23.87 ms |
+| **Async GPU preparation** | **360/360** | **15** | **10.63–11.14 ms** |
+
+Ranges are the per-run medians. All modes applied every selected update with
+zero stale ticks. Async preparation reduced GPU overruns by **73.7%** compared
+with on-tick preparation. Its dedicated CUDA stream prepares future exact-tier
+weights, while the playback stream waits on completion events before use.
+
+This moves INT4 dequantization off the playback critical path; it does not
+make dequantization itself faster, remove inference cost, or eliminate every
+overrun. The tested Quinn harness is separate from the earlier QUIC viewer in
+this repository. The reusable CPU/CUDA preparation logic and CPU-side tests are
+in [async_preparation](../research/quic/async_preparation/README.md).
+
 ## Image-quality evaluations
 
 Earlier Flame Steak results used a 50-frame rendering protocol and reported an FP32 reference of **33.938 dB PSNR**, **0.9591 SSIM**, and **0.0776 LPIPS**. A later 299-update experiment used a different renderer protocol and an approximately **30.612 dB FP32 reference**. Those numbers belong to different evaluations and should remain separate in comparisons.
