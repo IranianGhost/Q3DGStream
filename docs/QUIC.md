@@ -17,9 +17,9 @@ The sender and evaluation code are available in Git. The most recent CUDA viewer
 
 The [GPU validation guide](GPU_VALIDATION.md) covers a read-only source preview, safe integration into a separate checkout, CUDA inference tests, and live receiver tests.
 
-The [async preparation module](../research/quic/async_preparation/README.md)
-contains the independently tested CPU and CUDA prefetch logic. It has not yet
-been connected to this repository's older live QUIC receiver.
+The [NTC prefetch code](../research/quic/async_preparation/README.md) used
+in the Quinn tests is also available here. It is not yet wired into this
+repository's live viewer.
 
 ## Receiver behavior
 

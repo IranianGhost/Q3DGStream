@@ -38,27 +38,24 @@ The difference reflects the file formats. These payload sizes exclude the initia
 
 ## Asynchronous NTC preparation
 
-We compared four receiver preparation modes using real INT4 P0+P1 weights with
-Quinn transport: 120 updates × 3 runs per mode, 30 FPS, 15 Mbps, 20 ms RTT,
-1% packet loss and a 150 ms playout buffer.
+The Quinn receiver was tested with 120 NTC updates per run, three runs per
+method. Every run used concurrent-priority submission, fixed P0+P1 weights,
+30 FPS, 15 Mbps, 1% loss, about 20 ms RTT, and a 150 ms playout buffer.
 
-| Mode | Applied NTCs | GPU tick overruns (lower is better) | Median GPU work per tick |
-| --- | ---: | ---: | ---: |
-| No preparation | 360/360 | 57 | 19.61–23.54 ms |
-| CPU cache | 360/360 | 75 | 22.52–23.53 ms |
-| Synchronous GPU preparation | 360/360 | 67 | 19.84–23.87 ms |
-| **Async GPU preparation** | **360/360** | **15** | **10.63–11.14 ms** |
+| Preparation | GPU tick overruns / 360 ↓ | Median GPU time per tick |
+| --- | ---: | ---: |
+| On tick | 57 | 19.61–23.54 ms |
+| CPU prefetch | 75 | 22.52–23.53 ms |
+| Synchronous GPU prefetch | 67 | 19.84–23.87 ms |
+| **Async GPU prefetch** | **15** | **10.63–11.14 ms** |
 
-Ranges are the per-run medians. All modes applied every selected update with
-zero stale ticks. Async preparation reduced GPU overruns by **73.7%** compared
-with on-tick preparation. Its dedicated CUDA stream prepares future exact-tier
-weights, while the playback stream waits on completion events before use.
+The time ranges are the median from each run. All 360 updates were applied
+in every method, with no stale playback ticks. Async prefetch reduced tick
+overruns by 74% compared with on-tick preparation. It moved dequantization
+ahead of playback; it did not make the CUDA kernels themselves faster.
 
-This moves INT4 dequantization off the playback critical path; it does not
-make dequantization itself faster, remove inference cost, or eliminate every
-overrun. The tested Quinn harness is separate from the earlier QUIC viewer in
-this repository. The reusable CPU/CUDA preparation logic and CPU-side tests are
-in [async_preparation](../research/quic/async_preparation/README.md).
+The [prefetch module](../research/quic/async_preparation/README.md) is kept
+separate from the older QUIC viewer.
 
 ## Image-quality evaluations
 

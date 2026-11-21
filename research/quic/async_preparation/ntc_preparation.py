@@ -1,29 +1,20 @@
-"""Prepare compressed NTC weights before their playback deadline.
+"""CPU and CUDA prefetching for compressed NTC weights."""
 
-The background worker assembles weights on the CPU. CUDA preparation belongs
-to the playback thread and never installs weights or updates the scene early.
-"""
-
-from dataclasses import dataclass
-from pathlib import Path
 import math
 import threading
 import time
+from dataclasses import dataclass
+from pathlib import Path
 
 
-def gpu_prefetch_guard_ms(samples, safety_ms=5.0, minimum_ms=12.0,
-                          initial_ms=18.0):
-    """Estimate the idle gap needed for another CUDA preparation job.
-
-    Use the recent p95 GPU cost plus a safety margin. This is a heuristic,
-    not a guarantee that work will finish before the next playback tick.
-    """
+def gpu_prefetch_guard_ms(samples, safety_ms=5.0, minimum_ms=12.0, initial_ms=18.0):
+    """Estimate the idle time needed for a GPU prefetch from recent costs."""
     if not samples:
         return max(initial_ms, minimum_ms)
     values = sorted(float(x) for x in samples if x > 0)
     if not values:
         return max(initial_ms, minimum_ms)
-    rank = (len(values) - 1) * .95
+    rank = (len(values) - 1) * 0.95
     lo, hi = math.floor(rank), math.ceil(rank)
     p95 = values[lo] + (values[hi] - values[lo]) * (rank - lo)
     return max(minimum_ms, p95 + safety_ms)
@@ -41,7 +32,8 @@ class PreparedNTC:
 
 @dataclass
 class CUDAJob:
-    """Own the sources and results until the CUDA completion event fires."""
+    """Keep GPU buffers alive until the preparation event completes."""
+
     prepared: PreparedNTC
     dense: object
     start_event: object
@@ -58,11 +50,10 @@ class CUDAJob:
 
 
 class AsyncCUDAJobs:
-    """At most two complete future weight sets, prepared on a non-default stream.
+    """Dequantize future weights on a separate CUDA stream.
 
-    Never installs the weights or mutates the Gaussian scene. In particular,
-    event.query() only *observes* GPU progress and cannot force a host sync.
-    The playout thread waits on the matching event before consuming tensors.
+    All methods run on the playback thread. This class does not install
+    weights or change the Gaussian scene.
     """
 
     def __init__(self, torch_module, dequantize, max_slots=2):
@@ -83,9 +74,12 @@ class AsyncCUDAJobs:
 
     def retire(self, next_unapplied):
         self.poll()
-        # Never release a CUDA source/destination while its kernel is in flight.
+        # An unfinished job still owns buffers used by its CUDA kernels.
         for key, job in list(self.jobs.items()):
-            if job.prepared.frame < next_unapplied and job.completion_observed_at is not None:
+            if (
+                job.prepared.frame < next_unapplied
+                and job.completion_observed_at is not None
+            ):
                 del self.jobs[key]
 
     def launch(self, candidate: PreparedNTC):
@@ -99,8 +93,14 @@ class AsyncCUDAJobs:
             start.record(self.stream)
             dense = self.dequantize(candidate.quantized)["model.params"]
             end.record(self.stream)
-        job = CUDAJob(candidate, dense, start, end, now,
-                      (time.monotonic() - now) * 1000)
+        job = CUDAJob(
+            prepared=candidate,
+            dense=dense,
+            start_event=start,
+            finish_event=end,
+            submitted_at=now,
+            enqueue_ms=(time.monotonic() - now) * 1000,
+        )
         self.jobs[key] = job
         return job
 
@@ -108,7 +108,7 @@ class AsyncCUDAJobs:
         return self.jobs.get((frame, tiers))
 
     def consume(self, job):
-        """Order cross-stream GPU use; caller syncs its own stream for timing."""
+        """Wait on this job from the playback stream before using its weights."""
         self.poll()
         was_ready = job.completion_observed_at is not None
         self.torch.cuda.current_stream().wait_event(job.finish_event)
@@ -116,24 +116,27 @@ class AsyncCUDAJobs:
         return job.dense, was_ready
 
     def finish_logging(self):
-        """Outside all playout ticks, collect timings for surviving jobs."""
+        """Collect remaining GPU timings after playback ends."""
         self.stream.synchronize()
         self.poll()
 
 
 class NTCPreparation:
-    """Cache exact `(NTC, contiguous tiers)` states in a bounded lookahead.
+    """Assemble received NTC tiers on a CPU worker ahead of playback."""
 
-    The worker never silently downgrades a tier: the playout thread must ask
-    for the exact tier count available at its tick and decode synchronously if
-    that exact cache entry is not ready.
-    """
-
-    def __init__(self, received_dir: Path, manifests: dict, first: int, last: int,
-                 tier_count, assemble, ahead: int = 4, poll_s: float = .003):
+    def __init__(
+        self,
+        received_dir: Path,
+        manifests: dict,
+        first: int,
+        last: int,
+        tier_count,
+        assemble,
+        ahead: int = 4,
+        poll_s: float = 0.003,
+    ):
         self.received_dir = received_dir
         self.manifests = manifests
-        self.first = first
         self.last = last
         self.tier_count = tier_count
         self.assemble = assemble
@@ -144,7 +147,9 @@ class NTCPreparation:
         self._lock = threading.Lock()
         self._stop = threading.Event()
         self._error: BaseException | None = None
-        self._worker = threading.Thread(target=self._run, name="ntc-cpu-prefetch", daemon=True)
+        self._worker = threading.Thread(
+            target=self._run, name="ntc-cpu-prefetch", daemon=True
+        )
 
     def start(self):
         self._worker.start()
@@ -174,15 +179,18 @@ class NTCPreparation:
         with self._lock:
             return self._entries.get((frame, tiers))
 
-    def pending_dense(self, before_frame: int, required_tiers: int = 0,
-                      excluded=frozenset()):
-        """Select oldest most-complete future state, optionally exact-tier only."""
+    def pending_dense(
+        self, before_frame: int, required_tiers: int = 0, excluded=frozenset()
+    ):
+        """Find the oldest eligible frame that still needs GPU preparation."""
         with self._lock:
             latest_by_frame = {}
             for entry in self._entries.values():
-                if (not self._focus <= entry.frame <= before_frame or
-                        (required_tiers and entry.tiers != required_tiers) or
-                        (entry.frame, entry.tiers) in excluded):
+                if (
+                    not self._focus <= entry.frame <= before_frame
+                    or (required_tiers and entry.tiers != required_tiers)
+                    or (entry.frame, entry.tiers) in excluded
+                ):
                     continue
                 previous = latest_by_frame.get(entry.frame)
                 if previous is None or entry.tiers > previous.tiers:
@@ -211,9 +219,11 @@ class NTCPreparation:
                     elapsed = (time.perf_counter() - t0) * 1000.0
                     with self._lock:
                         if frame >= self._focus:
-                            self._entries[(frame, tiers)] = PreparedNTC(frame, tiers, state, elapsed)
+                            self._entries[(frame, tiers)] = PreparedNTC(
+                                frame, tiers, state, elapsed
+                            )
                     did_work = True
-                    break  # Favor checking progress/stop between allocations.
+                    break
                 if not did_work:
                     self._stop.wait(self.poll_s)
         except BaseException as e:

@@ -99,7 +99,7 @@ class PreparationTests(unittest.TestCase):
         self.assertFalse(ready)
         self.assertEqual(fake.cuda.playout.waits, [first.finish_event])
         gpu.retire(1)
-        self.assertEqual(len(gpu.jobs), 2)  # Never recycle in-flight device buffers.
+        self.assertEqual(len(gpu.jobs), 2)
         first.start_event.complete = first.finish_event.complete = True
         second.start_event.complete = second.finish_event.complete = True
         gpu.retire(1)
@@ -118,17 +118,20 @@ class PreparationTests(unittest.TestCase):
             try:
                 self.assertTrue(until(lambda: worker.get(3, 2) is not None))
                 self.assertEqual(worker.pending_dense(0, required_tiers=2).frame, 0)
-                self.assertEqual(worker.pending_dense(3, required_tiers=2,
-                                                     excluded={(0, 2), (1, 2)}).frame, 2)
+                self.assertEqual(
+                    worker.pending_dense(
+                        3, required_tiers=2, excluded={(0, 2), (1, 2)}
+                    ).frame,
+                    2,
+                )
                 self.assertIsNone(worker.pending_dense(3, required_tiers=1))
             finally:
                 worker.stop()
 
     def test_dynamic_guard_admits_work_between_30fps_ticks(self):
         self.assertEqual(gpu_prefetch_guard_ms([]), 18.0)
-        # A 6-7ms CUDA stage now fits a ~15ms idle gap (v1 needed 45ms).
+        # A short CUDA job fits between 30 FPS ticks.
         self.assertEqual(gpu_prefetch_guard_ms([6, 6.5, 7]), 12.0)
-        # A costly outlier raises the admission threshold automatically.
         self.assertGreater(gpu_prefetch_guard_ms([6, 7, 23]), 20)
         self.assertEqual(gpu_prefetch_guard_ms([7] * 20, safety_ms=7), 14)
 
@@ -158,9 +161,7 @@ class PreparationTests(unittest.TestCase):
                 self.assertEqual(worker.get(0, 2).quantized, "f0p2")
                 self.assertEqual(worker.pending_dense(0).tiers, 2)
                 worker.get(0, 2).dense = "already-decoded"
-                # Do not go back and waste GPU time on obsolete P0-only.
                 self.assertIsNone(worker.pending_dense(0))
-                # Once cumulative frame 0 is applied, discard its versions.
                 worker.advance(1)
                 self.assertIsNone(worker.get(0, 1))
                 self.assertIsNone(worker.get(0, 2))
