@@ -12,6 +12,9 @@ The experimental sender transmits Gaussian additions and four `.qblk` files per 
 | `progressive_pilot_v1/` | Initial receiver and progressive stage sender |
 | `progressive_299_v2/` | Bounded CPU decoding and per-NTC stage updates |
 | `dynamic_priority_adapter/` | Per-frame saliency-ranked stages and Gaussian additions |
+| `priority_transport/` | Quinn write-order and stream-priority tests, with an optional live preview |
+
+For the seven-method Quinn comparison, see [priority_transport](../research/quic/priority_transport/README.md). It tests both the application's write order and Quinn's stream priorities on the same INT4 NTC payloads.
 
 The sender and evaluation code are available in Git. The most recent CUDA viewer and receiver modifications are still being integrated from the working local installation. The source checks alone do not establish that a fresh clone can render progressive QUIC updates.
 
