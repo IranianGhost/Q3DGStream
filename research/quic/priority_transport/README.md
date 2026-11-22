@@ -93,3 +93,5 @@ individually.
 The slow-motion preview is for observing arrival and refinement. The 30 FPS
 command targets live playback; whether it sustains 30 distinct NTC updates
 must be checked using the observed rate, not the requested `--fps` value.
+
+Latest GPU-server [transport controls and pending quality inputs](evidence/quinn-20261122/SUMMARY.md).

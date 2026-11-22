@@ -119,6 +119,20 @@ fn options() -> Result<Options> {
     Ok(o)
 }
 
+fn byte_summary(role: &str, stats: &quinn::ConnectionStats, payload: u64) -> serde_json::Value {
+    serde_json::json!({
+        "role": role,
+        "unique_application_payload_bytes": payload,
+        "udp_tx_bytes": stats.udp_tx.bytes,
+        "udp_rx_bytes": stats.udp_rx.bytes,
+        "udp_tx_datagrams": stats.udp_tx.datagrams,
+        "udp_rx_datagrams": stats.udp_rx.datagrams,
+        "lost_packets": stats.path.lost_packets,
+        "sent_packets": stats.path.sent_packets,
+        "snapshot": "after_application_completion_before_connection_close"
+    })
+}
+
 fn log(s: impl AsRef<str>) {
     println!("{}", s.as_ref());
     let _ = io::stdout().flush();
@@ -234,6 +248,7 @@ async fn run_receiver(o: &Options) -> Result<()> {
     counters.done.store(true, Ordering::Relaxed);
     let _ = task.await;
     tokio::time::sleep(Duration::from_millis(100)).await;
+    log(format!("BYTE_COUNTERS {}", byte_summary("receiver", &connection.stats(), counters.bytes.load(Ordering::Relaxed))));
     endpoint.close(0u32.into(), b"done");
     endpoint.wait_idle().await;
     received
@@ -918,6 +933,7 @@ async fn run_sender(o: &Options) -> Result<()> {
     if let Some(remaining) = final_playout.checked_sub(started.elapsed()) {
         tokio::time::sleep(remaining).await;
     }
+    log(format!("BYTE_COUNTERS {}", byte_summary("sender", &conn.stats(), queued_bytes)));
     reader.abort();
     endpoint.close(0u32.into(), b"done");
     endpoint.wait_idle().await;
@@ -985,5 +1001,21 @@ mod admission_tests {
         for tier in 0..4 { for _ in 0..16 { q.push(job(tier)); } }
         let got: Vec<_> = (0..15).map(|_| q.pop().unwrap().tier).collect();
         assert_eq!(got, [vec![0; 8], vec![1; 4], vec![2; 2], vec![3]].concat());
+    }
+}
+
+#[cfg(test)]
+mod byte_counter_tests {
+    use super::*;
+    #[test]
+    fn byte_accounting_separates_unique_payload_and_udp() {
+        let mut stats = quinn::ConnectionStats::default();
+        stats.udp_tx.bytes = 12345;
+        stats.udp_rx.bytes = 4567;
+        let row = byte_summary("sender", &stats, 8000);
+        assert_eq!(row["role"], "sender");
+        assert_eq!(row["unique_application_payload_bytes"], 8000);
+        assert_eq!(row["udp_tx_bytes"], 12345);
+        assert_eq!(row["udp_rx_bytes"], 4567);
     }
 }

@@ -636,6 +636,9 @@ def run(args):
                 "tick_start_ms": f"{(tick_begin-epoch_mono)*1000:.3f}",
                 "tick_lag_ms": f"{max(0, (tick_begin-deadline)*1000):.3f}",
                 "tick_finish_ms": f"{(finish-epoch_mono)*1000:.3f}",
+                "render_ready_ms": f"{(render_ready-epoch_mono)*1000:.3f}",
+                "render_file": (str(images / f"frame_{frame+1:06}.png")
+                                if args.capture_every and tick % args.capture_every == 0 else ""),
                 "applied_up_to_ntc": last_applied, "applied_this_tick": applied_this_tick,
                 "applied_tiers_latest": last_tiers, "age_frames": frame-last_applied,
                 "played_current_ntc": int(last_applied == frame),
