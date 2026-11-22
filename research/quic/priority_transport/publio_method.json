@@ -1,0 +1,100 @@
+{
+  "paragraphs": [
+    {
+      "title": "What was received",
+      "text": "The 3,560,597,072-byte ZIP contains only 2,093 .pth checkpoints: 299 corresponding updates in seven representations. ZIP CRCs, restricted weights-only loading, bounds, sparse addresses and reconstruction passed for every checkpoint. All 299 supplied FP32 files match the existing Flame Steak scene byte for byte, so its initial Gaussian scene, configuration and additions are compatible. Archive SHA-256: c57b84af76e8d4a90b9fcd84ff58b5a04bf607f07a1ad5682fc8487609159b06."
+    },
+    {
+      "title": "Priority information present and missing",
+      "text": "The files include quantization scales, retained block addresses, shapes/counts and INT2 zero points. INT4_keep20 declares mean_abs importance. Every sparse address array is strictly ascending; these are parameter addresses, not a transmission ranking. The ZIP contains no P0-P3 stage files, saliency scores or priority-order arrays, and no initial scene or decoder source. We did not present a derived or artificial ranking as P\u00fablio's supplied saliency."
+    },
+    {
+      "title": "Player integration",
+      "text": "The QUIC cache preserves the original checkpoint bytes. A new provider-side decoder reconstructs sparse INT8, signed-offset INT4 and affine INT2 into the original 1,991,680-parameter FP32 model. Unretained blocks are zero. Reconstruction happens after a whole file is verified, before the existing NTC model is loaded. This reduces transfer/storage volume; inference still uses the full dense model. It does not enable rendering an incomplete neural model."
+    },
+    {
+      "title": "Static transfer comparison",
+      "text": "Each of the seven representations was sent through six original profiles, three repetitions, with whole-file and bounded 8KiB-chunk methods: 252 trials. Paired comparisons use the same source update (0,114 or298), Cubic, 1,400-byte datagrams and a128-chunk admission ceiling. Times begin after TLS handshake and end at verified complete checkpoint receipt. Initial scene and GPU rendering are excluded. This compares our controlled sequential-file reference with our chunked transport, not the unavailable legacy binary."
+    },
+    {
+      "title": "Constructed urgency experiment",
+      "text": "The priority workload uses actual INT4_keep05 checkpoints:32 future P3 files available at0ms and8 files in each of P0/P1/P2 available at150ms. This creates a backlog larger than128 admitted chunks. It tests FIFO, strict and weighted application admission with real bytes. These are experimentally assigned frame-urgency classes, not supplied weight saliency. Qlog verifies endpoint STREAM-frame construction order, not physical NIC departure or guaranteed arrival order. Already-admitted bytes cannot be recalled, and strict admission can starve lower classes."
+    },
+    {
+      "title": "Native playback experiment",
+      "text": "The original graphical CUDA player receives the same initial scene, real same-frame checkpoints and matching Gaussian additions. Fixed-profile tests run at30 updates/s with a0.1s startup/refill target: three contiguous updates. Most use eight updates plus the initial state; loss3 uses six updates plus the initial state, matching the earlier loss3 extent. Each fixed configuration has one exploratory trial. Partial observations and timeouts remain incomplete; their stall totals are censored and cannot be ranked against complete playback as if equally observed."
+    },
+    {
+      "title": "Actual representation adaptation",
+      "text": "The new dynamic comparison sends complete real models instead of synthetic optional files. It uses48 source updates at2 updates/s and a2s playable reserve, deliberately slowed for a controlled workload experiment. The sparse size ladder ranges from INT2_keep05 to INT8_keep20. This is not proof of original30fps real-time playback or of a perceptually optimal quality ladder. Fixed-high uses INT8_keep20; fixed-low uses INT2_keep05. Adaptive and fixed-high share the first high model. All policies preserve the same source frame index and additions; no synthetic optional bytes are sent."
+    },
+    {
+      "title": "Network phases and fairness",
+      "text": "After metadata delivery, the path is24Mbit/s with10ms delay, becomes1.5Mbit/s with40\u00b110ms jitter and2% random loss at6s, then recovers at12s. Phase changes follow wall time independently of update completion. Source pacing keeps admissions active through all phases. Two repetitions alternate policy order. Stochastic netem loss traces are independent, not paired, and the number of repetitions does not establish significance."
+    },
+    {
+      "title": "Controller algorithm",
+      "text": "The viewer publishes timestamped contiguous playable seconds. Feedback older than1s is rejected. The sender estimates active application service rate as complete payload bytes divided by submit-to-receipt-ACK time, excluding source pacing idle. It reserves20% headroom and subtracts addition bytes before sizing the next model. Low playable reserve reduces representation level. Healthy reserve and sufficient observed service rate allow one upward step. This service rate is a conservative observation, not direct unused link capacity. A low-rate or bursty path can still exceed what even the smallest model can sustain."
+    },
+    {
+      "title": "Metrics and interpretation",
+      "text": "Use playable buffer seconds for user-visible reserve and active delivery rate for future workload sizing. RTT, congestion window, bytes in flight, retained QUIC bytes, application-unacknowledged bytes, ACK throughput/silence, declared loss, due-update age and receiver commit work diagnose slow delivery. Due-update backlog is derived from the paced source schedule, not an allocated byte buffer. Receiver commit work excludes neural decompression, inference and rasterization. Excessive production or slow processing can also grow backlog. Demand-limited ACK throughput including pacing idle must not be treated as spare capacity."
+    },
+    {
+      "title": "Receiver timeout correction",
+      "text": "One original weighted burst-loss trial failed because receiver reads used a30s timeout while sender recovery allowed120s. The receiver now exposes a configurable120s default. Original failure evidence is retained. A separate three-run stochastic follow-up and a deterministic35s delayed real-checkpoint payload test compare recovery behavior. The deterministic test uses actual QUIC and explicit30/120s read budgets; it is not the same random-loss trace. This fixes premature application abandonment, not congestion response or playback deadlines."
+    },
+    {
+      "title": "What changed since the earlier results",
+      "text": "The14November report used original FP32 models and optional synthetic traffic. Its clean FP32 startup was13.52/12.36s and buffer stalls9.60/8.73s; optional-load adaptation reduced synthetic traffic without changing the scene representation. This report supplies a fresh FP32 control and real model alternatives. Historical harness, CC/MTU, source workload and GPU-load differences mean not every difference from old numbers is caused by compression. Earlier synthetic priority stress is a different workload and cannot be used as a direct speedup denominator."
+    },
+    {
+      "title": "Rendering check and quality limits",
+      "text": "All seven representations were verified through real QUIC, exact CUDA model-parameter loading, NTC inference and the original rasterizer for three sequential updates. Screenshot PSNR compares8-bit render outputs with our FP32 renderer for only those first three updates. It is not camera-matched ground-truth quality or a full-sequence assessment. Decodable same-frame alternatives need broader perceptual and mixed-trajectory evaluation before being called an optimal quality ladder."
+    },
+    {
+      "title": "Scope and remaining limitations",
+      "text": "Experiments run on loopback inside private network namespaces on gpu1; they do not measure different physical hosts or the Mac remote-desktop path. Raw monotonic receipt times are comparable on this one server, not across unsynchronized hosts. Viewer feedback uses an atomic same-host file, not a deployed remote feedback protocol. The interactive demo is paused only for native trials and resumed afterward. Other university workloads remain outside our control. No deadline cancellation or interpolation was added."
+    },
+    {
+      "title": "Verification and reproduction",
+      "text": "The complete repository collection still has the previously documented progressive receiver state-machine TypeError. Scoped priority/player tests are reported separately; the entire repository is not claimed green. Source checkout: /local/users/abeigi/Q3DGStream, branch codex/publio-real-ntc-eval. Environment: scripts/gpu1_env.sh. Launchers: scripts/run_gpu1_publio_matrix.sh and scripts/run_gpu1_publio_trial.sh. Raw evidence and exact driver commands: /local/users/abeigi/q3dg-publio-eval-20261119. Models and experiment assets remain on the server."
+    },
+    {
+      "title": "Requested cadence is not measured presentation speed",
+      "text": "The 30Hz setting is the requested update cadence. Zero network-buffer stalls does not imply sustained30fps rendering. The tables also calculate actual presented-update rate from first/last new-state timestamps. Non-buffer time above nominal cadence includes model loading, inference, rendering and event-loop/presentation overhead; it is not isolated GPU inference time. The initial scene remains the same large transfer for every representation and limits cold-start improvements, particularly under loss."
+    },
+    {
+      "title": "Protocol boundary",
+      "text": "This work uses ordinary reliable QUIC streams with verified TLS and application-level chunk admission. No MoQT is used and QUIC internal packet scheduling is not modified. P0-P3 labels control admissions in our application queue; sender qlog is additional evidence of endpoint emission order. The production per-update path still waits for complete required model/addition files and contiguous playback state."
+    },
+    {
+      "title": "Ages and held estimates",
+      "text": "Viewer feedback age is time since the viewer published its buffer snapshot. Due-update age is time since the oldest eligible, unfinished media update should have been released. Service-estimate age is time since the last complete transfer ACK, reconstructed from sender completion timestamps. The sampled service-rate value is held until another model finishes; it can remain from a preceding network phase during a stall. Phase tables label it as a held last-transfer estimate, not actual link throughput during that phase. ACK throughput is a separate byte/time observation including source idle. The two rates must not be conflated."
+    },
+    {
+      "title": "No TCP baseline",
+      "text": "The whole-file reference also uses QUIC. Cubic and Reno are congestion-control choices, not separate transport protocols. No new TCP baseline was run."
+    },
+    {
+      "title": "Phase statistics",
+      "text": "Phase RTT, window, buffer and held-estimate fields summarize median sampled state. QUIC loss events are counts. Observed wall ACK goodput integrates payload-ACK rate over the sampled phase interval, including source idle;100ms boundary intervals are apportioned by overlap. Held service-estimate age is reconstructed from the last completed transfer timestamp. Neither observed offered-load throughput nor a held service estimate alone measures unused network capacity."
+    },
+    {
+      "title": "Static and native profile parameters",
+      "text": "Static profiles: clean=unshaped; bandwidth=5Mbit/s; delay=40ms+5Mbit/s; jitter=40\u00b110ms normally distributed+5Mbit/s; random loss=20ms+2% packet loss+5Mbit/s; burst=20ms+Gilbert-Elliott loss (p1%, r25%, bad-state loss80%, good-state loss0.1%)+5Mbit/s. Static queue limit1000 packets. Native jitter uses60Mbit/s and15\u00b15ms; native loss1/loss3 use60Mbit/s and10ms with1%/3% random loss, queue limit4096. Netem delay is applied in both directions on the private loopback path, so it is not an RTT label."
+    },
+    {
+      "title": "What keep05, keep10 and keep20 mean",
+      "text": "These sparse formats retain5%,10% or20% of31,120 parameter blocks, each holding64 weights. The complete dense network has1,991,680 parameters in every representation. Block indices locate retained weights; bit depth sets how their quantized values are stored. These are complete alternative same-frame models, not additive layers to combine."
+    },
+    {
+      "title": "Visual-score caution",
+      "text": "Whole-image PNG PSNR includes large static and black background regions. Only the first three updates were compared. These scores are a rendering sanity check, not proof of full-sequence or foreground quality equivalence."
+    },
+    {
+      "title": "Raw representation metadata clarification",
+      "text": "The original dynamic REPORT.json representation field retained the unused CLI default even when representation_policy selected a different model. Actual per-update representations are recorded in sender.json. These summary tables label fixed-high as INT8_keep20, fixed-low as INT2_keep05 and adaptive as mixed, using the actual selection policy/log. Original raw reports are preserved. Future harness reports now use the correct label."
+    }
+  ]
+}

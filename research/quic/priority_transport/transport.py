@@ -4,6 +4,7 @@ import asyncio
 from dataclasses import dataclass
 import hashlib
 import json
+import math
 from pathlib import Path
 import struct
 import time
@@ -30,7 +31,10 @@ def file_hash(path):
 
 
 class Receiver:
-    def __init__(self, cache, on_file=None, processing_delay=0):
+    def __init__(self, cache, on_file=None, processing_delay=0, read_timeout=120):
+        if not math.isfinite(read_timeout) or read_timeout <= 0:
+            raise ValueError("positive finite receive recovery budget required")
+        self.read_timeout = read_timeout
         self.assembler = FileAssembler(cache)
         self.on_file = on_file
         self.tasks = set()
@@ -45,12 +49,12 @@ class Receiver:
 
     async def receive(self, reader, writer):
         try:
-            n = struct.unpack("!I", await asyncio.wait_for(reader.readexactly(4), 30))[
+            n = struct.unpack("!I", await asyncio.wait_for(reader.readexactly(4), self.read_timeout))[
                 0
             ]
             if not 0 < n <= 4096:
                 raise ValueError("invalid header size")
-            h = json.loads(await asyncio.wait_for(reader.readexactly(n), 30))
+            h = json.loads(await asyncio.wait_for(reader.readexactly(n), self.read_timeout))
             if h.get("whole_file") is True:
                 total = h["total"]
                 if (
@@ -61,7 +65,7 @@ class Receiver:
                     raise ValueError("invalid whole-file size")
                 for offset in range(0, total, CHUNK_SIZE):
                     payload = await asyncio.wait_for(
-                        reader.readexactly(min(CHUNK_SIZE, total - offset)), 30
+                        reader.readexactly(min(CHUNK_SIZE, total - offset)), self.read_timeout
                     )
                     part = dict(
                         h,
@@ -70,15 +74,15 @@ class Receiver:
                         chunk_sha256=hashlib.sha256(payload).hexdigest(),
                     )
                     if offset + len(payload) == total and await asyncio.wait_for(
-                        reader.read(1), 30
+                        reader.read(1), self.read_timeout
                     ):
                         raise ValueError("unexpected trailing bytes")
                     complete = self.assembler.accept(part, payload)
             else:
                 if type(h["size"]) is not int or not 0 < h["size"] <= CHUNK_SIZE:
                     raise ValueError("invalid payload size")
-                payload = await asyncio.wait_for(reader.readexactly(h["size"]), 30)
-                if await asyncio.wait_for(reader.read(1), 30):
+                payload = await asyncio.wait_for(reader.readexactly(h["size"]), self.read_timeout)
+                if await asyncio.wait_for(reader.read(1), self.read_timeout):
                     raise ValueError("unexpected trailing bytes")
                 processing_started = time.monotonic()
                 if self.processing_delay:

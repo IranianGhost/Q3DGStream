@@ -105,3 +105,35 @@ def test_receiver_reports_timeout_type(tmp_path, monkeypatch):
         await receiver.close()
 
     asyncio.run(check())
+
+
+@pytest.mark.parametrize('budget,success',[(.2,True),(.02,False)])
+def test_receiver_read_budget_allows_delayed_reliable_payload(tmp_path,budget,success):
+    import hashlib,json,struct
+    class Writer:
+        def __init__(self):self.payload=b''
+        def write(self,data):self.payload+=data
+        def write_eof(self):pass
+    async def run():
+        payload=b'real data'
+        digest=hashlib.sha256(payload).hexdigest()
+        header=json.dumps(dict(path='NTCs/update.bin',total=len(payload),offset=0,
+                 size=len(payload),sha256=digest,chunk_sha256=digest,priority=0)).encode()
+        reader=asyncio.StreamReader();writer=Writer()
+        receiver=Receiver(tmp_path,read_timeout=budget)
+        reader.feed_data(struct.pack('!I',len(header))+header)
+        async def delivery():
+            await asyncio.sleep(.08)
+            reader.feed_data(payload);reader.feed_eof()
+        task=asyncio.create_task(delivery())
+        try:
+            await receiver.receive(reader,writer)
+            response=json.loads(writer.payload)
+            assert response['ok'] is success
+            if success:
+                assert (tmp_path/'NTCs/update.bin').read_bytes()==payload
+                assert not receiver.errors
+            else:assert receiver.errors==['TimeoutError()']
+        finally:
+            await task;await receiver.close()
+    asyncio.run(run())

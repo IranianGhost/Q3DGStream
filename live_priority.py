@@ -36,7 +36,11 @@ class LivePriorityState(LiveTCPState):
     def _load_raw_checkpoint(self, path):
         import torch
 
-        return torch.load(path, map_location="cpu", weights_only=True)
+        from research.quic.priority_transport.checkpoints import decode_sparse_checkpoint
+
+        return decode_sparse_checkpoint(
+            torch.load(path, map_location="cpu", weights_only=True)
+        )
 
     def _ensure_bounds(self, renderer):
         if self._xyz_min is not None and self._xyz_max is not None:

@@ -112,7 +112,7 @@ async def stream(args, port, started, network):
     return frames_log
 
 
-async def run(args):
+async def run(args, stream_sender=None):
     parent_namespace = os.environ.get("Q3DG_PARENT_NETNS")
     interfaces = json.loads(command("ip", "-j", "link", "show", capture_output=True).stdout)
     if not parent_namespace or parent_namespace == os.readlink("/proc/self/ns/net") or [
@@ -141,7 +141,7 @@ async def run(args):
     env = dict(os.environ, DISPLAY=display, XAUTHORITY=str(auth), PYOPENGL_PLATFORM="egl",
                Q3DG_GLFW_CONTEXT_API="egl", NTC_DEBUG="0", NTC_DEBUG_DXYZ="0", LOOP_PLAYBACK="0",
                LD_LIBRARY_PATH=f"{root}/root/usr/lib:{os.environ.get('LD_LIBRARY_PATH', '')}")
-    camera = json.loads(Path("research/quic/priority_transport/evidence/gpu-server/REPORT.json").read_text())["camera"]
+    camera = json.loads(Path(__file__).with_name("camera_flame_steak.json").read_text())
     camera.update(up=[0, -1, 0], yaw=-1.5707963267948966, pitch=0, zfar=250)
     write_snapshot(args.output / "camera.json", camera)
     env.update(FIXED_CAMERA_JSON=str(args.output / "camera.json"), LOCK_CAMERA="1")
@@ -177,7 +177,7 @@ async def run(args):
             port = await wait_for_feedback(args.output, viewer)
             started = time.monotonic()
             write_snapshot(args.output / "transfer-start.json", dict(at=started))
-            await asyncio.wait_for(stream(args, port, started, network), args.timeout)
+            await asyncio.wait_for((stream_sender or stream)(args, port, started, network), args.timeout)
             write_snapshot(args.output / "transfer-done.json", dict(at=time.monotonic()))
             await asyncio.to_thread(viewer.wait, max(1, args.timeout - (time.monotonic() - started) + 3))
             if viewer.returncode or not (args.output / "playback.json").exists():

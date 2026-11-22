@@ -33,8 +33,7 @@ openssl req -x509 -newkey rsa:2048 -nodes -keyout "$run_dir/key.pem" \
 python - "$run_dir/camera.json" <<'CAMERA'
 import json, sys
 from pathlib import Path
-report=json.loads(Path('research/quic/priority_transport/evidence/gpu-server/REPORT.json').read_text())
-camera=report['camera']
+camera=json.loads(Path('research/quic/priority_transport/camera_flame_steak.json').read_text())
 camera.update(up=[0,-1,0],yaw=-1.5707963267948966,pitch=0,zfar=250)
 Path(sys.argv[1]).write_text(json.dumps(camera))
 CAMERA

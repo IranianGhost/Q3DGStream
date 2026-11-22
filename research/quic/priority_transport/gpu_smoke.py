@@ -75,6 +75,9 @@ async def run(a):
                     ntc=live.get_ntc_for_index(i-1)
                     if ntc is None or live.err:raise RuntimeError(live.err or 'NTC unavailable')
                     expected=torch.load(a.scene/f'NTCs/NTC_{i-1:06d}.pth',map_location='cpu',weights_only=True)
+                    from .checkpoints import decode_sparse_checkpoint
+                    expected=decode_sparse_checkpoint(expected)
+                    expected={k:v.float() if torch.is_tensor(v) and v.is_floating_point() else v for k,v in expected.items()}
                     assert ntc.model.params.dtype==expected['model.params'].dtype
                     assert torch.equal(ntc.model.params.detach().cpu(),expected['model.params'])
                     assert ntc.model.params.is_cuda and ntc.model.params.numel()==expected['model.params'].numel()
@@ -107,7 +110,7 @@ async def run(a):
             ntc_parameters=int(live._ntc_single.model.params.numel()),
             parameter_dtype=str(live._ntc_single.model.params.dtype),
             verified='Post-transfer integration: real QUIC, native lazy CUDA NTC providers, weight parity, original NTC wrapper, native renderer Gaussian motion/additions/rasterization, nonblack finite PNG output',
-            unverified='Concurrent network/playback, interactive OpenGL presentation, camera equivalence to original capture, image quality metrics, compressed Publio assets')
+            unverified='Concurrent network/playback, interactive OpenGL presentation, camera equivalence to original capture, ground-truth image quality metrics')
         (a.output/'REPORT.json').write_text(json.dumps(report,indent=2));print(json.dumps(report),flush=True)
     finally:live.request_stop()
 

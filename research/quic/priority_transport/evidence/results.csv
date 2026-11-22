@@ -1,0 +1,166 @@
+experiment,case,method,model,complete,trials,delivery_s,delivery_min_s,delivery_max_s,P0_p95_ms,first_STREAM_rank,startup_s,stall_s,presented,planned,payload_MB,buffer_s,RTT_ms,goodput_Mbit_s,cwnd_KiB,QUIC_loss_events,note
+models,FP32,,FP32,299,299,,,,,,,,,,7.968015,,,,,,same bytes per checkpoint; decoded model has 1991680 parameters
+models,FP16,,FP16,299,299,,,,,,,,,,3.985532,,,,,,same bytes per checkpoint; decoded model has 1991680 parameters
+models,INT8_keep20_PQAT,,INT8_keep20_PQAT,299,299,,,,,,,,,,0.477154,,,,,,same bytes per checkpoint; decoded model has 1991680 parameters
+models,INT4_keep20_PQAT,,INT4_keep20_PQAT,299,299,,,,,,,,,,0.25341,,,,,,same bytes per checkpoint; decoded model has 1991680 parameters
+models,INT4_keep10_PQAT,,INT4_keep10_PQAT,299,299,,,,,,,,,,0.128949,,,,,,same bytes per checkpoint; decoded model has 1991680 parameters
+models,INT4_keep05_PQAT,,INT4_keep05_PQAT,299,299,,,,,,,,,,0.066741,,,,,,same bytes per checkpoint; decoded model has 1991680 parameters
+models,INT2_keep05_PQAT,,INT2_keep05_PQAT,299,299,,,,,,,,,,0.043637,,,,,,same bytes per checkpoint; decoded model has 1991680 parameters
+static-transfers,clean,whole,FP32,3,3,1.538286,1.49596,1.707243,,,,,,,,,12.502467,41.43841,77.089844,11,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,clean,chunked,FP32,3,3,4.929245,4.637998,5.105278,,,,,,,,,38.975057,12.931823,74.151367,16,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,clean,whole,FP16,3,3,0.766013,0.707096,0.766523,,,,,,,,,12.543086,41.623655,74.031738,15,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,clean,chunked,FP16,3,3,2.350347,2.336407,2.354173,,,,,,,,,37.624682,13.565763,72.608398,8,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,clean,whole,INT8_keep20_PQAT,3,3,0.079242,0.076447,0.085225,,,,,,,,,2.730388,48.17177,14.197266,10,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,clean,chunked,INT8_keep20_PQAT,3,3,0.251768,0.18378,0.282606,,,,,,,,,27.362495,15.161695,56.563477,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,clean,whole,INT4_keep20_PQAT,3,3,0.064837,0.064194,0.069204,,,,,,,,,3.539779,31.267339,14.197266,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,clean,chunked,INT4_keep20_PQAT,3,3,0.119874,0.112342,0.123507,,,,,,,,,14.249331,16.911755,40.687012,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,clean,whole,INT4_keep10_PQAT,3,3,0.031344,0.031129,0.032128,,,,,,,,,4.131831,32.911616,14.197266,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,clean,chunked,INT4_keep10_PQAT,3,3,0.044605,0.042081,0.045944,,,,,,,,,3.645162,23.127049,14.197266,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,clean,whole,INT4_keep05_PQAT,3,3,0.017228,0.016868,0.018671,,,,,,,,,3.483391,30.991378,14.197266,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,clean,chunked,INT4_keep05_PQAT,3,3,0.021937,0.021029,0.023131,,,,,,,,,3.863779,24.338971,14.197266,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,clean,whole,INT2_keep05_PQAT,3,3,0.012103,0.0119,0.012192,,,,,,,,,3.705909,28.844007,14.197266,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,clean,chunked,INT2_keep05_PQAT,3,3,0.014613,0.014157,0.017976,,,,,,,,,4.531984,23.889796,14.197266,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,bandwidth,whole,FP32,3,3,14.430208,14.375154,14.446579,,,,,,,,,411.519939,4.417408,250.878906,4,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,bandwidth,chunked,FP32,3,3,15.069026,15.040832,15.187958,,,,,,,,,362.64665,4.230142,276.086914,1,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,bandwidth,whole,FP16,3,3,7.235891,7.224278,7.307702,,,,,,,,,157.979332,4.406403,90.125977,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,bandwidth,chunked,FP16,3,3,7.557813,7.557423,7.563327,,,,,,,,,155.136842,4.218715,86.867676,1,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,bandwidth,whole,INT8_keep20_PQAT,3,3,0.869837,0.866165,0.870066,,,,,,,,,94.652085,4.388444,54.896484,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,bandwidth,chunked,INT8_keep20_PQAT,3,3,0.915781,0.907632,0.923242,,,,,,,,,88.642663,4.16828,51.492188,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,bandwidth,whole,INT4_keep20_PQAT,3,3,0.462705,0.460613,0.463383,,,,,,,,,82.616432,4.381365,49.572266,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,bandwidth,chunked,INT4_keep20_PQAT,3,3,0.481376,0.481234,0.483885,,,,,,,,,79.801327,4.211426,46.977539,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,bandwidth,whole,INT4_keep10_PQAT,3,3,0.237215,0.234458,0.238489,,,,,,,,,49.807109,4.348761,45.582031,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,bandwidth,chunked,INT4_keep10_PQAT,3,3,0.247609,0.24684,0.248272,,,,,,,,,46.680237,4.166218,42.803711,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,bandwidth,whole,INT4_keep05_PQAT,3,3,0.125897,0.123935,0.126337,,,,,,,,,28.351741,4.240989,30.519043,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,bandwidth,chunked,INT4_keep05_PQAT,3,3,0.128663,0.127466,0.129264,,,,,,,,,28.901385,4.149813,29.180176,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,bandwidth,whole,INT2_keep05_PQAT,3,3,0.082748,0.081922,0.083797,,,,,,,,,7.773262,4.218805,14.197266,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,bandwidth,chunked,INT2_keep05_PQAT,3,3,0.08655,0.085734,0.086624,,,,,,,,,8.170575,4.033481,14.197266,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,delay,whole,FP32,3,3,14.615419,14.530651,14.730061,,,,,,,,,434.358203,4.36143,257.963867,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,delay,chunked,FP32,3,3,15.337403,15.328572,15.423367,,,,,,,,,421.957127,4.156122,293.958008,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,delay,whole,FP16,3,3,7.513419,7.42782,7.53463,,,,,,,,,180.440713,4.243641,102.626953,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,delay,chunked,FP16,3,3,7.750164,7.734491,7.773948,,,,,,,,,186.689885,4.11401,104.624023,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,delay,whole,INT8_keep20_PQAT,3,3,1.019249,1.00703,1.024697,,,,,,,,,139.329306,3.745142,78.74707,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,delay,chunked,INT8_keep20_PQAT,3,3,1.05453,1.043361,1.112374,,,,,,,,,134.765755,3.619841,77.412109,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,delay,whole,INT4_keep20_PQAT,3,3,0.611327,0.607327,0.611461,,,,,,,,,101.173025,3.316196,64.496094,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,delay,chunked,INT4_keep20_PQAT,3,3,0.653092,0.624857,0.678895,,,,,,,,,100.913052,3.104124,64.496094,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,delay,whole,INT4_keep10_PQAT,3,3,0.38632,0.382953,0.389799,,,,,,,,,88.328582,2.670302,43.869141,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,delay,chunked,INT4_keep10_PQAT,3,3,0.388131,0.383174,0.389399,,,,,,,,,90.118633,2.657846,42.501953,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,delay,whole,INT4_keep05_PQAT,3,3,0.260945,0.258855,0.26231,,,,,,,,,87.934506,2.046129,19.883789,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,delay,chunked,INT4_keep05_PQAT,3,3,0.266761,0.266239,0.268575,,,,,,,,,87.995355,2.001523,31.192871,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,delay,whole,INT2_keep05_PQAT,3,3,0.21898,0.217342,0.221993,,,,,,,,,87.354544,1.594193,19.883789,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,delay,chunked,INT2_keep05_PQAT,3,3,0.222271,0.222177,0.225004,,,,,,,,,87.19815,1.570585,19.883789,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,jitter,whole,FP32,3,3,14.969972,14.839668,15.117448,,,,,,,,,460.364305,4.258132,269.892578,30,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,jitter,chunked,FP32,3,3,15.717324,15.521521,15.809005,,,,,,,,,435.402951,4.05566,306.349121,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,jitter,whole,FP16,3,3,7.763148,7.395143,8.014525,,,,,,,,,196.739736,4.10713,103.154785,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,jitter,chunked,FP16,3,3,7.890898,7.797,8.143814,,,,,,,,,189.889328,4.040637,104.370117,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,jitter,whole,INT8_keep20_PQAT,3,3,1.204845,1.100031,1.276362,,,,,,,,,163.307066,3.168236,82.779297,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,jitter,chunked,INT8_keep20_PQAT,3,3,1.128288,1.111478,1.260458,,,,,,,,,165.14775,3.383208,115.705078,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,jitter,whole,INT4_keep20_PQAT,3,3,0.699047,0.676354,0.710436,,,,,,,,,121.390834,2.900062,81.047852,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,jitter,chunked,INT4_keep20_PQAT,3,3,0.775069,0.689828,0.80019,,,,,,,,,126.114152,2.615613,67.886719,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,jitter,whole,INT4_keep10_PQAT,3,3,0.459674,0.422429,0.487461,,,,,,,,,110.019618,2.244184,42.437988,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,jitter,chunked,INT4_keep10_PQAT,3,3,0.468577,0.467865,0.483221,,,,,,,,,105.208467,2.201544,42.437988,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,jitter,whole,INT4_keep05_PQAT,3,3,0.314189,0.30292,0.325127,,,,,,,,,92.609162,1.699385,22.037109,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,jitter,chunked,INT4_keep05_PQAT,3,3,0.318548,0.307964,0.324468,,,,,,,,,90.211767,1.676131,22.037109,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,jitter,whole,INT2_keep05_PQAT,3,3,0.271266,0.243352,0.283184,,,,,,,,,100.122993,1.286915,21.244629,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,jitter,chunked,INT2_keep05_PQAT,3,3,0.263314,0.253464,0.285704,,,,,,,,,96.091226,1.325776,23.67334,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,loss,whole,FP32,3,3,27.125951,26.353885,28.051362,,,,,,,,,44.782569,2.349931,14.023438,172,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,loss,chunked,FP32,3,3,30.030245,29.204448,30.126941,,,,,,,,,46.683777,2.122664,13.998047,182,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,loss,whole,FP16,3,3,13.416923,11.963048,13.998766,,,,,,,,,44.782933,2.376421,14.514648,85,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,loss,chunked,FP16,3,3,14.31222,12.503119,14.995096,,,,,,,,,46.560102,2.227765,13.98877,86,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,loss,whole,INT8_keep20_PQAT,3,3,1.505445,1.308166,1.888852,,,,,,,,,45.32181,2.535617,16.767578,11,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,loss,chunked,INT8_keep20_PQAT,3,3,1.33545,1.285901,1.609231,,,,,,,,,50.094319,2.858385,21.108887,10,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,loss,whole,INT4_keep20_PQAT,3,3,0.534792,0.513907,0.611858,,,,,,,,,74.249601,3.790783,46.205078,3,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,loss,chunked,INT4_keep20_PQAT,3,3,0.546934,0.536008,0.853769,,,,,,,,,68.926786,3.706628,36.976074,3,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,loss,whole,INT4_keep10_PQAT,3,3,0.305797,0.297974,0.309929,,,,,,,,,52.829315,3.373451,26.677246,2,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,loss,chunked,INT4_keep10_PQAT,3,3,0.36371,0.292916,0.929161,,,,,,,,,59.96301,2.836301,26.882812,5,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,loss,whole,INT4_keep05_PQAT,3,3,0.207066,0.167305,0.281246,,,,,,,,,47.082819,2.578536,14.197266,1,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,loss,chunked,INT4_keep05_PQAT,3,3,0.20962,0.172724,0.307056,,,,,,,,,47.73481,2.547122,14.236328,3,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,loss,whole,INT2_keep05_PQAT,3,3,0.131938,0.128932,0.13479,,,,,,,,,48.66381,2.645908,21.513672,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,loss,chunked,INT2_keep05_PQAT,3,3,0.190644,0.130524,0.545625,,,,,,,,,47.470962,1.831142,13.75,2,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,burst,whole,FP32,3,3,25.202482,23.746416,25.632583,,,,,,,,,45.53972,2.529279,15.999023,249,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,burst,chunked,FP32,3,3,33.797561,28.150847,40.805111,,,,,,,,,46.623541,1.886057,13.671875,361,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,burst,whole,FP16,3,3,14.162782,11.367178,17.641415,,,,,,,,,44.964088,2.251271,13.76123,140,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,burst,chunked,FP16,3,3,14.484444,13.389736,14.681212,,,,,,,,,47.413794,2.201276,15.65332,139,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,burst,whole,INT8_keep20_PQAT,3,3,1.06573,0.962012,1.254278,,,,,,,,,55.48134,3.581802,28.744141,11,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,burst,chunked,INT8_keep20_PQAT,3,3,1.635635,1.037776,1.843562,,,,,,,,,48.372235,2.333792,15.524414,16,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,burst,whole,INT4_keep20_PQAT,3,3,0.567723,0.537258,0.81485,,,,,,,,,66.141647,3.570894,32.322266,12,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,burst,chunked,INT4_keep20_PQAT,3,3,0.899834,0.608428,1.788896,,,,,,,,,45.813967,2.252948,14.912598,10,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,burst,whole,INT4_keep10_PQAT,3,3,0.365803,0.325477,0.607686,,,,,,,,,49.045563,2.820078,20.540039,4,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,burst,chunked,INT4_keep10_PQAT,3,3,0.309396,0.305322,0.318821,,,,,,,,,58.847409,3.334211,33.396973,4,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,burst,whole,INT4_keep05_PQAT,3,3,0.175484,0.172982,0.188077,,,,,,,,,47.768262,3.042599,21.295898,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,burst,chunked,INT4_keep05_PQAT,3,3,0.174856,0.173623,0.213423,,,,,,,,,47.921816,3.05353,22.197266,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,burst,whole,INT2_keep05_PQAT,3,3,0.13127,0.126475,0.132847,,,,,,,,,47.626788,2.65937,21.295898,0,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+static-transfers,burst,chunked,INT2_keep05_PQAT,3,3,0.182898,0.129728,0.360863,,,,,,,,,47.878676,1.908694,14.197266,6,medians over successful repeats; post-handshake complete-file receipt; source frames 0/114/298
+priority-comparison,clean,fifo,,3,3,1.981041,,,1640.491039,324.5,,,,,,,,,,,successful-run medians; no failure
+priority-comparison,clean,strict,,3,3,1.987447,,,1075.132141,175.5,,,,,,,,,,,successful-run medians; no failure
+priority-comparison,clean,weighted,,3,3,2.027279,,,1259.493604,192.5,,,,,,,,,,,successful-run medians; no failure
+priority-comparison,bandwidth,fifo,,3,3,7.104752,,,6109.840271,324.5,,,,,,,,,,,successful-run medians; no failure
+priority-comparison,bandwidth,strict,,3,3,7.122369,,,3945.968143,164.5,,,,,,,,,,,successful-run medians; no failure
+priority-comparison,bandwidth,weighted,,3,3,7.110092,,,4251.302024,192.5,,,,,,,,,,,successful-run medians; no failure
+priority-comparison,delay,fifo,,3,3,7.26167,,,6174.575159,324.5,,,,,,,,,,,successful-run medians; no failure
+priority-comparison,delay,strict,,3,3,7.274287,,,4129.422831,164.5,,,,,,,,,,,successful-run medians; no failure
+priority-comparison,delay,weighted,,3,3,7.338269,,,4462.622173,192.5,,,,,,,,,,,successful-run medians; no failure
+priority-comparison,jitter,fifo,,3,3,7.382842,,,6218.207643,324.5,,,,,,,,,,,successful-run medians; no failure
+priority-comparison,jitter,strict,,3,3,7.423285,,,4277.53213,164.5,,,,,,,,,,,successful-run medians; no failure
+priority-comparison,jitter,weighted,,3,3,7.529277,,,4689.644515,192.5,,,,,,,,,,,successful-run medians; no failure
+priority-comparison,loss,fifo,,3,3,14.651661,,,13302.162988,324.5,,,,,,,,,,,successful-run medians; no failure
+priority-comparison,loss,strict,,3,3,12.761284,,,7812.010791,164.5,,,,,,,,,,,successful-run medians; no failure
+priority-comparison,loss,weighted,,3,3,13.723024,,,8636.419916,192.5,,,,,,,,,,,successful-run medians; no failure
+priority-comparison,burst,fifo,,3,3,14.540738,,,12482.29193,324.5,,,,,,,,,,,successful-run medians; no failure
+priority-comparison,burst,strict,,3,3,13.663244,,,7429.49537,164.5,,,,,,,,,,,successful-run medians; no failure
+priority-comparison,burst,weighted,,2,3,12.650402,,,7630.31683,192.5,,,,,,,,,,,successful-run medians; RuntimeError('TimeoutError()')
+native-playback,native-clean-FP16,fixed,FP16,1,1,,,,,,10.648372,5.599513,9,9,32.61781,,,,,,committed_updates=8/8; effective_update_Hz=1.1456112134899012; error=None
+native-playback,native-clean-FP32,fixed,FP32,1,1,,,,,,14.549994,10.492897,9,9,64.477674,,,,,,committed_updates=8/8; effective_update_Hz=0.6746018206628849; error=None
+native-playback,native-clean-INT2_keep05_PQAT,fixed,INT2_keep05_PQAT,1,1,,,,,,7.570999,0,9,9,1.08265,,,,,,committed_updates=8/8; effective_update_Hz=7.491504989019254; error=None
+native-playback,native-clean-INT4_keep05_PQAT,fixed,INT4_keep05_PQAT,1,1,,,,,,7.539891,0,9,9,1.267482,,,,,,committed_updates=8/8; effective_update_Hz=8.36165946574344; error=None
+native-playback,native-clean-INT4_keep10_PQAT,fixed,INT4_keep10_PQAT,1,1,,,,,,7.831437,0,9,9,1.765146,,,,,,committed_updates=8/8; effective_update_Hz=6.308172115537715; error=None
+native-playback,native-clean-INT4_keep20_PQAT,fixed,INT4_keep20_PQAT,1,1,,,,,,7.957263,0,9,9,2.760834,,,,,,committed_updates=8/8; effective_update_Hz=7.15417187891062; error=None
+native-playback,native-clean-INT8_keep20_PQAT,fixed,INT8_keep20_PQAT,1,1,,,,,,8.015993,0,9,9,4.550786,,,,,,committed_updates=8/8; effective_update_Hz=5.6530363527535785; error=None
+native-playback,native-dynamic-1-adaptive,adaptive,mixed per update,1,1,,,,,,13.939103,2.937601,49,49,24.073368,,,,,,committed_updates=48/48; effective_update_Hz=1.6010598716825362; error=None
+native-playback,native-dynamic-1-fixed-high,fixed-high,INT8_keep20_PQAT,1,1,,,,,,13.661753,4.450701,49,49,28.132262,,,,,,committed_updates=48/48; effective_update_Hz=1.5430371783178973; error=None
+native-playback,native-dynamic-1-fixed-low,fixed-low,INT2_keep05_PQAT,1,1,,,,,,13.489034,1.534735,49,49,7.323446,,,,,,committed_updates=48/48; effective_update_Hz=1.7380846274424993; error=None
+native-playback,native-dynamic-2-adaptive,adaptive,mixed per update,1,1,,,,,,13.722672,3.083603,49,49,24.15868,,,,,,committed_updates=48/48; effective_update_Hz=1.6062400635050351; error=None
+native-playback,native-dynamic-2-fixed-high,fixed-high,INT8_keep20_PQAT,1,1,,,,,,13.683978,3.73783,49,49,28.132262,,,,,,committed_updates=48/48; effective_update_Hz=1.559458418809112; error=None
+native-playback,native-dynamic-2-fixed-low,fixed-low,INT2_keep05_PQAT,1,1,,,,,,13.625263,2.051071,49,49,7.323446,,,,,,committed_updates=48/48; effective_update_Hz=1.7103769510027182; error=None
+native-playback,native-jitter-FP32,fixed,FP32,1,1,,,,,,26.286377,19.590711,9,9,64.477674,,,,,,committed_updates=8/8; effective_update_Hz=0.38614128657548286; error=None
+native-playback,native-jitter-INT4_keep05_PQAT,fixed,INT4_keep05_PQAT,1,1,,,,,,11.825748,3.283568,9,9,1.267482,,,,,,committed_updates=8/8; effective_update_Hz=1.7981583349853454; error=None
+native-playback,native-loss1-FP32,fixed,FP32,1,1,,,,,,71.770333,56.766841,9,9,64.477674,,,,,,committed_updates=8/8; effective_update_Hz=0.1387600892923257; error=None
+native-playback,native-loss1-INT4_keep05_PQAT,fixed,INT4_keep05_PQAT,1,1,,,,,,42.589638,0.668943,9,9,1.267482,,,,,,committed_updates=8/8; effective_update_Hz=4.7426919369729585; error=None
+native-playback,native-loss3-FP32,fixed,FP32,0,1,,,,,,133.076528,36.183246,4,7,32.252513,,,,,,committed_updates=4/6; effective_update_Hz=4.2310724048427035; error=TimeoutError()
+native-playback,native-loss3-INT2_keep05_PQAT,fixed,INT2_keep05_PQAT,1,1,,,,,,72.352901,0.770081,7,7,0.822206,,,,,,committed_updates=6/6; effective_update_Hz=3.715422071236649; error=None
+native-playback,native-loss3-INT4_keep05_PQAT,fixed,INT4_keep05_PQAT,1,1,,,,,,71.086547,0.9196,7,7,0.96083,,,,,,committed_updates=6/6; effective_update_Hz=3.5261246078402357; error=None
+real-adaptation,native-dynamic-1-adaptive,adaptive,mixed per update,1,1,,,,,,13.939103,2.937601,49,49,24.073368,,,,,,committed_updates=48/48; effective_update_Hz=1.6010598716825362; error=None; checkpoint_MB=18.844498; up_steps=7; down_steps=4
+real-adaptation,native-dynamic-1-fixed-high,fixed-high,INT8_keep20_PQAT,1,1,,,,,,13.661753,4.450701,49,49,28.132262,,,,,,committed_updates=48/48; effective_update_Hz=1.5430371783178973; error=None; checkpoint_MB=22.903392; up_steps=0; down_steps=0
+real-adaptation,native-dynamic-1-fixed-low,fixed-low,INT2_keep05_PQAT,1,1,,,,,,13.489034,1.534735,49,49,7.323446,,,,,,committed_updates=48/48; effective_update_Hz=1.7380846274424993; error=None; checkpoint_MB=2.094576; up_steps=0; down_steps=0
+real-adaptation,native-dynamic-2-adaptive,adaptive,mixed per update,1,1,,,,,,13.722672,3.083603,49,49,24.15868,,,,,,committed_updates=48/48; effective_update_Hz=1.6062400635050351; error=None; checkpoint_MB=18.92981; up_steps=9; down_steps=5
+real-adaptation,native-dynamic-2-fixed-high,fixed-high,INT8_keep20_PQAT,1,1,,,,,,13.683978,3.73783,49,49,28.132262,,,,,,committed_updates=48/48; effective_update_Hz=1.559458418809112; error=None; checkpoint_MB=22.903392; up_steps=0; down_steps=0
+real-adaptation,native-dynamic-2-fixed-low,fixed-low,INT2_keep05_PQAT,1,1,,,,,,13.625263,2.051071,49,49,7.323446,,,,,,committed_updates=48/48; effective_update_Hz=1.7103769510027182; error=None; checkpoint_MB=2.094576; up_steps=0; down_steps=0
+phase-metrics,native-dynamic-1-adaptive:good,,,,,,,,,,,,,,,2.5,75.32548,8.25714,282.867188,210,phase medians; held_service_Mbit_s=14.56786176366084; held_service_age_s=0.24436325952410698; app_unacked_KiB=339.5927734375; oldest_due_update_ms=172.79270943254232; receiver_commit_work_ms=0.40273647755384445
+phase-metrics,native-dynamic-1-adaptive:impaired,,,,,,,,,,,,,,,1.0,482.329384,1.174788,212.444336,19,phase medians; held_service_Mbit_s=14.72872046984417; held_service_age_s=1.129709462635219; app_unacked_KiB=568.0; oldest_due_update_ms=3009.0137599036098; receiver_commit_work_ms=0.43973326683044434
+phase-metrics,native-dynamic-1-adaptive:recovered,,,,,,,,,,,,,,,6.5,55.15824,10.49052,156.892578,0,phase medians; held_service_Mbit_s=14.625205459030788; held_service_age_s=0.1903256601653993; app_unacked_KiB=545.05419921875; oldest_due_update_ms=1236.8499608710408; receiver_commit_work_ms=0.4174024797976017
+phase-metrics,native-dynamic-1-fixed-high:good,,,,,,,,,,,,,,,2.0,79.536161,9.155115,290.001953,252,phase medians; held_service_Mbit_s=14.406579021511808; held_service_age_s=0.24586939997971058; app_unacked_KiB=536.9677734375; oldest_due_update_ms=170.94194144010544; receiver_commit_work_ms=0.4188818857073784
+phase-metrics,native-dynamic-1-fixed-high:impaired,,,,,,,,,,,,,,,0.5,111.313222,0.780704,16.311523,25,phase medians; held_service_Mbit_s=14.457578643647349; held_service_age_s=2.084013381972909; app_unacked_KiB=568.0; oldest_due_update_ms=3015.159798786044; receiver_commit_work_ms=0.4261462017893791
+phase-metrics,native-dynamic-1-fixed-high:recovered,,,,,,,,,,,,,,,5.0,66.18535,11.266302,180.768555,2,phase medians; held_service_Mbit_s=14.8278711918857; held_service_age_s=0.21524874959141016; app_unacked_KiB=568.0; oldest_due_update_ms=3466.071810107678; receiver_commit_work_ms=0.41575124487280846
+phase-metrics,native-dynamic-1-fixed-low:good,,,,,,,,,,,,,,,2.5,57.699613,2.211385,393.716309,0,phase medians; held_service_Mbit_s=10.967060509587869; held_service_age_s=0.2666509933769703; app_unacked_KiB=0.0; oldest_due_update_ms=66.11139606684446; receiver_commit_work_ms=0.5864608101546764
+phase-metrics,native-dynamic-1-fixed-low:impaired,,,,,,,,,,,,,,,1.0,156.969396,0.812213,79.988281,15,phase medians; held_service_Mbit_s=1.1263517813370567; held_service_age_s=0.6942863212898374; app_unacked_KiB=148.982421875; oldest_due_update_ms=1883.27262038365; receiver_commit_work_ms=0.6524594500660896
+phase-metrics,native-dynamic-1-fixed-low:recovered,,,,,,,,,,,,,,,5.0,32.855557,3.265074,94.34082,3,phase medians; held_service_Mbit_s=10.396515901826094; held_service_age_s=0.21742621902376413; app_unacked_KiB=0.0; oldest_due_update_ms=107.57846711203456; receiver_commit_work_ms=0.6973478011786938
+phase-metrics,native-dynamic-2-adaptive:good,,,,,,,,,,,,,,,2.5,79.133055,7.796479,292.972656,215,phase medians; held_service_Mbit_s=14.437347915554454; held_service_age_s=0.2609956590458751; app_unacked_KiB=304.0; oldest_due_update_ms=170.67154683172703; receiver_commit_work_ms=0.4075891338288784
+phase-metrics,native-dynamic-2-adaptive:impaired,,,,,,,,,,,,,,,0.5,147.411267,0.975064,19.376953,12,phase medians; held_service_Mbit_s=14.408521806536742; held_service_age_s=1.3749333219602704; app_unacked_KiB=568.0; oldest_due_update_ms=3013.9119531959295; receiver_commit_work_ms=0.4091481678187847
+phase-metrics,native-dynamic-2-adaptive:recovered,,,,,,,,,,,,,,,6.25,60.910439,10.569522,173.096191,1,phase medians; held_service_Mbit_s=14.542094812571772; held_service_age_s=0.20233390433713794; app_unacked_KiB=541.162109375; oldest_due_update_ms=1518.2963609695435; receiver_commit_work_ms=0.42593199759721756
+phase-metrics,native-dynamic-2-fixed-high:good,,,,,,,,,,,,,,,2.0,76.295572,9.169227,288.951172,226,phase medians; held_service_Mbit_s=14.580561987170588; held_service_age_s=0.2531779268756509; app_unacked_KiB=463.49853515625; oldest_due_update_ms=193.74612998217344; receiver_commit_work_ms=0.4078065976500511
+phase-metrics,native-dynamic-2-fixed-high:impaired,,,,,,,,,,,,,,,0.5,872.250477,0.783395,299.499023,18,phase medians; held_service_Mbit_s=14.786706155222815; held_service_age_s=1.6016965927556157; app_unacked_KiB=568.0; oldest_due_update_ms=3010.571057908237; receiver_commit_work_ms=0.4274137318134308
+phase-metrics,native-dynamic-2-fixed-high:recovered,,,,,,,,,,,,,,,5.0,72.303446,12.763515,210.946777,6,phase medians; held_service_Mbit_s=14.894928571473269; held_service_age_s=0.14039544528350234; app_unacked_KiB=570.8193359375; oldest_due_update_ms=2941.494190134108; receiver_commit_work_ms=0.4080822691321373
+phase-metrics,native-dynamic-2-fixed-low:good,,,,,,,,,,,,,,,2.5,57.102699,2.205019,379.951172,0,phase medians; held_service_Mbit_s=10.873619208988046; held_service_age_s=0.23513904586434364; app_unacked_KiB=0.0; oldest_due_update_ms=40.0780513882637; receiver_commit_work_ms=0.5872687324881554
+phase-metrics,native-dynamic-2-fixed-low:impaired,,,,,,,,,,,,,,,1.0,135.371098,0.820698,74.105469,20,phase medians; held_service_Mbit_s=1.104609123000683; held_service_age_s=0.6511449282988906; app_unacked_KiB=148.4482421875; oldest_due_update_ms=1882.802166044712; receiver_commit_work_ms=0.6783995777368546
+phase-metrics,native-dynamic-2-fixed-low:recovered,,,,,,,,,,,,,,,5.5,32.787722,3.30264,94.422852,2,phase medians; held_service_Mbit_s=10.222770934043576; held_service_age_s=0.21572126727551222; app_unacked_KiB=0.0; oldest_due_update_ms=115.00302515923977; receiver_commit_work_ms=0.7313694804906845
+render-sanity,FP32,,FP32,3,3,,,,,,,,,,,,,,,,exact decoded parameters on CUDA; finite nonblack render; no equal-quality claim
+render-sanity,FP16,,FP16,3,3,,,,,,,,,,,,,,,,exact decoded parameters on CUDA; finite nonblack render; no equal-quality claim
+render-sanity,INT8_keep20_PQAT,,INT8_keep20_PQAT,3,3,,,,,,,,,,,,,,,,exact decoded parameters on CUDA; finite nonblack render; no equal-quality claim
+render-sanity,INT4_keep20_PQAT,,INT4_keep20_PQAT,3,3,,,,,,,,,,,,,,,,exact decoded parameters on CUDA; finite nonblack render; no equal-quality claim
+render-sanity,INT4_keep10_PQAT,,INT4_keep10_PQAT,3,3,,,,,,,,,,,,,,,,exact decoded parameters on CUDA; finite nonblack render; no equal-quality claim
+render-sanity,INT4_keep05_PQAT,,INT4_keep05_PQAT,3,3,,,,,,,,,,,,,,,,exact decoded parameters on CUDA; finite nonblack render; no equal-quality claim
+render-sanity,INT2_keep05_PQAT,,INT2_keep05_PQAT,3,3,,,,,,,,,,,,,,,,exact decoded parameters on CUDA; finite nonblack render; no equal-quality claim
+recovery-followup,burst-1-weighted,,,1,1,13.134841,,,,,,,,,,,,,,,120s read budget; independent burst-loss run; error=None
+recovery-followup,burst-2-weighted,,,1,1,12.42734,,,,,,,,,,,,,,,120s read budget; independent burst-loss run; error=None
+recovery-followup,burst-3-weighted,,,1,1,12.875307,,,,,,,,,,,,,,,120s read budget; independent burst-loss run; error=None
+receive-budget,30s_read_budget,,,0,1,30.005046,,,,,,,,,,,,,,,deterministic 35s delayed payload; hash_match=False
+receive-budget,120s_read_budget,,,1,1,35.058576,,,,,,,,,,,,,,,deterministic 35s delayed payload; hash_match=True

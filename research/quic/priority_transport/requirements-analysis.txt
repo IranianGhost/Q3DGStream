@@ -1,0 +1,2 @@
+# Optional reporting dependency, prepared server venv only.
+matplotlib==3.10.7
