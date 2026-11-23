@@ -17,8 +17,25 @@ PROFILES={
  'loss':['delay','20ms','loss','random','2%','rate','5mbit'],
  'burst':['delay','20ms','loss','gemodel','1%','25%','80%','0.1%','rate','5mbit'],
  'dynamic':['delay','10ms','rate','20mbit'],
+ 'controlled':['delay','10ms','rate','28mbit'],
 }
 METHODS=['original','sequential','concurrent','p0_first','amirali_fifo','amirali_strict','amirali_weighted']
+
+def phase_plan(profile):
+    if profile=='controlled':
+        return PROFILES[profile],[(3.,['delay','10ms','rate','70mbit']),
+                                 (5.,['delay','10ms','rate','16.8mbit']),
+                                 (7.,['delay','10ms','rate','28mbit'])],70.
+    if profile=='dynamic':
+        return PROFILES[profile],[(.5,['delay','40ms','10ms','distribution','normal','loss','random','2%','rate','1mbit']),
+                                 (1.5,PROFILES[profile])],20.
+    return PROFILES[profile],[],30. if profile=='clean' else 5.
+
+
+def validate_schedule(profiles,frames):
+    if 'controlled' in profiles and frames<240:
+        raise ValueError('controlled requires >=240 updates at 30Hz to exercise recovery after 7s; use 299')
+
 
 def validate_isolation(parent,current,interfaces):
     if not parent or parent==current or interfaces!=['lo']:
@@ -61,6 +78,7 @@ def percentile(values,q):
 
 
 def main(a):
+    validate_schedule(a.profiles,a.frames)
     links=json.loads(subprocess.check_output(['ip','-j','link','show']))
     validate_isolation(os.environ.get('Q3DG_PARENT_NETNS'),os.readlink('/proc/self/ns/net'),[x['ifname'] for x in links])
     subprocess.run(['ip','link','set','lo','up'],check=True)
@@ -88,7 +106,8 @@ def main(a):
             name=f'{profile}-{selection}-{priority}-{method}-{rep}'
             out=a.output/name;summary_file=out/'pilot-summary.json'
             if out.exists():raise ValueError('incomplete output exists; inspect or choose new output: '+str(out))
-            shape(PROFILES[profile]);epoch=threading.Event();stop=threading.Event();network_events=[];phase_errors=[]
+            initial,changes,ceiling=phase_plan(profile)
+            shape(initial);epoch=threading.Event();stop=threading.Event();network_events=[];phase_errors=[]
             raw=[];lock=threading.Lock()
             def pump(who,process,messages):
                 for line in process.stdout:
@@ -102,16 +121,15 @@ def main(a):
                 try:
                     if not epoch.wait(20):return
                     start=time.monotonic()
-                    for at,tokens in [(0.5,['delay','40ms','10ms','distribution','normal','loss','random','2%','rate','1mbit']),
-                                      (1.5,PROFILES['dynamic'])]:
+                    for at,tokens in changes:
                         if stop.wait(max(0,start+at-time.monotonic())):return
                         change_shape(tokens);network_events.append(dict(at=time.monotonic()-start,tokens=tokens,qdisc=json.loads(subprocess.check_output(['tc','-j','-s','qdisc','show','dev','lo']))))
                 except Exception as exc:phase_errors.append(repr(exc))
-            thread=threading.Thread(target=phases,daemon=True) if profile=='dynamic' else None
+            thread=threading.Thread(target=phases,daemon=True) if changes else None
             if thread:thread.start()
             args=SimpleNamespace(frames=60 if profile=='dynamic' else a.frames,start_frame=0,timeout=120.,live=False,
                 metrics_json=None,progressive=False,rate_profile='',wire_dir=str(a.wire),priority_dir=str(orders),out=str(out),
-                prepare_only=False,netns=False,rate_mbps=30,initial_mbps=30 if profile=='clean' else (20 if profile=='dynamic' else 5),
+                prepare_only=False,netns=False,rate_mbps=30,initial_mbps=ceiling,
                 delay_ms=0,loss_pct=0,port=55443,fps=30.,feedback_ms=100,playout_ms=500.,scheduling_mode=method,
                 quinn_priority=priority,tier_selection=selection,fixed_tiers=4,max_inflight=128,tier_delays_ms='0,0,0,0',
                 delivery_timeout_ms=60000,utilization=.92,inference_ms=8.,render_ms=8.,decode_ms=1.)
@@ -119,7 +137,7 @@ def main(a):
             try:
                 runner.run(args)
                 if phase_errors:raise RuntimeError(str(phase_errors))
-                if profile=='dynamic' and len(network_events)!=2:raise RuntimeError('both dynamic transitions must occur')
+                if len(network_events)!=len(changes):raise RuntimeError('all scheduled transitions must occur')
                 counters=parse_byte_counters(raw)
                 summary=json.loads((out/'priority/summary.json').read_text())
                 records=list(csv.DictReader((out/'priority/per_frame_deadline.csv').open()))
@@ -161,8 +179,11 @@ if __name__=='__main__':
     p.add_argument('--methods',nargs='+',choices=METHODS,default=METHODS)
     p.add_argument('--priorities',nargs='+',choices=['equal','tiered'],default=['equal','tiered'])
     p.add_argument('--selections',nargs='+',choices=['full','adaptive'],default=['full','adaptive'])
-    p.add_argument('--profiles',nargs='+',choices=list(PROFILES),default=list(PROFILES))
+    p.add_argument('--profiles',nargs='+',choices=list(PROFILES),default=[x for x in PROFILES if x!="controlled"])
     a=p.parse_args()
     if (not a.orders and not a.address_control) or (a.orders and a.address_control):p.error('choose real --orders or explicit --address-control')
     if a.frames<1 or a.frames>299 or a.repeats<1:p.error('invalid frames/repeats')
-    main(a)
+    try:validate_schedule(a.profiles,a.frames)
+    except ValueError as exc:p.error(str(exc))
+    results=main(a)
+    if any(not row['complete'] for row in results):raise SystemExit(1)

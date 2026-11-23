@@ -1,3 +1,5 @@
+> Update 23 November: supplied orders/viewer received and 30 actual-order runs completed. See [the follow-up](FOLLOWUP_REAL_ORDER.md); the results below remain the dated address-order controls.
+
 # Quinn experiments — 22 November 2026
 
 **Status: transport controls completed; the requested saliency/stage-quality study is pending inputs.** This uses Públio's `research/quinn-priority-transport` branch (`db1d0dc`), not the earlier aioquic implementation.

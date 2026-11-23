@@ -1,3 +1,5 @@
+Latest: [23 November actual-order follow-up](evidence/quinn-20261122/FOLLOWUP_REAL_ORDER.md).
+
 # Quinn NTC transport tests
 
 This experiment checks whether the order in which we write P0–P3 to Quinn

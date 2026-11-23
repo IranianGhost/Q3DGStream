@@ -33,6 +33,7 @@ from ntc_preparation import NTCPreparation, AsyncCUDAJobs, gpu_prefetch_guard_ms
 from live_preview import LivePreview
 
 HOME = Path.home()
+# Inspection pose: no supplied calibration establishes cam00 identity.
 CAM_POS = "0.03796185,-1.32009901,-0.27442019"
 CAM_TARGET = "-0.03145422,-1.26137897,0.72143792"
 CAM_UP = "0.01708074,-0.99804983,0.06003988"
@@ -753,6 +754,8 @@ def run(args):
         "median_on_tick_install_ms": statistics.median(install_hist) if install_hist else None,
         "captured_frames": len(list(images.glob("frame_*.png"))) if args.capture_every else 0,
         "progressive_snapshots": len(progressive_events),
+        "camera_identity": "Hard-coded inspection pose; cam00 identity unverified",
+        "camera_pose": {"position": CAM_POS, "target": CAM_TARGET, "up": CAM_UP},
         "capture_dropped": capture_dropped,
         "quality_note": "Cumulative P0/P0..Pk trajectory; quality must be scored separately against exact FP32 reference",
         "timing_note": "Same phase boundaries in all arms. Async preparation uses a separate non-default CUDA stream and completion events; the playout CUDA stream, not the whole device, is synchronized at phase boundaries to avoid waiting for future frames. Event waits on the playout stream are measured on-tick. PNG readback excluded",

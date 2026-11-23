@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Score captured LIVE cumulative QUIC playback vs the cam00 FP32 trajectory.
+"""Score captured LIVE cumulative QUIC playback vs the same-view FP32 trajectory.
 
 Only image filenames present in the live capture are evaluated; this is not the
 old independent-stage single-frame test. Held/stale frames remain in the score.
@@ -67,7 +67,8 @@ def score(args):
         "mean_ssim": statistics.mean(r["ssim_vs_fp32"] for r in rows),
         "mean_lpips": statistics.mean(r["lpips_vs_fp32"] for r in rows) if lpips_model else None,
         "reference": str(args.ref_dir),
-        "protocol": "Real cumulative QUIC stage playback with cam00 camera vs exact indexed FP32 rendered images",
+        "camera_identity": "Not verified by this evaluator; requires external camera provenance",
+        "protocol": "Real cumulative QUIC stage playback vs exact indexed, camera-matched FP32 rendered images",
         "caveat": "Captured-sample quality only; glReadPixels readback affects live timing. Compare same camera/protocol.",
     }
     (args.live_dir / "live_quality_summary.json").write_text(json.dumps(summary, indent=2)+"\n")
@@ -80,6 +81,6 @@ if __name__ == "__main__":
     p.add_argument("--live-dir", type=Path, required=True,
                    help="results_deadline_.../priority/live")
     p.add_argument("--ref-dir", type=Path, required=True,
-                   help="Original 299-frame exact cam00 FP32 renderer refs directory")
+                   help="299-frame camera-matched FP32 reference directory")
     p.add_argument("--no-lpips", action="store_true")
     score(p.parse_args())
