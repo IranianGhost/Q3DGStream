@@ -26,10 +26,10 @@ import time
 from net_link import isolated_link
 
 HERE = Path(__file__).resolve().parent
-DEFAULT_WIRE_DIR = Path(
-    "/data/3dgs_storage/QNTC-Stream-PQAT-Chunks/qoe_eval/"
-    "lowbit299_v11_20261011T014600_039285Z/cases/int4_keep05/pqat/wire"
-)
+REPO = Path(__file__).resolve().parents[3]
+if str(REPO) not in sys.path:
+    sys.path.insert(0, str(REPO))
+from q3dg_paths import WIRE_DIR as DEFAULT_WIRE_DIR
 TIMING_RE = re.compile(r"^TIMING ([0-3]) (\d+(?:\.\d+)?) (\d+(?:\.\d+)?)$")
 MAX_GROUP_BYTES = 128 * 1024 * 1024
 

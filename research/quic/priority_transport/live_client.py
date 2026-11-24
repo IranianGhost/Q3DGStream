@@ -39,10 +39,10 @@ HOME = Path.home()
 CAM_POS = "0.03796185,-1.32009901,-0.27442019"
 CAM_TARGET = "-0.03145422,-1.26137897,0.72143792"
 CAM_UP = "0.01708074,-0.99804983,0.06003988"
-WIRE = Path(
-    "/data/3dgs_storage/QNTC-Stream-PQAT-Chunks/qoe_eval/"
-    "lowbit299_v11_20261011T014600_039285Z/cases/int4_keep05/pqat/wire"
-)
+REPO = Path(__file__).resolve().parents[3]
+if str(REPO) not in sys.path:
+    sys.path.insert(0, str(REPO))
+from q3dg_paths import WIRE_DIR as WIRE
 
 
 def atomic_json(path: Path, obj: dict):

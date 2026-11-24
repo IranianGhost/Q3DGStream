@@ -69,7 +69,7 @@ As a separate model/camera check, the calibrated FP32 replay versus source video
 
 Every selected group passed the transport hash checks; applied trajectories were checked again during scoring. Offline quality is computed once per byte-identical applied trajectory; every reused score is disclosed in `quality_reused_from` and server `SCORE_REUSE.json`, after checking all applied group bytes/order and every scheduled live image. Timing/network measurements are always independent. Direct full replay remains available through `parallel_quality.py`.
 
-Validation: **77 Python checks**, the separately enabled real private-netns regression, and **9 Rust tests** passed. The old flat INT4 GPU path and the chunk-admission scheduler with both paired precisions also passed live/replay checks.
+Validation: **77 Python checks**, the separately enabled real private-netns regression, and **9 Rust tests** passed. The root workflow also passed its 21 CPU tests, decoder demo and compile checks on both Python 3.10 and 3.12. The old flat INT4 GPU path and the chunk-admission scheduler with both paired precisions also passed live/replay checks.
 
 ## Scope and evidence
 
@@ -84,3 +84,5 @@ Startup measures the first GPU-render-ready update **after QUIC connection estab
 [Source bundle](https://drive.google.com/file/d/1kEgg-dlO702v1pIdvsoiXs4TcehoujDD/view) SHA256: `6415bda495b011581d517a5be8105faddf50b4fce35c22ff3397792de156d546`; 2,610,133,391 bytes and 1,649 verified manifest entries. Models, source archives and detailed trial CSVs/logs stay under `/local/users/abeigi/q3dg-publio-reproduction-20261124`. Additional camera/integration checks and the final summary are under `/local/users/abeigi/q3dg-completion-20261124`. Scene/model files were not downloaded to the Mac.
 
 The previously reported startup trial that overlapped a side quality probe remains quarantined and replaced by its isolated rerun; the 39-case cohort contains only that valid replacement. Every newly timed phase ran separately from GPU scoring.
+
+Portable defaults were centralized after the timed trials; study arguments already supplied explicit paths. A fresh three-update chunk/GPU/replay check passed after this cleanup.

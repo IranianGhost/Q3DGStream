@@ -29,7 +29,10 @@ from net_link import isolated_link
 from run_ntc import DEFAULT_WIRE_DIR, pump, within_namespace
 
 HERE = Path(__file__).resolve().parent
-DEFAULT_PRIORITY_DIR = Path.home() / "snap/firefox/common/QNTC_dynamic_299_priorities_v1/orders"
+REPO = Path(__file__).resolve().parents[3]
+if str(REPO) not in sys.path:
+    sys.path.insert(0, str(REPO))
+from q3dg_paths import PRIORITIES_DIR as DEFAULT_PRIORITY_DIR
 TIMING_RE = re.compile(r"^TIMING (\d+) ([0-3]) (\d+(?:\.\d+)?) (\d+(?:\.\d+)?)$")
 COMPLETE_RE = re.compile(r"^FRAME_COMPLETE (\d+) (\d+(?:\.\d+)?)$")
 

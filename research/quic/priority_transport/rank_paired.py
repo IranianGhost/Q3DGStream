@@ -18,7 +18,11 @@ from paired_affine import decode_to_dense_state
 BLOCK_SIZE = 64
 HASH_BLOCKS = 30976
 TOTAL_BLOCKS = 31120
-PAIRED = Path.home() / "gs4-flame-steak/pqat-paired-affine-keep20"
+REPO = Path(__file__).resolve().parents[3]
+if str(REPO) not in sys.path:
+    sys.path.insert(0, str(REPO))
+from q3dg_paths import DATA_DIR, PRIORITIES_DIR, SCENE_DIR
+PAIRED = DATA_DIR / "paired"
 
 
 def sha256(path):
@@ -190,9 +194,9 @@ if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--int2-dir", type=Path, default=PAIRED / "int2_keep20/wire")
     p.add_argument("--int4-dir", type=Path, default=PAIRED / "int4_keep20/wire")
-    p.add_argument("--old-orders", type=Path, default=Path.home() / "snap/firefox/common/QNTC_dynamic_299_priorities_v1/orders")
-    p.add_argument("--scene", type=Path, default=Path.home() / "qntc_scenes/flame_steak_official")
-    p.add_argument("--viewer", type=Path, default=Path.home() / "QNTC_Linux_Package/3DGStreamViewer")
+    p.add_argument("--old-orders", type=Path, default=PRIORITIES_DIR)
+    p.add_argument("--scene", type=Path, default=SCENE_DIR)
+    p.add_argument("--viewer", type=Path, default=Path(__file__).resolve().parent / "viewer")
     p.add_argument("--out", required=True, type=Path)
     p.add_argument("--frames", type=int, default=299)
     p.add_argument("--samples-per-tile", type=int, default=128)

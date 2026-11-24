@@ -62,7 +62,8 @@
     "Pinned resource verification, checked CLI, independent calibrated fx/fy camera option and scene binding",
     "Rootless server launch and legacy-path regression checks",
     "Optional byte-identical trajectory score reuse; every network measurement remains independent and every live sample must match",
-    "Normalize trailing whitespace in vendored source; original hashes above retain upstream provenance"
+    "Normalize trailing whitespace in vendored source; original hashes above retain upstream provenance",
+    "Use existing q3dg_paths environment overrides and repository defaults instead of workstation-specific paths"
   ],
   "resource_manifest_sha256": "f376ec4147c651f76b76b6c044c78d45e059ecd3d34127995afacac38a25e120",
   "viewer_files": {
