@@ -84,7 +84,6 @@
     "path": "scene/colmap_loader.py",
     "license": "Original copyright/license header retained"
   },
-  "source_archive_url": "https://drive.google.com/file/d/1kEgg-dlO702v1pIdvsoiXs4TcehoujDD/view",
   "verified_model_contract": {
     "reference": "keep05/wire/NTC_000000.pth",
     "minimum": [

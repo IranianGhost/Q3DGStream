@@ -11,8 +11,8 @@ helps or gets in the way of Quinn's own stream priorities. The sender is in
 Run the commands below from `research/quic/priority_transport`.
 
 You'll need Python 3.10+, NumPy, Rust/Cargo, and the compressed INT4 NTCs
-with their P0–P3 ordering files. The default data paths point to our Ubuntu
-test machine. On another machine, supply `--wire-dir` and `--priority-dir`.
+with their P0–P3 ordering files. Defaults use the project data directories or `Q3DGSTREAM_*` environment
+overrides. Supply `--wire-dir` and `--priority-dir` for other locations.
 The files should be named `wire/NTC_000000.pth` and
 `orders/NTC_000000.npz`, continuing through `NTC_000298`.
 For the shaped network tests, install `iproute2` and allow `sudo` to create
@@ -28,7 +28,7 @@ python3 run.py p0-first --frames 5 \
 Before running the experiments:
 
 ```bash
-python3 -m unittest discover -p 'test_*.py' -q
+python3 -m pytest -q
 cargo test
 python3 run.py p0-first --frames 3 --dry-run
 ```
@@ -97,5 +97,3 @@ individually.
 The slow-motion preview is for observing arrival and refinement. The 30 FPS
 command targets live playback; whether it sustains 30 distinct NTC updates
 must be checked using the observed rate, not the requested `--fps` value.
-
-Latest GPU-server [transport controls and pending quality inputs](evidence/quinn-20261122/SUMMARY.md).
