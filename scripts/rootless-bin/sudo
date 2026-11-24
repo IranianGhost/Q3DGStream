@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# Compatibility for preserved experiment commands inside mapped-root namespaces.
+# This is not system sudo and grants no privilege in the host namespaces.
+set -euo pipefail
+[[ ${QS_REPRO_ROOTLESS_READY:-} == 1 && $(id -u) == 0 ]] || exit 65
+[[ -n ${QS_PARENT_USERNS:-} && -n ${QS_PARENT_NETNS:-} && -n ${QS_PARENT_MNTNS:-} ]] || exit 65
+[[ $(readlink /proc/self/ns/user) != "$QS_PARENT_USERNS" && $(readlink /proc/self/ns/net) != "$QS_PARENT_NETNS" && $(readlink /proc/self/ns/mnt) != "$QS_PARENT_MNTNS" ]] || exit 65
+read -r mapped host_uid range < /proc/self/uid_map
+[[ $mapped == 0 && $range == 1 ]] || exit 65
+user_mode=0
+while (( $# )); do
+ case "$1" in
+  -n) shift;;
+  -v) exit 0;;
+  -u) [[ ${2:-} == root ]] || exit 65; user_mode=1; shift 2;;
+  *) break;;
+ esac
+done
+(( $# )) || exit 64
+if (( ! user_mode )); then
+ case "$1" in ip|tc) ;; *) echo "Unsupported namespace helper: $1" >&2; exit 64;; esac
+fi
+exec "$@"

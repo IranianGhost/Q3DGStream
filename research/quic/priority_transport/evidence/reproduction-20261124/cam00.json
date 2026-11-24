@@ -1,0 +1,72 @@
+{
+  "schema": "q3dg_camera_v1",
+  "convention": "opencv",
+  "camera_name": "cam00",
+  "width": 1345,
+  "height": 1008,
+  "intrinsics": [
+    [
+      730.3216281718156,
+      0.0,
+      672.5
+    ],
+    [
+      0.0,
+      727.5171140563883,
+      504.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "world_to_camera": [
+    [
+      0.9974415556550508,
+      0.021177724074741312,
+      0.06827772005161267,
+      0.008828750484291707
+    ],
+    [
+      -0.01708073796292938,
+      0.9980498290792115,
+      -0.06003987896055827,
+      1.30169684981265
+    ],
+    [
+      -0.06941607481753784,
+      0.05872003642685234,
+      0.9958581052935981,
+      0.3534349909691981
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "scene_init_sha256": "1e33d48bf4df0073d9329ead05df52582a90075b7e9b5edd521e7ff2c794a5cb",
+  "source": {
+    "training_repository": "https://github.com/SJoJoK/3DGStream",
+    "training_commit": "747ddfef646edf3ea628f2bd13b7bedce7c5fe47",
+    "camera_name": "cam00.png",
+    "initial_scene_git_blob": "823792edc9d815a77a6ebb693861c8b1e8385712",
+    "video_source": "https://github.com/facebookresearch/Neural_3D_Video/releases/download/v1.0/flame_steak.zip",
+    "video_sha256": "c0b19854049da7ae3e8c770c65c082d27878dbe99d118cb58b1f3bcb9dd580c5",
+    "fixture_sha256": {
+      "sparse/0/cameras.bin": "871b0844b21f4b8a86f58f3664a7b71404825ffeaf1d0ed5ca3e01efa8c83589",
+      "sparse/0/images.bin": "c5973f03b59cc0b3bd83dc7e654fa8c272b6120bbe7145a3cdab1d2aba8884b2",
+      "distorted/sparse/0/cameras.bin": "650cbad6edf460f664e78f881166d9bb2622ca7fc8f5240a08c2cf5f0dca1b29",
+      "distorted/sparse/0/images.bin": "3518a03ee48b4e714619c3088f914fe7d54dcbc1fd4c773dbe4d627a79e0c805",
+      "images/cam00.png": "446c2a69a9b805a33753c3378aef772cb2185ccd0f81223dc7b0955ece93ce90"
+    },
+    "data_license": "CC-BY-NC-4.0"
+  },
+  "time_alignment": {
+    "initial_scene_video_frame": 0,
+    "ntc_zero_video_frame": 1,
+    "fps": 30
+  }
+}

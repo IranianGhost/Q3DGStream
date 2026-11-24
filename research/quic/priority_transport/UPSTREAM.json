@@ -1,0 +1,106 @@
+{
+  "source_archive_sha256": "6415bda495b011581d517a5be8105faddf50b4fce35c22ff3397792de156d546",
+  "source": "Publio supplied reproduction bundle; startup runtime and shared viewer",
+  "files": {
+    "dynamic_priority_core.py": {
+      "upstream_snapshot": "experiments/startup/runner/dynamic_priority_core.py",
+      "upstream_sha256": "26c1ce851952241bd440c36ad9ed743c830702565ca81b764c8b5056ed1c2cd0"
+    },
+    "evaluation_support.py": {
+      "upstream_snapshot": "experiments/startup/runner/evaluation_support.py",
+      "upstream_sha256": "fc81926fb675883b84dd5bf8fc0ba2b4d935c6d9da9cacbac982fcf368e98d95"
+    },
+    "live_client.py": {
+      "upstream_snapshot": "experiments/startup/runner/live_client.py",
+      "upstream_sha256": "5b6cece042f1e93e9e5e5a416d78ac82883e8e5e509980406ea23a7372ae2c75"
+    },
+    "net_link.py": {
+      "upstream_snapshot": "experiments/startup/runner/net_link.py",
+      "upstream_sha256": "8e3a1682fa8b254403fdf804309d9ddcdc82abfa49add5c636c07e2a2b14c097"
+    },
+    "network_samples.py": {
+      "upstream_snapshot": "experiments/startup/runner/network_samples.py",
+      "upstream_sha256": "ba9faa0b3879081c5af1249cacf351f396bbbe983b7bf257327822162d8e3d5b"
+    },
+    "paired_affine.py": {
+      "upstream_snapshot": "experiments/startup/runner/paired_affine.py",
+      "upstream_sha256": "53b3f550608ae4ab86ab5e647fa4ed6b0e96c7e045fa2e29cc05702d5f54cf6b"
+    },
+    "paired_groups.py": {
+      "upstream_snapshot": "experiments/startup/runner/paired_groups.py",
+      "upstream_sha256": "77cf47d15332c17d84c12411b80179c35786b5dd8ad5ad7362b0617d4600a32e"
+    },
+    "prepare_precision.py": {
+      "upstream_snapshot": "experiments/startup/runner/prepare_precision.py",
+      "upstream_sha256": "6b6bfb9cc2f33be70b9627c894face79f91b04653af173b9aa85ea3e9f4e926c"
+    },
+    "rank_paired.py": {
+      "upstream_snapshot": "experiments/startup/runner/rank_paired.py",
+      "upstream_sha256": "58856bdd4ec2a9a15f9bc3c0d502a421459de61513c31dd3c3c8fd8ed91b30db"
+    },
+    "run_deadline.py": {
+      "upstream_snapshot": "experiments/startup/runner/run_deadline.py",
+      "upstream_sha256": "dcacc30a26857b15a259f54f6c2fc53d5ddcb2474b4b618b3c322f79b1a4844d"
+    },
+    "vod_playback.py": {
+      "upstream_snapshot": "experiments/startup/runner/vod_playback.py",
+      "upstream_sha256": "4f3ece526682ceca81ab38f3b06dae0ff0743a89bf79ab4dc78bb2c44c8b003b"
+    },
+    "src/main.rs": {
+      "upstream_snapshot": "experiments/startup/runner/src/main.rs",
+      "upstream_sha256": "2a5f5619ff70ee14235ff31739758cefa5598a950b02264e8597574e47ab8612"
+    },
+    "score_vod_study.py": {
+      "upstream_snapshot": "experiments/startup/score_vod_study.py",
+      "upstream_sha256": "b40a0f05f9c77791cf52177cf8e1efa19fe2e781f42a73ce2b084046584a02e8"
+    }
+  },
+  "integration_changes": [
+    "Retain original endpoint byte counters and legacy flat INT4 payload layout",
+    "Use repository-local optional viewer",
+    "Validate tier boundaries; camera configuration and execution helpers documented separately",
+    "Pinned resource verification, checked CLI, independent calibrated fx/fy camera option and scene binding",
+    "Rootless server launch and legacy-path regression checks",
+    "Optional byte-identical trajectory score reuse; every network measurement remains independent and every live sample must match",
+    "Normalize trailing whitespace in vendored source; original hashes above retain upstream provenance"
+  ],
+  "resource_manifest_sha256": "f376ec4147c651f76b76b6c044c78d45e059ecd3d34127995afacac38a25e120",
+  "viewer_files": {
+    "LICENSE": "4d8eda38135606cd9bb17c12892f8141836ac27c1e2ed6b94ad7422c229b2cae",
+    "NTC.py": "f70aaef97430311e1775e6c56c6ea9a66e109640b6b1fe452f9c50a345fb288b",
+    "renderer.py": "c9b6708e90af86ba5de77ef3438e11a0bcaee0a7dd9167019f172ff1d53df1ff",
+    "renderer_cuda.py": "c0e56f53816358815760f3544bd2d1ce991ed01176f4998518b896311dad042a",
+    "renderer_ogl.py": "f8c9b47ae7f1a1096e62b732e126a0cb4b44c0f1264955a5c5f0a923ed540e93",
+    "shaders/gau_frag.glsl": "116a75865c18acd0003b933c1d9aa1f263a3df3da07f6d3ae53252fd9286fe5e",
+    "shaders/gau_vert.glsl": "ae5a90ef400b28ae335b382236c9f8d38ba5b2d2f441139f421f8d515d8786d1",
+    "util.py": "6dde5831f97751191c7153b8365bb67ad3a002a4893bf4b8c1d33fc507feb6bb",
+    "util_3dgstream.py": "801055a7ece35f52771cecee4e7177db26c6938f0143b827fc01d8ee941a7d54",
+    "util_gau.py": "396c13b177561eda6ff0b39e819b33e1d92e942b048a19a3f4654bebcaa848ea"
+  },
+  "colmap_model_source": {
+    "repository": "https://github.com/SJoJoK/3DGStream",
+    "commit": "747ddfef646edf3ea628f2bd13b7bedce7c5fe47",
+    "path": "scene/colmap_loader.py",
+    "license": "Original copyright/license header retained"
+  },
+  "source_archive_url": "https://drive.google.com/file/d/1kEgg-dlO702v1pIdvsoiXs4TcehoujDD/view",
+  "verified_model_contract": {
+    "reference": "keep05/wire/NTC_000000.pth",
+    "minimum": [
+      -20.0,
+      -15.0,
+      5.0
+    ],
+    "maximum": [
+      15.0,
+      10.0,
+      23.0
+    ],
+    "equal_bounds_checked": {
+      "int2": 299,
+      "int4": 299,
+      "fp32": 299
+    },
+    "conclusion": "One shared network normalization box is valid for every supplied update and both precisions"
+  }
+}

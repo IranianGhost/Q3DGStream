@@ -1,4 +1,6 @@
-Latest: [23 November actual-order follow-up](evidence/quinn-20261122/FOLLOWUP_REAL_ORDER.md).
+Paired INT2/INT4 adaptation: [implementation and server commands](ADAPTIVE.md).
+
+Latest: [completed compressed-NTC GPU evaluation](evidence/reproduction-20261124/README.md).
 
 # Quinn NTC transport tests
 

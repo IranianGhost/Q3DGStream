@@ -9,6 +9,16 @@ import sys
 import time
 
 
+WIFI_IMPAIRMENTS = {
+    "campus": (),
+    "delay": ("delay", "40ms"),
+    "jitter": ("delay", "40ms", "10ms", "distribution", "normal"),
+    "loss": ("delay", "20ms", "loss", "random", "2%"),
+    "burst": ("delay", "20ms", "loss", "gemodel", "1%", "25%", "80%", "0.1%"),
+}
+QUEUE_PACKETS = WIFI_QUEUE_PACKETS = 1000
+
+
 def privileged(*args):
     subprocess.run(["sudo", "-n", *args], check=True, stdout=subprocess.DEVNULL)
 
@@ -32,25 +42,55 @@ def parse_rate_profile(spec: str):
     return points
 
 
-def apply_rate_profile(points, network, delay_ms, loss_pct, stop_event, epoch, errors):
-    """Change ONLY this experiment's two temporary netns qdiscs."""
+def apply_rate_profile(points, network, delay_ms, loss_pct, stop_event, epoch, errors,
+                       forward_only=False, changes=None):
+    """Change the bottleneck rate within the temporary link."""
+    directions = [(network["client_ns"], network["client_dev"])]
+    if not forward_only and "wifi_impairment" not in network:
+        directions.append((network["server_ns"], network["server_dev"]))
+    impairment = network.get("wifi_impairment")
+    impairments = (WIFI_IMPAIRMENTS[impairment] if impairment is not None else
+                   ["delay", f"{delay_ms:g}ms", "loss", f"{loss_pct:g}%"])
+    netem = ["limit", str(QUEUE_PACKETS), *impairments]
+    if changes is not None:
+        changes.append({"scheduled_s": 0.0, "applied_s": 0.0, "rate_mbps": points[0][1]})
     try:
         for elapsed, mbps in points[1:]:
             remaining = epoch + elapsed - time.monotonic()
             if stop_event.wait(max(0, remaining)):
                 return
-            for ns, dev in ((network["server_ns"], network["server_dev"]),
-                            (network["client_ns"], network["client_dev"])):
+            for ns, dev in directions:
                 privileged("ip", "netns", "exec", ns, "tc", "qdisc", "change",
-                           "dev", dev, "root", "netem", "delay", f"{delay_ms:g}ms",
-                           "loss", f"{loss_pct:g}%", "rate", f"{mbps:g}mbit")
-            print(f"NETWORK_CHANGE at {time.monotonic()-epoch:.3f}s -> {mbps:g}Mbps", flush=True)
+                           "dev", dev, "root", "netem", *netem, "rate", f"{mbps:g}mbit")
+            applied = time.monotonic() - epoch
+            if changes is not None:
+                changes.append({"scheduled_s": elapsed, "applied_s": round(applied, 6), "rate_mbps": mbps})
+            if changes is None or elapsed.is_integer():
+                print(f"NETWORK_CHANGE at {applied:.3f}s -> {mbps:g}Mbps", flush=True)
     except Exception as exc:
         errors.append(str(exc))
 
 
 @contextmanager
-def isolated_link(rate_mbps, delay_ms, loss_pct):
+def isolated_wifi_loopback(rate_mbps, impairment):
+    """Replay the campus rate and impair both directions on a shared queue."""
+    subprocess.run(["sudo", "-v"], check=True)
+    namespace = f"qntcn_wifi_{os.getpid()}"
+    privileged("ip", "netns", "add", namespace)
+    try:
+        privileged("ip", "-n", namespace, "link", "set", "lo", "up")
+        privileged("ip", "netns", "exec", namespace, "tc", "qdisc", "add",
+                   "dev", "lo", "root", "netem", "limit", str(WIFI_QUEUE_PACKETS),
+                   *WIFI_IMPAIRMENTS[impairment], "rate", f"{rate_mbps:g}mbit")
+        print(f"NETWORK shared loopback {impairment}, initial rate {rate_mbps:g} Mbps", flush=True)
+        yield {"host": "127.0.0.1", "client_ns": namespace, "server_ns": namespace,
+               "client_dev": "lo", "server_dev": "lo", "wifi_impairment": impairment}
+    finally:
+        privileged("ip", "netns", "del", namespace)
+
+
+@contextmanager
+def isolated_link(rate_mbps, delay_ms, loss_pct, forward_only=False):
     for program in ("sudo", "ip", "tc"):
         if not shutil.which(program):
             raise RuntimeError(f"Missing {program} (ip/tc are in Ubuntu's iproute2)")
@@ -81,9 +121,12 @@ def isolated_link(rate_mbps, delay_ms, loss_pct):
             privileged("ip", "-n", ns, "addr", "add", addr + "/24", "dev", dev)
             privileged("ip", "-n", ns, "link", "set", "lo", "up")
             privileged("ip", "-n", ns, "link", "set", dev, "up")
+            shaper = [] if forward_only and ns == ns_server else ["rate", f"{rate_mbps:g}mbit"]
             privileged("ip", "netns", "exec", ns, "tc", "qdisc", "add", "dev", dev, "root", "netem",
-                       "delay", f"{delay_ms:g}ms", "loss", f"{loss_pct:g}%", "rate", f"{rate_mbps:g}mbit")
-        print(f"NETWORK {rate_mbps:g}Mbps RTT~{2 * delay_ms:g}ms loss={loss_pct:g}% per direction", flush=True)
+                       "limit", str(QUEUE_PACKETS), "delay", f"{delay_ms:g}ms",
+                       "loss", f"{loss_pct:g}%", *shaper)
+        print(f"NETWORK {rate_mbps:g}Mbps {'sender egress' if forward_only else 'per direction'} "
+              f"RTT~{2 * delay_ms:g}ms loss={loss_pct:g}% per direction", flush=True)
         yield {"host": address_server, "server_ns": ns_server, "client_ns": ns_client,
                "server_dev": dev_server, "client_dev": dev_client}
     finally:

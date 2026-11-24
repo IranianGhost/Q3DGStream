@@ -1,6 +1,7 @@
 //! Deadline-aware QUIC sender and receiver with live CUDA playback feedback.
 //! The companion Python process applies cumulative updates to actual Gaussians.
 
+use std::path::Path;
 use anyhow::{anyhow, bail, Context, Result};
 use quinn::{Connection, Endpoint, RecvStream, SendStream};
 use rustls::pki_types::{CertificateDer, PrivateKeyDer, PrivatePkcs8KeyDer};
@@ -21,6 +22,7 @@ const MAX_GROUP: usize = 2 * 1024 * 1024;
 const CHUNK_SIZE: usize = 8192; // Match Amirali's 8 KiB application chunks.
 const CHUNK_META_LEN: usize = 16; // offset:u64, total-group-bytes:u64
 const CHUNK_FLAG: u8 = 0x80;
+const VOD_REQUEST_WINDOW: u32 = 12;
 
 #[derive(Clone)]
 struct Options {
@@ -30,10 +32,14 @@ struct Options {
     start_frame: u32, frames: u32, fps: f64,
     initial_mbps: f64, feedback_ms: u64, playout_ms: f64,
     utilization: f64, inference_ms: f64, render_ms: f64, decode_ms: f64,
-    scheduling_mode: String, tier_selection: String, fixed_tiers: usize,
+    buffer_reservoir: f64,
+    scheduling_mode: String, tier_selection: String, fixed_tiers: usize, precision_policy: String,
     quinn_priority: String,
+    bandwidth_estimator: String,
+    sample_transport: bool,
     delivery_timeout_ms: u64, max_inflight: usize,
     tier_delays_ms: [u64; 4],
+    vod_max_buffer_frames: u32,
 }
 
 fn parse_tier_delays(text: &str) -> Result<[u64; 4]> {
@@ -58,11 +64,14 @@ fn options() -> Result<Options> {
         received_dir: "received".into(), metrics_json: None, session_clock_file: None,
         start_frame: 0, frames: 299, fps: 30.0, initial_mbps: 5.0,
         feedback_ms: 100, playout_ms: 150.0, utilization: 0.92,
+        buffer_reservoir: 0.20,
         inference_ms: 8.0, render_ms: 8.0, decode_ms: 1.0,
         scheduling_mode: "adaptive".into(), tier_selection: "full".into(),
-        fixed_tiers: 4, quinn_priority: "legacy".into(),
+        fixed_tiers: 4, precision_policy: "fixed4".into(), quinn_priority: "legacy".into(),
+        bandwidth_estimator: "hybrid".into(), sample_transport: false,
         delivery_timeout_ms: 30_000, max_inflight: 16,
         tier_delays_ms: [0; 4],
+        vod_max_buffer_frames: 0,
     };
     let mut args = env::args().skip(1);
     o.role = args.next().unwrap_or_default();
@@ -85,15 +94,23 @@ fn options() -> Result<Options> {
             "--feedback-ms" => o.feedback_ms = args.next().context("--feedback-ms requires number")?.parse()?,
             "--playout-ms" => o.playout_ms = args.next().context("--playout-ms requires number")?.parse()?,
             "--utilization" => o.utilization = args.next().context("--utilization requires number")?.parse()?,
+            "--buffer-reservoir" => o.buffer_reservoir =
+                args.next().context("--buffer-reservoir requires a fraction")?.parse()?,
             "--inference-ms" => o.inference_ms = args.next().context("--inference-ms requires number")?.parse()?,
             "--render-ms" => o.render_ms = args.next().context("--render-ms requires number")?.parse()?,
             "--decode-ms" => o.decode_ms = args.next().context("--decode-ms requires number")?.parse()?,
             "--scheduling-mode" => o.scheduling_mode = args.next().context("--scheduling-mode requires name")?,
             "--quinn-priority" => o.quinn_priority = args.next().context("--quinn-priority requires policy")?,
+            "--bandwidth-estimator" => o.bandwidth_estimator =
+                args.next().context("--bandwidth-estimator requires hybrid or goodput")?,
+            "--sample-transport" => o.sample_transport = true,
             "--tier-selection" => o.tier_selection = args.next().context("--tier-selection requires name")?,
+            "--precision-policy" => o.precision_policy = args.next().context("--precision-policy requires fixed2, fixed4, or adaptive")?,
             "--fixed-tiers" => o.fixed_tiers = args.next().context("--fixed-tiers requires number")?.parse()?,
             "--delivery-timeout-ms" => o.delivery_timeout_ms = args.next().context("--delivery-timeout-ms requires number")?.parse()?,
             "--max-inflight" => o.max_inflight = args.next().context("--max-inflight requires number")?.parse()?,
+            "--vod-max-buffer-frames" => o.vod_max_buffer_frames =
+                args.next().context("--vod-max-buffer-frames requires number")?.parse()?,
             "--tier-delays-ms" => o.tier_delays_ms =
                 parse_tier_delays(&args.next().context("--tier-delays-ms requires P0,P1,P2,P3")?)?,
             _ => bail!("unknown argument: {arg}"),
@@ -104,13 +121,18 @@ fn options() -> Result<Options> {
         || !o.initial_mbps.is_finite() || o.initial_mbps <= 0.0
         || !o.playout_ms.is_finite() || o.playout_ms < 0.0
         || !o.utilization.is_finite() || !(0.0 < o.utilization && o.utilization <= 1.0)
+        || !(0.0..0.9).contains(&o.buffer_reservoir)
         || o.feedback_ms < 20 || o.delivery_timeout_ms == 0
         || !matches!(o.scheduling_mode.as_str(), "adaptive" | "sequential_equal" |
             "concurrent_equal" | "concurrent_priority" | "sequential_priority" |
             "p0_first_priority" | "sequential" | "concurrent" | "p0_first" |
             "original" | "amirali_fifo" | "amirali_strict" | "amirali_weighted")
         || !matches!(o.quinn_priority.as_str(), "equal" | "tiered" | "legacy")
-        || !matches!(o.tier_selection.as_str(), "full" | "fixed" | "adaptive")
+        || !matches!(o.bandwidth_estimator.as_str(), "hybrid" | "goodput")
+        || !matches!(o.tier_selection.as_str(), "full" | "fixed" | "adaptive" | "buffer")
+        || (o.tier_selection == "buffer" && o.vod_max_buffer_frames == 0)
+        || !matches!(o.precision_policy.as_str(), "fixed2" | "fixed4" | "adaptive")
+        || o.vod_max_buffer_frames > 128
         || !(1..=4).contains(&o.fixed_tiers)
         || !(1..=128).contains(&o.max_inflight)
         || [o.inference_ms, o.render_ms, o.decode_ms].iter().any(|v| !v.is_finite() || *v < 0.0) {
@@ -133,9 +155,42 @@ fn byte_summary(role: &str, stats: &quinn::ConnectionStats, payload: u64) -> ser
     })
 }
 
+
 fn log(s: impl AsRef<str>) {
     println!("{}", s.as_ref());
     let _ = io::stdout().flush();
+}
+
+fn transport_sample(conn: &Connection, received: Option<&Counters>) {
+    let stats = conn.stats();
+    let unix_ms = SystemTime::now().duration_since(UNIX_EPOCH)
+        .expect("system clock is after the Unix epoch").as_secs_f64() * 1000.0;
+    log(format!("TRANSPORT_SAMPLE {}", serde_json::json!({
+        "unix_ms": unix_ms,
+        "udp_tx_bytes": stats.udp_tx.bytes,
+        "udp_rx_bytes": stats.udp_rx.bytes,
+        "udp_tx_datagrams": stats.udp_tx.datagrams,
+        "udp_rx_datagrams": stats.udp_rx.datagrams,
+        "cwnd_bytes": stats.path.cwnd,
+        "rtt_ms": stats.path.rtt.as_secs_f64() * 1000.0,
+        "min_rtt_ms": stats.path.min_rtt.as_secs_f64() * 1000.0,
+        "lost_packets": stats.path.lost_packets,
+        "congestion_events": stats.path.congestion_events,
+        "received_application_bytes": received.map(|c| c.bytes.load(Ordering::Relaxed)),
+    })));
+}
+
+fn transport_sampler(conn: Connection, received: Option<Arc<Counters>>) -> tokio::task::JoinHandle<()> {
+    transport_sample(&conn, received.as_deref());
+    tokio::spawn(async move {
+        let cadence = Duration::from_millis(200);
+        let mut timer = tokio::time::interval_at(tokio::time::Instant::now() + cadence, cadence);
+        timer.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Skip);
+        loop {
+            timer.tick().await;
+            transport_sample(&conn, received.as_deref());
+        }
+    })
 }
 
 // An explicit policy is mandatory in the priority matrix. "legacy" keeps
@@ -160,6 +215,14 @@ async fn wait_for_tier(frame_start: Instant, delay_ms: u64) {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+struct VodFeedback {
+    phase: String,
+    next_ntc: u32,
+    ready_frames: u32,
+    next_due_unix_ms: Option<f64>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
 struct Feedback {
     sequence: u64,
     elapsed_ms: f64,
@@ -176,6 +239,8 @@ struct Feedback {
     ntc_inference_ms: f64,
     render_ms: f64,
     gpu_timing_source: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    vod: Option<VodFeedback>,
 }
 
 impl Feedback {
@@ -191,6 +256,7 @@ impl Feedback {
             decode_ms: o.decode_ms,
             ntc_inference_ms: o.inference_ms, render_ms: o.render_ms,
             gpu_timing_source: "placeholder_not_measured".into(),
+            vod: None,
         }
     }
 }
@@ -243,10 +309,16 @@ async fn run_receiver(o: &Options) -> Result<()> {
     }
     let counters = Arc::new(Counters::default());
     counters.last.store(o.start_frame as i64 - 1, Ordering::Relaxed);
+    let telemetry = o.sample_transport.then(|| transport_sampler(connection.clone(), Some(counters.clone())));
     let task = tokio::spawn(feedback_loop(connection.clone(), counters.clone(), started, o.clone()));
     let received = receive_all(&connection, counters.clone(), started, o).await;
     counters.done.store(true, Ordering::Relaxed);
     let _ = task.await;
+    if let Some(telemetry) = telemetry {
+        telemetry.abort();
+        let _ = telemetry.await;
+        transport_sample(&connection, Some(&counters));
+    }
     tokio::time::sleep(Duration::from_millis(100)).await;
     log(format!("BYTE_COUNTERS {}", byte_summary("receiver", &connection.stats(), counters.bytes.load(Ordering::Relaxed))));
     endpoint.close(0u32.into(), b"done");
@@ -289,6 +361,10 @@ async fn feedback_loop(conn: Connection, c: Arc<Counters>, started: Instant, o: 
                         .map(|t| now_unix_ms >= t && now_unix_ms - t < 500.0)
                         .unwrap_or(false);
                     if fresh && v.get("status").and_then(|s| s.as_str()) == Some("live") {
+                    if o.vod_max_buffer_frames > 0 {
+                        fb.vod = v.get("vod")
+                            .and_then(|value| serde_json::from_value(value.clone()).ok());
+                    }
                     for (key, target) in [
                         ("decode_ms", &mut fb.decode_ms),
                         ("ntc_inference_ms", &mut fb.ntc_inference_ms),
@@ -316,7 +392,8 @@ async fn feedback_loop(conn: Connection, c: Arc<Counters>, started: Instant, o: 
             }
         }
         let final_playout_ms = o.playout_ms + o.frames as f64 * 1000.0 / o.fps;
-        let final_report = fb.receiver_done && fb.elapsed_ms >= final_playout_ms;
+        let final_report = fb.receiver_done &&
+            (o.vod_max_buffer_frames > 0 || fb.elapsed_ms >= final_playout_ms);
         if let Ok(mut stream) = conn.open_uni().await {
             if let Ok(json) = serde_json::to_vec(&fb) {
                 let _ = stream.write_all(&json).await;
@@ -334,6 +411,11 @@ async fn feedback_loop(conn: Connection, c: Arc<Counters>, started: Instant, o: 
                 sequence, rate_ewma, fb.buffer_frames, fb.completed_ntcs,
                 fb.missed_deadlines, fb.gpu_timing_source,
                 fb.last_applied_ntc, fb.playback_deadline_misses));
+        }
+        if o.sample_transport {
+            if let Some(vod) = &fb.vod {
+                log(format!("PLAYOUT_BUFFER {} {:.3} {}", vod.phase, fb.elapsed_ms, vod.ready_frames));
+            }
         }
         // Keep the feedback channel alive through the final GPU playout tick,
         // even for a 3-NTC smoke test whose transport finishes in ~130 ms.
@@ -745,6 +827,28 @@ async fn submit_ntc_groups(conn: &Connection, frame: u32, bodies: &[Vec<u8>],
     Ok(())
 }
 
+fn vod_can_submit(frame: u32, start_frame: u32, max_buffer_frames: u32,
+                  feedback: Option<&VodFeedback>) -> bool {
+    let (next, ready) = feedback.map_or((start_frame, 0), |v| (v.next_ntc, v.ready_frames));
+    let limit = max_buffer_frames.min(ready.saturating_add(VOD_REQUEST_WINDOW));
+    frame.saturating_sub(next) < limit
+}
+
+fn buffer_tier_budget(base_bytes: usize, full_bytes: usize, ready_frames: u32,
+                      max_buffer_frames: u32, reservoir: f64) -> f64 {
+    // Keep the full-rate threshold at 90% while varying the reservoir.
+    let occupancy = ready_frames as f64 / max_buffer_frames as f64;
+    let fraction = ((occupancy - reservoir) / (0.9 - reservoir)).clamp(0.0, 1.0);
+    base_bytes as f64 + (full_bytes - base_bytes) as f64 * fraction
+}
+
+fn payload_group_path(root: &Path, frame: u32, bits: u8, tier: usize, allow_flat_int4: bool) -> PathBuf {
+    let paired = root.join(format!("NTC_{frame:06}/int{bits}"));
+    if bits == 4 && allow_flat_int4 && !paired.is_dir() {
+        root.join(format!("NTC_{frame:06}/P{tier}.bin"))
+    } else { paired.join(format!("P{tier}.bin")) }
+}
+
 async fn run_sender(o: &Options) -> Result<()> {
     let cert = fs::read(&o.cert)?;
     let mut roots = rustls::RootCertStore::empty();
@@ -771,6 +875,8 @@ async fn run_sender(o: &Options) -> Result<()> {
     // elapsed timings themselves remain monotonic.
     let started_unix_ms = SystemTime::now().duration_since(UNIX_EPOCH)?.as_secs_f64() * 1000.0;
     log(format!("SENDER_EPOCH unix_ms={started_unix_ms:.3}"));
+    log(format!("BANDWIDTH_ESTIMATOR {}", o.bandwidth_estimator));
+    let telemetry = o.sample_transport.then(|| transport_sampler(conn.clone(), None));
     let current_fb = Arc::new(Mutex::new(Feedback::initial(o)));
     let reader = tokio::spawn(read_feedback(conn.clone(), current_fb.clone()));
     let mut queued_bytes = 0u64;
@@ -781,21 +887,41 @@ async fn run_sender(o: &Options) -> Result<()> {
     let mut observed_rtt_jitter_ms = 0.0;
     let mut tier_counts = [0u64; 5];
     let mut infeasible = 0u64;
+    let vod = o.vod_max_buffer_frames > 0;
     log(format!("SCHEDULING_MODE {} TIER_SELECTION {} FIXED_TIERS {} QUINN_PRIORITY {}",
                 o.scheduling_mode, o.tier_selection, o.fixed_tiers,
                 if tiered { "tiered" } else { "equal" }));
     for offset in 0..o.frames {
-        let target = Duration::from_secs_f64(offset as f64 / o.fps);
-        if let Some(sleep) = target.checked_sub(started.elapsed()) {
-            tokio::time::sleep(sleep).await;
-        }
         let frame = o.start_frame + offset;
-        let mut bodies = Vec::with_capacity(4);
-        for tier in 0..4 {
-            let path = o.payload_dir.join(format!("NTC_{frame:06}/P{tier}.bin"));
-            let body = fs::read(&path).with_context(|| format!("reading {}", path.display()))?;
-            if body.len() > MAX_GROUP { bail!("NTC {frame} P{tier} payload too large"); }
-            bodies.push(body);
+        if vod {
+            let wait_started = Instant::now();
+            loop {
+                let can_submit = vod_can_submit(frame, o.start_frame, o.vod_max_buffer_frames,
+                                                current_fb.lock().await.vod.as_ref());
+                if can_submit { break; }
+                if wait_started.elapsed() > Duration::from_millis(o.delivery_timeout_ms) {
+                    bail!("VoD receiver made no buffer progress before NTC {frame}");
+                }
+                tokio::time::sleep(Duration::from_millis(5)).await;
+            }
+        } else {
+            let target = Duration::from_secs_f64(offset as f64 / o.fps);
+            if let Some(sleep) = target.checked_sub(started.elapsed()) {
+                tokio::time::sleep(sleep).await;
+            }
+        }
+        let mut variants: Vec<(u8, Vec<Vec<u8>>)> = Vec::new();
+        for bits in [2u8, 4u8] {
+            if (o.precision_policy == "fixed2" && bits != 2) ||
+               (o.precision_policy == "fixed4" && bits != 4) { continue; }
+            let mut variant = Vec::with_capacity(4);
+            for tier in 0..4 {
+                let path = payload_group_path(&o.payload_dir, frame, bits, tier, o.precision_policy == "fixed4");
+                let body = fs::read(&path).with_context(|| format!("reading {}", path.display()))?;
+                if body.len() > MAX_GROUP { bail!("NTC {frame} P{tier} payload too large"); }
+                variant.push(body);
+            }
+            variants.push((bits, variant));
         }
         let frame_start = Instant::now();
         let stats = conn.stats();
@@ -821,7 +947,9 @@ async fn run_sender(o: &Options) -> Result<()> {
         let raw_path_mbps = o.initial_mbps.min(cwnd_mbps.max(0.1));
         let waiting_bytes = queued_bytes.saturating_sub(fb.total_received_bytes);
         let backlog_threshold = raw_path_mbps * 1e6 / (8.0 * o.fps) * 2.0;
-        let capacity_mbps = if fb.sequence >= 3 && fb.app_goodput_mbps > 0.0 &&
+        let capacity_mbps = if o.bandwidth_estimator == "goodput" && fb.sequence > 0 {
+            o.initial_mbps.min(fb.app_goodput_mbps)
+        } else if fb.sequence >= 3 && fb.app_goodput_mbps > 0.0 &&
             waiting_bytes as f64 > backlog_threshold {
             raw_path_mbps.min(fb.app_goodput_mbps * 1.15)
         } else { raw_path_mbps };
@@ -831,43 +959,71 @@ async fn run_sender(o: &Options) -> Result<()> {
         let client_ms = fb.decode_ms + fb.ntc_inference_ms + fb.render_ms;
         let gpu_feasible = client_ms <= 1000.0 / o.fps;
         let expected_played = (fb.elapsed_ms - o.playout_ms).max(0.0) * o.fps / 1000.0;
-        let viewer_is_behind = fb.gpu_timing_source == "live_cuda_viewer"
+        let viewer_is_behind = !vod && fb.gpu_timing_source == "live_cuda_viewer"
             && expected_played.floor() as i64 + o.start_frame as i64 > fb.last_applied_ntc + 1;
         if !gpu_feasible {
             log(format!("GPU_BUDGET_INFEASIBLE frame={frame} client_ms={client_ms:.2} tick_ms={:.2}",
                         1000.0 / o.fps));
         }
-        let deadline_ms = o.playout_ms + offset as f64 * 1000.0 / o.fps;
         let now_ms = started.elapsed().as_secs_f64() * 1000.0;
+        let vod_deadline = fb.vod.as_ref().filter(|v| v.phase == "playing").and_then(|v| {
+            v.next_due_unix_ms.map(|due| due - started_unix_ms +
+                                  frame.saturating_sub(v.next_ntc) as f64 * 1000.0 / o.fps)
+        });
+        let deadline_ms = if vod { vod_deadline.unwrap_or(now_ms).max(0.0) }
+                          else { o.playout_ms + offset as f64 * 1000.0 / o.fps };
         let bytes_per_tick = rate_mbps * 1e6 / (8.0 * o.fps);
-        let mut selected = 0usize;
-        let mut size = 0usize;
-        if o.scheduling_mode == "adaptive" || o.tier_selection == "adaptive" {
-            for (tier, body) in bodies.iter().enumerate() {
-                let candidate = size + body.len();
-                let arrival_ms = now_ms + queue_ms + candidate as f64 * 8.0 /
-                    (rate_mbps * 1000.0) + rtt_ms / 2.0 + client_ms + 2.0 * observed_rtt_jitter_ms;
-                if candidate as f64 <= bytes_per_tick && arrival_ms <= deadline_ms &&
-                    (!viewer_is_behind || tier == 0) &&
-                    (gpu_feasible || tier == 0) {
-                    selected = tier + 1;
-                    size = candidate;
-                } else { break; }
-            }
-            if selected == 0 {
-                // The NTCs are cumulative: never silently omit an update.
+        // Equal deadline rules; adaptive chooses most groups and then INT4.
+        let mut choices: Vec<(usize, u8, usize)> = Vec::new();
+        for (bits, bodies) in &variants {
+            let mut selected = 0usize;
+            let mut size = 0usize;
+            if o.tier_selection == "fixed" && o.scheduling_mode != "adaptive" {
+                selected = o.fixed_tiers;
+                size = bodies.iter().take(selected).map(Vec::len).sum();
+            } else if vod && vod_deadline.is_none() {
                 selected = 1;
                 size = bodies[0].len();
-                infeasible += 1;
-                log(format!("DEADLINE_INFEASIBLE frame={frame} P0_bytes={size} tick_budget={bytes_per_tick:.0}"));
+            } else if o.tier_selection == "buffer" {
+                let ready = fb.vod.as_ref().map_or(0, |v| v.ready_frames);
+                let full: usize = bodies.iter().map(Vec::len).sum();
+                let budget = buffer_tier_budget(bodies[0].len(), full, ready,
+                                               o.vod_max_buffer_frames, o.buffer_reservoir);
+                for body in bodies {
+                    if (size + body.len()) as f64 > budget { break; }
+                    size += body.len(); selected += 1;
+                }
+            } else if o.scheduling_mode == "adaptive" || o.tier_selection == "adaptive" {
+                for (tier, body) in bodies.iter().enumerate() {
+                    let candidate = size + body.len();
+                    let arrival = now_ms + queue_ms + candidate as f64 * 8.0 /
+                        (rate_mbps * 1000.0) + rtt_ms / 2.0 + client_ms + 2.0 * observed_rtt_jitter_ms;
+                    if candidate as f64 <= bytes_per_tick && arrival <= deadline_ms &&
+                        (!viewer_is_behind || tier == 0) && (gpu_feasible || tier == 0) {
+                        selected = tier + 1; size = candidate;
+                    } else { break; }
+                }
+            } else {
+                selected = 4;
+                size = bodies.iter().take(selected).map(Vec::len).sum();
             }
-        } else {
-            // Controlled comparison: force identical tier counts across all
-            // scheduling arms for this network condition. The fixed-tier
-            // scenario is provisioned independently of measured feedback.
-            selected = if o.tier_selection == "fixed" { o.fixed_tiers } else { 4 };
-            size = bodies.iter().take(selected).map(Vec::len).sum();
+            choices.push((selected, *bits, size));
         }
+        let startup = vod && vod_deadline.is_none();
+        let no_feasible_choice = choices.iter().all(|c| c.0 == 0);
+        let (mut selected, bits, mut size) = if (startup || no_feasible_choice) && o.precision_policy == "adaptive" {
+            *choices.iter().find(|c| c.1 == 2).unwrap()
+        } else {
+            *choices.iter().max_by_key(|c| (c.0, c.1)).unwrap()
+        };
+        let bodies = variants.into_iter().find(|v| v.0 == bits).unwrap().1;
+        if selected == 0 {
+            selected = 1;
+            size = bodies[0].len();
+            infeasible += 1;
+            log(format!("DEADLINE_INFEASIBLE frame={frame} P0_bytes={size} tick_budget={bytes_per_tick:.0}"));
+        }
+        log(format!("PRECISION frame={frame} bits={bits}"));
         tier_counts[selected] += 1;
         log(format!("DECISION frame={frame} tiers={selected} bytes={size} capacity_mbps={rate_mbps:.3} measured_goodput_mbps={:.3} cwnd={} rtt_ms={rtt_ms:.2} min_rtt_ms={:.2} jitter_sample_ms={observed_rtt_jitter_ms:.2} backlog_ms={queue_ms:.2} client_ms={client_ms:.2} gpu_source={} deadline_ms={deadline_ms:.2} loss_delta={extra_loss} sent_delta={sent_packets} loss_fraction={loss_fraction:.5} congestion_delta={extra_congestion}",
                     fb.app_goodput_mbps, stats.path.cwnd,
@@ -930,11 +1086,22 @@ async fn run_sender(o: &Options) -> Result<()> {
     let final_playout = Duration::from_secs_f64(
         (o.playout_ms + o.frames as f64 * 1000.0 / o.fps + o.feedback_ms as f64) / 1000.0,
     );
-    if let Some(remaining) = final_playout.checked_sub(started.elapsed()) {
-        tokio::time::sleep(remaining).await;
+    if !vod {
+        if let Some(remaining) = final_playout.checked_sub(started.elapsed()) {
+            tokio::time::sleep(remaining).await;
+        }
+    }
+    reader.abort();
+    if let Some(telemetry) = telemetry {
+        telemetry.abort();
+        let _ = telemetry.await;
+        transport_sample(&conn, None);
+    }
+    if vod {
+        let stats = conn.stats();
+        log(format!("QUINN_UDP_BYTES tx={} rx={}", stats.udp_tx.bytes, stats.udp_rx.bytes));
     }
     log(format!("BYTE_COUNTERS {}", byte_summary("sender", &conn.stats(), queued_bytes)));
-    reader.abort();
     endpoint.close(0u32.into(), b"done");
     endpoint.wait_idle().await;
     Ok(())
@@ -1017,5 +1184,35 @@ mod byte_counter_tests {
         assert_eq!(row["unique_application_payload_bytes"], 8000);
         assert_eq!(row["udp_tx_bytes"], 12345);
         assert_eq!(row["udp_rx_bytes"], 4567);
+    }
+}
+
+#[cfg(test)]
+mod adaptive_compatibility_tests {
+    use super::*;
+    #[test]
+    fn vod_window_grows_with_ready_data_and_stays_bounded() {
+        assert!(vod_can_submit(11, 0, 60, None));
+        assert!(!vod_can_submit(12, 0, 60, None));
+        let feedback = VodFeedback { phase: "playing".into(), next_ntc: 10,
+            ready_frames: 20, next_due_unix_ms: None };
+        assert!(vod_can_submit(41, 0, 60, Some(&feedback)));
+        assert!(!vod_can_submit(42, 0, 60, Some(&feedback)));
+        assert!(!vod_can_submit(25, 0, 15, Some(&feedback)));
+    }
+    #[test]
+    fn buffer_budget_preserves_base_and_caps_at_full_payload() {
+        assert_eq!(buffer_tier_budget(100, 400, 0, 60, 0.2), 100.0);
+        assert_eq!(buffer_tier_budget(100, 400, 12, 60, 0.2), 100.0);
+        assert_eq!(buffer_tier_budget(100, 400, 60, 60, 0.2), 400.0);
+        assert!(buffer_tier_budget(100, 400, 30, 60, 0.2) > 100.0);
+        assert!(buffer_tier_budget(100, 400, 30, 60, 0.2) < 400.0);
+    }
+    #[test]
+    fn flat_int4_legacy_paths_do_not_become_int2_paths() {
+        let root = Path::new("/nonexistent-q3dg-test-payload");
+        assert_eq!(payload_group_path(root, 7, 4, 0, true), root.join("NTC_000007/P0.bin"));
+        assert_eq!(payload_group_path(root, 7, 2, 0, true), root.join("NTC_000007/int2/P0.bin"));
+        assert_eq!(payload_group_path(root, 7, 4, 0, false), root.join("NTC_000007/int4/P0.bin"));
     }
 }

@@ -20,7 +20,9 @@ import threading
 import time
 from contextlib import nullcontext
 
-from net_link import isolated_link, parse_rate_profile, apply_rate_profile
+from net_link import (WIFI_IMPAIRMENTS, apply_rate_profile, isolated_link,
+                      isolated_wifi_loopback, parse_rate_profile)
+from network_samples import sample_bottleneck
 from run_ntc import DEFAULT_WIRE_DIR, pump, within_namespace
 from run_sequence import prepare_all, paths_for, DEFAULT_PRIORITY_DIR
 
@@ -49,6 +51,8 @@ PREDICT_CONTEXT = re.compile(
     r"buffer_frames=(\d+) last_applied_ntc=(-?\d+)$"
 )
 SENDER_EPOCH = re.compile(r"^SENDER_EPOCH unix_ms=([\d.]+)$")
+UDP_BYTES = re.compile(r"^QUINN_UDP_BYTES tx=(\d+) rx=(\d+)$")
+PRECISION = re.compile(r"^PRECISION frame=(\d+) bits=(2|4)$")
 
 SCHEDULING_MODES = (
     "adaptive", "sequential_equal", "concurrent_equal",
@@ -61,14 +65,21 @@ SCHEDULING_MODES = (
 def verify_received(output, manifest, chosen):
     """Verify every transported actual group against its exact input hash."""
     frames = {}
-    for frame, selected in chosen.items():
+    for frame, decision in chosen.items():
         if frame not in manifest:
             raise RuntimeError(f"Unknown frame {frame}")
+        selected, bits = (decision, 4) if isinstance(decision, int) else decision
+        if not isinstance(selected, int) or not 1 <= selected <= 4 or bits not in (2, 4):
+            raise RuntimeError(f"Invalid group selection for NTC {frame}")
         received_dir = output / "priority" / "received" / f"NTC_{frame:06}"
         for priority in range(selected):
             file = received_dir / f"P{priority}.bin"
             actual = hashlib.sha256(file.read_bytes()).hexdigest()
-            expected = manifest[frame]["groups"][f"P{priority}"]["sha256"]
+            groups = (manifest[frame]["variants"][str(bits)]["groups"] if "variants" in manifest[frame]
+                      else manifest[frame]["groups"])
+            if "variants" not in manifest[frame] and bits != 4:
+                raise RuntimeError("Legacy groups require fixed4 precision")
+            expected = groups[f"P{priority}"]["sha256"]
             if actual != expected:
                 raise RuntimeError(f"Checksum mismatch for NTC {frame} P{priority}")
         if (files := list(received_dir.glob("P*.bin"))) and len(files) != selected:
@@ -95,16 +106,47 @@ def run(args):
         raise ValueError("--metrics-json cannot be combined with --live (the viewer supplies it)")
     if args.progressive and not args.live:
         raise ValueError("--progressive requires --live")
+    vod_frames = getattr(args, "vod_startup_frames", 0)
+    vod_limit = getattr(args, "vod_max_buffer_frames", 60)
+    if vod_frames and (not args.live or args.progressive or
+                       not 1 <= vod_frames <= min(vod_limit, args.frames) or vod_limit > 128):
+        raise ValueError("VoD requires --live and a valid contiguous startup buffer")
+    if args.tier_selection == "buffer" and not vod_frames:
+        raise ValueError("Buffer-based tier selection requires VoD playback")
+    if args.sample_network and not (args.netns and vod_frames):
+        raise ValueError("Network sampling requires a shaped VoD link")
     profile = parse_rate_profile(args.rate_profile)
     if profile and not args.netns:
         raise ValueError("--rate-profile requires --netns for isolated tc changes")
-    selection = paths_for(args)
+    wifi_impairment = getattr(args, "wifi_impairment", None)
+    if wifi_impairment is not None and not (args.netns and profile):
+        raise ValueError("--wifi-impairment requires --netns and --rate-profile")
+    prepared_arg = getattr(args, "prepared", None)
+    if prepared_arg:
+        prepared = Path(prepared_arg).expanduser().resolve()
+        manifest_path = prepared / "sequence_manifest.json"
+        sequence = json.loads(manifest_path.read_text())
+        manifests = {int(i): m for i, m in sequence["manifests"].items()}
+        if set(manifests) != set(range(args.start_frame, args.start_frame + args.frames)):
+            raise ValueError("Prepared sequence does not match the requested frames")
+        total_bytes = sequence["payload_bytes_total"]
+    else:
+        selection = paths_for(args)
     output = (Path(args.out).expanduser().resolve() if args.out else
               HERE / f"results_deadline_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{os.getpid()}")
     output.mkdir(parents=True, exist_ok=False)
-    manifests, total_bytes = prepare_all(selection, output)
-    p0_mbps = sum(m["groups"]["P0"]["payload_bytes"] for m in manifests.values()) * (
-        args.fps * 8 / args.frames / 1e6)
+    if not prepared_arg:
+        prepared = output
+        manifest_path = output / "sequence_manifest.json"
+        manifests, total_bytes = prepare_all(selection, output)
+    paired = ["variants" in m for m in manifests.values()]
+    if any(paired) != all(paired):
+        raise ValueError("A sequence cannot mix paired and legacy group layouts")
+    if not any(paired) and args.precision_policy != "fixed4":
+        raise ValueError("INT2/adaptive precision requires paired prepared inputs")
+    p0_bits = "4" if args.precision_policy == "fixed4" else "2"
+    p0_bytes = sum((m["variants"][p0_bits]["groups"] if "variants" in m else m["groups"])["P0"]["payload_bytes"] for m in manifests.values())
+    p0_mbps = p0_bytes * args.fps * 8 / args.frames / 1e6
     full_mbps = total_bytes * args.fps * 8 / args.frames / 1e6
     print(f"INPUT {args.frames} NTCs, {total_bytes/1e6:.3f} MB; "
           f"required at {args.fps:g}FPS: P0={p0_mbps:.3f}Mbps full={full_mbps:.3f}Mbps "
@@ -113,7 +155,8 @@ def run(args):
         print(f"PREPARED {output}"); return
     if not shutil.which("cargo"):
         raise RuntimeError("Cargo unavailable. Build/run on your Ubuntu laptop.")
-    subprocess.run(["cargo", "build", "--release"], cwd=HERE, check=True)
+    lock_args = ["--locked"] if (HERE / "Cargo.lock").is_file() else []
+    subprocess.run(["cargo", "build", "--release", *lock_args], cwd=HERE, check=True)
     binary = HERE / "target" / "release" / "quinn-ntc-deadline"
     trial = output / "priority"
     trial.mkdir()
@@ -123,11 +166,15 @@ def run(args):
     live_folder = trial / "live"
     metrics_file = trial / "live_metrics.json"
     session_clock = trial / "connection_clock.json"
+    play_request = trial / "play_request.json"
     initial_link_rate = profile[0][1] if profile else args.rate_mbps
     initial_estimate = (args.initial_mbps if args.initial_mbps is not None else
                         max(mbps for _, mbps in profile) if profile else args.rate_mbps)
-    link = (isolated_link(initial_link_rate, args.delay_ms, args.loss_pct) if args.netns
+    link = (isolated_link(initial_link_rate, args.delay_ms, args.loss_pct,
+                          forward_only=bool(vod_frames)) if args.netns
             else nullcontext({"host": "127.0.0.1"}))
+    if wifi_impairment is not None:
+        link = isolated_wifi_loopback(initial_link_rate, wifi_impairment)
     gpu_proc = None
     with link as network:
         common = [
@@ -139,14 +186,20 @@ def run(args):
             "--scheduling-mode", args.scheduling_mode,
             "--quinn-priority", args.quinn_priority,
             "--tier-selection", args.tier_selection,
+            "--precision-policy", args.precision_policy,
             "--fixed-tiers", str(args.fixed_tiers),
             "--max-inflight", str(args.max_inflight),
             "--tier-delays-ms", args.tier_delays_ms,
             "--delivery-timeout-ms", str(args.delivery_timeout_ms),
             "--utilization", str(args.utilization),
+            "--buffer-reservoir", str(getattr(args, "buffer_reservoir", 0.20)),
+            "--bandwidth-estimator", args.bandwidth_estimator,
+            *(["--sample-transport"] if args.sample_network else []),
             "--inference-ms", str(args.inference_ms),
             "--render-ms", str(args.render_ms), "--decode-ms", str(args.decode_ms),
         ]
+        if vod_frames:
+            common += ["--vod-max-buffer-frames", str(vod_limit)]
         recv_cmd = within_namespace(
             [str(binary), "receiver", "--cert", str(cert),
              "--received-dir", str(received), *common,
@@ -156,7 +209,7 @@ def run(args):
             network.get("server_ns"))
         send_cmd = within_namespace(
             [str(binary), "sender", "--cert", str(cert),
-             "--payload-dir", str(output / "send"), *common],
+             "--payload-dir", str(prepared / "send"), *common],
             network.get("client_ns"))
         events = queue.Queue()
         receiver = None
@@ -165,13 +218,34 @@ def run(args):
         rate_stop = threading.Event()
         rate_errors = []
         rate_thread = None
+        rate_changes = []
+        pumps = []
+        queue_stop = threading.Event()
+        queue_samples, queue_errors = [], []
+        queue_thread = None
+
+        def start_rate_controller(epoch):
+            thread = threading.Thread(
+                target=apply_rate_profile,
+                args=(profile, network, args.delay_ms, args.loss_pct, rate_stop, epoch, rate_errors),
+                kwargs={"forward_only": bool(vod_frames), "changes": rate_changes if vod_frames else None},
+                daemon=True,
+            )
+            thread.start()
+            return thread
+
+        def start_pump(name, proc):
+            thread = threading.Thread(target=pump, args=(name, proc, events), daemon=True)
+            thread.start()
+            pumps.append(thread)
+
         start = time.monotonic()
         try:
             if args.live:
                 live_cmd = [
                     sys.executable, str(HERE / "live_client.py"),
                     "--out", str(live_folder), "--received-dir", str(received),
-                    "--manifest", str(output / "sequence_manifest.json"),
+                    "--manifest", str(manifest_path),
                     "--clock-file", str(session_clock), "--metrics-json", str(metrics_file),
                     "--scene-base", str(Path(args.scene_base).expanduser().resolve()),
                     "--viewer", str(Path(args.viewer).expanduser().resolve()),
@@ -190,9 +264,18 @@ def run(args):
                     "--preview-linger-seconds", str(args.preview_linger_seconds),
                     *(["--save-stages"] if args.save_stages else []),
                 ]
+                if args.camera_config:
+                    from camera_config import load_camera
+                    camera_snapshot = output / "camera-config.json"
+                    camera_snapshot.write_bytes(args.camera_config.expanduser().resolve().read_bytes())
+                    load_camera(camera_snapshot, Path(args.scene_base).expanduser() / "init_3dgs.ply")
+                    live_cmd += ["--camera-config", str(camera_snapshot)]
+                if vod_frames:
+                    live_cmd += ["--vod-startup-frames", str(vod_frames),
+                                 "--play-request-file", str(play_request)]
                 gpu_proc = subprocess.Popen(live_cmd, cwd=HERE, stdout=subprocess.PIPE,
                                             stderr=subprocess.STDOUT, text=True, bufsize=1)
-                threading.Thread(target=pump, args=("GPU", gpu_proc, events), daemon=True).start()
+                start_pump("GPU", gpu_proc)
                 print("[LIVE] Preloading CUDA renderer before QUIC connects...", flush=True)
                 preload_start = time.monotonic()
                 while not (live_folder / "ready.json").is_file():
@@ -205,7 +288,7 @@ def run(args):
                 print("[LIVE] Viewer ready; starting Quinn receiver/sender", flush=True)
             receiver = subprocess.Popen(recv_cmd, cwd=HERE, stdout=subprocess.PIPE,
                                         stderr=subprocess.STDOUT, text=True, bufsize=1)
-            threading.Thread(target=pump, args=("RECEIVER", receiver, events), daemon=True).start()
+            start_pump("RECEIVER", receiver)
             receiver_start = time.monotonic()
             while not cert.exists():
                 if receiver.poll() is not None:
@@ -213,15 +296,18 @@ def run(args):
                 if time.monotonic() - receiver_start > 20:
                     raise TimeoutError("Receiver did not become ready")
                 time.sleep(0.02)
+            if vod_frames:
+                play_request.write_text(json.dumps({"monotonic_s": time.monotonic()}) + "\n")
+            if args.sample_network:
+                queue_thread = threading.Thread(target=sample_bottleneck,
+                                                args=(network, queue_stop, queue_samples, queue_errors),
+                                                daemon=True)
+                queue_thread.start()
             sender = subprocess.Popen(send_cmd, cwd=HERE, stdout=subprocess.PIPE,
                                       stderr=subprocess.STDOUT, text=True, bufsize=1)
-            threading.Thread(target=pump, args=("SENDER", sender, events), daemon=True).start()
-            if len(profile) > 1:
-                rate_thread = threading.Thread(
-                    target=apply_rate_profile,
-                    args=(profile, network, args.delay_ms, args.loss_pct,
-                          rate_stop, time.monotonic(), rate_errors), daemon=True)
-                rate_thread.start()
+            start_pump("SENDER", sender)
+            if len(profile) > 1 and not vod_frames:
+                rate_thread = start_rate_controller(time.monotonic())
             while True:
                 if rate_errors:
                     raise RuntimeError(f"Bandwidth-profile controller failed: {rate_errors}")
@@ -233,6 +319,10 @@ def run(args):
                     who, line = None, None
                 if line and line != "__EXIT__":
                     all_logs.append((who, line))
+                    if vod_frames and profile and rate_thread is None and who == "SENDER":
+                        if (match := SENDER_EPOCH.fullmatch(line)):
+                            epoch = time.monotonic() - (time.time() - float(match[1]) / 1000)
+                            rate_thread = start_rate_controller(epoch)
                     if line.startswith(("SENDER_FINISH", "ALL_COMPLETE", "DEADLINE_INFEASIBLE")):
                         print(f"[{who}] {line}", flush=True)
                     elif who == "GPU" and line.startswith(("[LIVE]", "[LIVE DONE]", "[GPU READY]", "[PREVIEW]")):
@@ -262,9 +352,8 @@ def run(args):
                             print(line, flush=True)
                 if gpu_proc.returncode != 0:
                     raise RuntimeError(f"Live viewer failed {gpu_proc.returncode}: {all_logs[-15:]}")
-            while not events.empty():
-                who, line = events.get_nowait()
-                if line and line != "__EXIT__": all_logs.append((who, line))
+            if rate_errors:
+                raise RuntimeError(f"Bandwidth-profile controller failed: {rate_errors}")
         finally:
             rate_stop.set()
             if rate_thread is not None:
@@ -273,14 +362,37 @@ def run(args):
                 if proc is not None and proc.poll() is None:
                     proc.terminate()
                     try: proc.wait(timeout=3)
-                    except subprocess.TimeoutExpired: proc.kill()
+                    except subprocess.TimeoutExpired:
+                        proc.kill()
+                        proc.wait()
+            for thread in pumps:
+                thread.join(timeout=2)
+            queue_stop.set()
+            if queue_thread is not None:
+                queue_thread.join(timeout=4)
+                if queue_thread.is_alive():
+                    queue_errors.append("bottleneck sampler did not stop")
+            while not events.empty():
+                who, line = events.get_nowait()
+                if line and line != "__EXIT__": all_logs.append((who, line))
+            (trial / "transport.log").write_text("\n".join(f"[{who}] {line}" for who, line in all_logs) + "\n")
+            if rate_changes:
+                write_csv(trial / "rate_changes.csv", rate_changes)
+            if queue_samples:
+                write_csv(trial / "bottleneck_samples.csv", queue_samples)
 
     decisions, arrivals, group_arrivals, group_write_starts, feedback_lines = {}, {}, {}, {}, []
     group_net_ready = {}
     group_write_ends, native_priorities = {}, {}
     predict_contexts = {}
+    precisions = {}
     sender_epoch_unix_ms = None
     for who, line in all_logs:
+        if who == "SENDER" and (match := PRECISION.fullmatch(line)):
+            frame = int(match[1])
+            if frame in precisions:
+                raise RuntimeError(f"Duplicate precision choice for NTC {frame}")
+            precisions[frame] = int(match[2])
         if who == "SENDER" and (match := SENDER_EPOCH.fullmatch(line)):
             sender_epoch_unix_ms = float(match[1])
         if who == "SENDER" and (match := PREDICT_CONTEXT.fullmatch(line)):
@@ -349,14 +461,32 @@ def run(args):
             feedback_lines.append(line)
     if len(decisions) != args.frames or len(arrivals) != args.frames:
         raise RuntimeError(f"Missing decisions/receipts: {len(decisions)}/{len(arrivals)} of {args.frames}")
+    if set(precisions) != set(decisions):
+        raise RuntimeError("Missing per-frame precision choices")
+    for frame, bits in precisions.items():
+        decisions[frame]["precision_bits"] = bits
     if len(predict_contexts) != args.frames or sender_epoch_unix_ms is None:
         raise RuntimeError(f"Missing sender prediction context: {len(predict_contexts)}/{args.frames}")
     if not session_clock.is_file():
         raise RuntimeError("Missing receiver connection epoch; cannot compare cross-process times")
     receiver_epoch_unix_ms = float(json.loads(session_clock.read_text())["unix_ms"])
     sender_to_receiver_ms = sender_epoch_unix_ms - receiver_epoch_unix_ms
+    if args.sample_network:
+        if queue_errors or len(queue_samples) < 2:
+            raise RuntimeError(f"Bottleneck sampler failed: {queue_errors or 'missing samples'}")
+        for role in ("SENDER", "RECEIVER"):
+            samples = [json.loads(line.removeprefix("TRANSPORT_SAMPLE ")) for who, line in all_logs
+                       if who == role and line.startswith("TRANSPORT_SAMPLE ")]
+            if len(samples) < 2:
+                raise RuntimeError(f"Missing timed {role} transport samples")
+            write_csv(trial / f"{role.lower()}_quic_samples.csv", samples)
+        write_csv(trial / "playout_buffer_samples.csv", [
+            {"phase": phase, "receiver_connection_ms": elapsed, "buffer_frames": frames}
+            for who, line in all_logs if who == "RECEIVER" and line.startswith("PLAYOUT_BUFFER ")
+            for _, phase, elapsed, frames in [line.split()]
+        ])
     verified = verify_received(output, manifests,
-                               {f: d["selected_tiers"] for f, d in decisions.items()})
+                               {f: (d["selected_tiers"], d["precision_bits"]) for f, d in decisions.items()})
     rows = []
     previous_completion = None
     late_run = 0
@@ -443,13 +573,12 @@ def run(args):
         previous_completion = completion
     write_csv(trial / "per_frame_deadline.csv", rows)
     (trial / "feedback.log").write_text("\n".join(feedback_lines) + "\n")
-    (trial / "transport.log").write_text("\n".join(f"[{who}] {line}" for who, line in all_logs) + "\n")
     summary = {
         "frames": args.frames, "fps_target": args.fps,
         "scheduling_mode": args.scheduling_mode,
         "quinn_priority_policy": args.quinn_priority,
         "tier_selection": args.tier_selection, "fixed_tiers": args.fixed_tiers,
-        "rate_profile": args.rate_profile,
+        "rate_profile": args.rate_profile, "wifi_impairment": wifi_impairment,
         "concurrent_write_start_mean_spread_ms": sum(float(r["write_start_spread_ms"]) for r in rows) / len(rows),
         "p0_deadline_missed_transport": sum(row["p0_deadline_missed"] for row in rows),
         "selected_tier_counts": {f"P0..P{j-1}": sum(v == j for v in verified.values())
@@ -495,15 +624,36 @@ def run(args):
             "Cumulative NTC backlog is applied in order, which may cause GPU tick overruns",
             "Post-deadline enhancement tiers are not retroactively applied",
         ]
+        if vod_frames:
+            udp = [m for who, line in all_logs if who == "SENDER" and (m := UDP_BYTES.fullmatch(line))]
+            if len(udp) != 1 or not p0_bytes <= summary["payload_bytes_verified"] <= total_bytes:
+                raise RuntimeError("VoD sender counters failed verification")
+            summary.update(
+                source="Actual QUIC delivery + buffered VoD CUDA/OpenGL playback",
+                vod_max_buffer_frames=vod_limit,
+                sender_udp_payload_bytes=int(udp[0][1]),
+                sender_received_udp_payload_bytes=int(udp[0][2]),
+                actual_rate_changes=len(rate_changes),
+                synthetic_transport_deadline_misses=summary.pop("deadline_missed_transport"),
+                synthetic_transport_p0_deadline_misses=summary.pop("p0_deadline_missed_transport"),
+                critical_limitations=[
+                    "Per-frame transport CSV deadlines use the legacy connection-relative clock",
+                    "Startup measurement begins with the base scene and CUDA context preloaded",
+                    "UDP payload counters exclude IP and UDP headers and connection close",
+                ],
+            )
         (trial / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
-    print(f"VERIFIED {len(verified)}/{args.frames} selected real INT4 group payloads SHA256=OK")
-    print(f"TIERS {summary['selected_tier_counts']} missed transport deadlines={summary['deadline_missed_transport']}")
+    print(f"VERIFIED {len(verified)}/{args.frames} selected INT2/INT4 group payloads SHA256=OK")
+    print(f"TIERS {summary['selected_tier_counts']}")
+    if not vod_frames:
+        print(f"Missed transport deadlines={summary['deadline_missed_transport']}")
     print(f"CSV {trial / 'per_frame_deadline.csv'}")
     print(f"RESULTS {trial}")
     if args.live:
         print(f"LIVE CSV {live_folder / 'playback_frames.csv'}")
         print(f"LIVE SUMMARY {live_folder / 'playback_summary.json'}")
-        print("NOTE: Real GPU playback measured; run evaluate_live.py separately for image quality.")
+        if not vod_frames:
+            print("NOTE: Real GPU playback measured; score captures separately for image quality.")
     else:
         print("NOTE: Transport-only run; no real-time GPU playback or render PSNR.")
 
@@ -516,6 +666,7 @@ if __name__ == "__main__":
     p.add_argument("--priority-dir", default=str(DEFAULT_PRIORITY_DIR))
     p.add_argument("--out")
     p.add_argument("--prepare-only", action="store_true")
+    p.add_argument("--prepared", help="Reuse a sequence made with --prepare-only")
     p.add_argument("--netns", action="store_true")
     p.add_argument("--rate-mbps", type=float, default=5)
     p.add_argument("--delay-ms", type=float, default=10)
@@ -527,24 +678,34 @@ if __name__ == "__main__":
                    help="Adaptive, original stage-by-stage, Quinn writes, or Amirali chunk admission")
     p.add_argument("--quinn-priority", choices=("equal", "tiered", "legacy"), default="legacy",
                    help="Native Quinn priority independent of application admission; matrix uses equal/tiered")
-    p.add_argument("--tier-selection", choices=("full", "fixed", "adaptive"), default="full",
+    p.add_argument("--tier-selection", choices=("full", "fixed", "adaptive", "buffer"), default="full",
                    help="All tiers, a shared fixed tier count, or feedback-driven tier selection")
+    p.add_argument("--precision-policy", choices=("fixed2", "fixed4", "adaptive"), default="fixed4")
     p.add_argument("--fixed-tiers", type=int, choices=range(1, 5), default=4)
     p.add_argument("--max-inflight", type=int, choices=range(1, 129), default=16,
                    help="Maximum in-flight chunks for Amirali's application-level policies")
     p.add_argument("--rate-profile", default="",
                    help="netns only: comma-separated elapsed_seconds:Mbps, e.g. 0:20,3:5,6:10")
+    p.add_argument("--wifi-impairment", choices=tuple(WIFI_IMPAIRMENTS),
+                   help="Apply the campus rate and selected impairment to one shared loopback queue")
     p.add_argument("--delivery-timeout-ms", type=int, default=30000,
                    help="Max wait for all application-level group receipts (default: 30000)")
     p.add_argument("--feedback-ms", type=int, default=100)
     p.add_argument("--playout-ms", type=float, default=150)
     p.add_argument("--utilization", type=float, default=0.92)
+    p.add_argument("--buffer-reservoir", type=float, default=0.20,
+                   help="Buffer-based P0-only threshold as a fraction of the maximum buffer")
+    p.add_argument("--bandwidth-estimator", choices=("hybrid", "goodput"), default="hybrid")
+    p.add_argument("--sample-network", action="store_true", help="Sample QUIC and the bottleneck queue")
     p.add_argument("--inference-ms", type=float, default=8,
                    help="Fallback ONLY; replace with measured GPU ms via --metrics-json")
     p.add_argument("--render-ms", type=float, default=8)
     p.add_argument("--decode-ms", type=float, default=1)
     p.add_argument("--metrics-json", help="Receiver-visible JSON periodically updated by GPU viewer")
     p.add_argument("--live", action="store_true", help="Run actual cumulative CUDA viewer during QUIC delivery")
+    p.add_argument("--vod-startup-frames", type=int, default=0,
+                   help="Enable VoD with this many consecutive P0 updates before playback")
+    p.add_argument("--vod-max-buffer-frames", type=int, default=60)
     p.add_argument("--progressive", action="store_true",
                    help="Show P0 first, then render later priority groups during the same playout tick")
     p.add_argument("--show-window", action="store_true",
@@ -558,8 +719,9 @@ if __name__ == "__main__":
     p.add_argument("--preparation-mode", choices=("none", "cpu", "dense", "async"), default="none",
                    help="GPU playback preparation, only meaningful with --live")
     p.add_argument("--prefetch-frames", type=int, default=4)
-    p.add_argument("--scene-base", default=str(Path.home() / "qntc_scenes/flame_steak_official"))
-    p.add_argument("--viewer", default=str(Path.home() / "QNTC_Linux_Package/3DGStreamViewer"))
+    p.add_argument("--scene-base", default=Path(__file__).resolve().parents[3] / 'data/scenes/flame_steak')
+    p.add_argument("--viewer", default=Path(__file__).resolve().parent / 'viewer')
+    p.add_argument("--camera-config", type=Path)
     p.add_argument("--width", type=int, default=1345)
     p.add_argument("--height", type=int, default=1008)
     p.add_argument("--capture-every", type=int, default=0,

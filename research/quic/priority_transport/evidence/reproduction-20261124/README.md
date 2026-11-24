@@ -1,87 +1,86 @@
-# Reproducing the compressed NTC experiments
+# Compressed NTC playback: completed GPU1 reproduction
 
-Públio's full reproduction bundle is now available on gpu1. It includes the actual INT2/INT4 models, saved saliency orders, campus Wi-Fi trace, adaptation code and completed image-quality results. The earlier report that these inputs and startup quality scores were missing is superseded by this evidence.
+**Completed:** 264 main live-GPU trials, plus six separate tests of the integrated repository runtime. Every case applied all 299 updates. All **2,700 scheduled live captures** matched their reconstructed replay exactly, with zero dropped captures. Thirty hertz is the playback target, not a claim of uninterrupted 30 FPS.
 
-## What was tested
+## What changed
 
-| Evidence | Scope |
-| --- | --- |
-| Supplied results, audited | 264 main trials and 7 earlier pilots. Recorded playback/transport summaries and all 81,029 per-image scores were checked. This is an archive consistency audit. |
-| Fresh transport controls | Six 299-update QUIC transfers: fixed INT2 P0, fixed INT4 P0–P1 and adaptive selection, each on campus rate variation and random loss. No GPU playback in these six controls. |
-| Fresh live compatibility study | 39 startup/adaptation trials on gpu1, with a real GPU receiver and the original experiment policies. The table below reports completion and quality-validation status. |
+Públio’s paired INT2/INT4 runtime is integrated into the existing Quinn experiment. The repository now includes the optional real CUDA/OpenGL viewer, verified asset preparation, explicit network presets, receiver-feedback adaptation, calibrated camera support and rootless server launchers. The old flat INT4 path also passed a real three-update GPU/replay regression. Públio’s selectors and compression method are credited in [UPSTREAM.json](../../UPSTREAM.json); local integration and commands are explained in [ADAPTIVE.md](../../ADAPTIVE.md).
 
-The main studies use one Flame Steak clip: 299 sequential NTC updates, approximately 10 seconds at a **30 Hz target**. Each update offers INT2 and INT4 keep20 representations, split into P0–P3. P0 provides the playable base; later groups refine it. The earlier keep05 controls use a different representation and cannot establish an improvement over keep20 by direct comparison.
+For each update, the sender chooses precision and how many cumulative weight groups to send. Each update has two-/four-bit weight versions. P0 is the approximate playable base; P1–P3 add weights. The decoder zero-fills omitted blocks to build a complete-shaped model tensor. Application submission controls when a stream is admitted. Quinn priority controls selection among pending streams. The receiver reconstructs the model and applies updates in sequence. Priority does not guarantee arrival order or a playback deadline.
 
-| Representation | Application payload for 299 updates | Average payload rate at 30 Hz |
-| --- | --- | --- |
-| INT2 P0 only | 11.69 MB | 9.38 Mbit/s |
-| INT2 P0–P3 | 46.60 MB | 37.41 Mbit/s |
-| INT4 P0–P1 | 38.22 MB | 30.68 Mbit/s |
-| INT4 P0–P3 | 76.38 MB | 61.31 Mbit/s |
+## Independent trials and conditions
 
-These rates exclude the initial scene and transport overhead. The chosen 70 Mbit/s ceiling can accommodate larger representations; the controlled drop to 16.8 Mbit/s forces smaller choices.
+| Cohort | Main trials | Purpose |
+| --- | ---: | --- |
+| Precision/tiers | 135 | Nine fixed/adaptive policies × five profiles × three repeats |
+| Adaptive QUIC priorities | 30 | Equal versus tiered priorities × five profiles × three repeats |
+| Matched-payload ablations | 60 | Four new ordering/priority/saliency arms × five profiles × three repeats |
+| Startup/estimator sweep | 39 | Previously validated buffer/deadline and estimator trials |
 
-The sender selects precision and group count for each update using recent feedback and the chosen policy. Application feedback is configured every **50 ms**; this is an experiment setting, not a mandatory QUIC interval. P0-first submission controls which writes the application starts first. Tiered Quinn priorities control transport scheduling when several streams have queued data. Neither guarantees delivery before a deadline.
+The ablations reuse 15 fixed INT4 P0–P1 controls from the precision cohort; those controls are **not counted twice**. The 225 newly run cases complete the main matrix alongside the prior 39. The separate repository validation uses campus/jitter/loss × equal/tiered priorities, once each; it validates integration, not a statistical ranking.
 
-The **buffer** selector uses the reserve of ready media to adjust the load. The **deadline** selector estimates how much data can arrive before the next update's playback deadline, allowing for receiver processing. Both can switch precision and group count.
+All use the actual 299 Flame Steak INT2/INT4 **keep20** checkpoints and saved saliency orders. Models are available ahead of playback (VoD). INT2 P0 is 11.69 MB per clip; INT4 P0–P1 is 38.22 MB; full INT4 is 76.38 MB. MB means 1,000,000 bytes. Initial scene delivery is excluded.
 
-The campus trace retains its original relative timestamps and is capped at 70 Mbit/s. Startup trials also use the controlled 28 → 70 → 16.8 → 28 Mbit/s profile, changing at 3, 5 and 7 seconds, with 10 ms added delay in each direction and no injected loss. The receiver starts after 200, 500 or 1,000 ms of buffered media. Two selectors, two traces, three buffer targets and three repetitions give 36 trials; three additional trials compare bandwidth estimators.
+The measured campus trace retains its timestamps and is capped at 70 Mbit/s. Five profiles add: nothing (`campus`); 40 ms delay; normally distributed 40±10 ms delay (`jitter`); 20 ms delay plus 2% random loss; or 20 ms plus Gilbert–Elliott burst loss (1%,25%,80%,0.1%). These preserve the supplied shared-loopback bottleneck and 1,000-packet queue. The startup sweep instead uses campus/controlled rates with 10 ms each direction and zero injected loss.
 
-## What the supplied results support
+Feedback is configured every 50 ms. The sender reads the latest feedback and Quinn path state before admitting another update. New choices affect future updates, not streams already in flight. The default playable-media limit is 60 updates; it is separate from the 12-update admission window, the legacy chunk-writer limit, and QUIC’s congestion window.
 
-| Comparison | Result | Interpretation |
-| --- | --- | --- |
-| Campus fixed INT4 P0–P1 versus joint adaptive precision/tiers; three repeats | Median startup **607 → 282 ms**, zero stalls in both. Median application bytes **38.22 → 44.55 MB** and PSNR **27.76 → 27.13 dB**. | Faster startup came with more bytes and lower average PSNR. This is a trade-off, not an improvement at equal cost and quality. |
-| Ascending retained-block order versus saved saliency, fixed INT4 P0–P1 | Same **38,216,575 application bytes**: PSNR **27.60 → 27.76 dB**, SSIM **0.841 → 0.862**. | Weight selection/order improves the reconstructed sequence at this fixed payload. The fixed receiver waits for both selected groups. |
-| Concurrent versus P0-first application submission, equal Quinn priorities | Median P0-first arrival **19.1% → 79.9%** on campus. Combining P0-first submission with tiered Quinn priorities reached 299/299 in each campus repeat. | Application submission and transport scheduling are separate controls. These are receiver group-ready ranks, not a packet-arrival guarantee under loss. |
-| Adaptive playback with equal versus tiered Quinn priorities | Tiered priorities had zero stalls in all six delay/jitter trials; every random/burst-loss trial still stalled. | Earlier base delivery helps in some conditions. Priority does not create capacity or remove retransmission delay. Adaptive payloads can differ between arms. |
-| Fixed INT2 P0 versus adaptive, random loss in the precision study; three repeats | Median stalled time **4.65 → 7.43 seconds**, despite median stall counts **37 → 36**. | A lower stall count can still mean longer freezing. Retain stalled duration alongside event count. |
-| Startup selection sweep | All **39 archived trials** have quality scores and zero stalls. Only **2/18** tested policy/threshold contrasts meet the median byte/quality/stall tolerances; none of six equal-threshold contrasts do. | No general superiority of deadline-aware selection is established. Comparing different buffer thresholds changes two factors. |
-| Hybrid versus smoothed receiver-goodput estimator; controlled trace, 500 ms target, three pairs | Median paired changes: startup **−25.5 ms**, sender UDP bytes **−54.0%**, PSNR **−0.294 dB**; zero stalls in both. | Goodput selected smaller representations. The bandwidth saving has a quality cost; it is not a uniform win across quality metrics. |
+## New results
 
-The study's declared comparison tolerances are 5% sender UDP bytes, 0.25 dB PSNR and 100 ms stalled time. The two passing contrasts each pass only two of their three individual pairs. Median paired changes are calculated within each repetition before aggregation; they need not equal the difference between arm medians.
+Each number below is the median of three independent network runs on GPU1. Stalled time is total freezing per approximately ten-second clip. Quality is update-aligned replay against matching FP32 checkpoint renders.
 
-The previously cited final campus pair (**580 versus 613 ms**) now has quality results: deadline versus buffer gave **27.10 versus 27.44 dB PSNR** and **45.27 versus 48.60 MB sender UDP payload**. It started sooner using fewer bytes, with lower quality; that single pair exceeds both the 5% byte and 0.25 dB quality tolerances.
+| Profile / policy | Startup ms | Stalled s | App MB | PSNR dB |
+| --- | ---: | ---: | ---: | ---: |
+| campus / int4-p1 | 720.7 | 0.00 | 38.22 | 29.84 |
+| campus / adaptive | 394.1 | 0.00 | 44.16 | 29.09 |
+| loss / int2-p0 | 790.5 | 7.31 | 11.69 | 27.86 |
+| loss / adaptive | 711.0 | 7.19 | 12.34 | 27.99 |
+| burst / int2-p0 | 719.8 | 5.33 | 11.69 | 27.86 |
+| burst / adaptive | 766.5 | 6.67 | 12.11 | 28.00 |
 
-## What changed on gpu1
+Campus adaptation started 45.3% sooner, but used 15.5% more application bytes and lost 0.74 dB PSNR. This is a trade-off. Early approximate cumulative transforms can affect later states; more later bytes do not guarantee recovery from earlier approximation error.
 
-The experiment policies, compressed payloads, saved orders and network topology were retained. All 299 generated group manifests match the recorded payload manifests after source-path rebasing. Network namespaces and veth links run inside private rootless user/mount/network namespaces, so the experiment does not alter the host network.
+| Adaptive profile | Stalled s, equal / tiered | P95 P0-ready ms, equal / tiered |
+| --- | ---: | ---: |
+| campus | 0.00 / 0.00 | 209.5 / 154.6 |
+| delay | 0.00 / 0.00 | 540.3 / 217.4 |
+| jitter | 0.67 / 0.00 | 579.1 / 207.3 |
+| loss | 7.35 / 7.83 | 1061.5 / 1175.6 |
+| burst | 4.41 / 6.96 | 916.4 / 1127.2 |
 
-The available GV100 requires tiny-cuda-nn's CutlassMLP fallback rather than the source machine's FullyFusedMLP. The original tiny-cuda-nn commit was built in an isolated overlay. All 1,991,680 loaded parameters match exactly in a checkpoint probe, but inference differs numerically: maximum absolute difference 0.001465 in a 128-value probe. Other compatibility changes are EGL context selection, accepting the source's disabled rasterizer depth option, and local VMAF 3.0.0/cuDNN library resolution. The installed Torch/CUDA and rasterizer build differ from the supplied environment. Therefore these are **gpu1 compatibility reruns**, not bitwise replication of Públio's hardware.
+Tiered priority avoided stalls in all six delay/jitter runs. All random/burst-loss runs still stalled. These loss realizations are independent, so the table does not establish a general loss ranking. Adaptive arms can choose different payloads and quality; their full values remain in the CSV. P0-ready means a complete usable group at the receiver, not the first packet.
 
-The reference is a same-view cumulative FP32 render with dynamic additions omitted. It is not calibrated cam00 source-video ground truth. The GPU view was checked to contain the cooking scene rather than black images. Replay quality measures update-aligned rendered content; startup/stalls separately measure waiting. These scores do not measure quality throughout freezes or every intermediate group arrival. Startup is measured after scene/GPU preparation, not from the initial scene download.
+At a fixed **38,216,575 bytes**, saliency versus ascending retained-block order produced (this changes the selected weight subset; transport-only controls keep that subset fixed):
 
-## Fresh gpu1 results
+- PSNR (dB): **28.9864 → 29.8355**.
+- SSIM: **0.8518 → 0.8676**.
 
-All **39 live cases** applied and presented **299/299 updates**; all **11,661 rendered image pairs** were scored. The ten scheduled live captures in each case matched replay exactly (**390/390**), with zero dropped captures and zero buffer stalls. Each case recorded **1–4 playback-tick overruns**. The table gives medians of three repeats on this GPU; these absolute values are not compared directly with the source machine.
+With equal Quinn priorities and the same fixed payload, P0-first submission changed campus P0-first completion from **16.7% to 85.6%**. These fixed-payload controls isolate submission/saliency effects; adaptive QoE tests measure their interaction with representation selection.
 
-| Trace | Buffer target | Startup ms, buffer / deadline | PSNR dB, buffer / deadline | App MB, buffer / deadline |
-| --- | --- | --- | --- | --- |
-| controlled | 200 ms | 497.2 / 465.3 | 28.894 / 28.770 | 35.24 / 37.91 |
-| controlled | 500 ms | 692.0 / 693.3 | 29.139 / 28.861 | 36.38 / 33.95 |
-| controlled | 1000 ms | 905.5 / 877.7 | 29.042 / 28.835 | 37.64 / 33.52 |
-| campus | 200 ms | 430.6 / 402.6 | 29.547 / 29.427 | 47.11 / 44.77 |
-| campus | 500 ms | 566.0 / 556.5 | 29.614 / 29.225 | 46.30 / 43.77 |
-| campus | 1000 ms | 700.4 / 699.0 | 29.607 / 29.170 | 47.51 / 44.20 |
+The prior 39-case startup/estimator results remain part of this matrix. They did not establish a general deadline-selector advantage. In the controlled 500 ms estimator comparison, goodput-only reduced paired-median UDP payload by 53.55% and startup by 29.2 ms, with 0.511 dB lower PSNR and zero stalls in either arm. Lower goodput can mean an application-limited sender as well as a slow path.
 
-The buffer target is **stored media duration**, not a mandatory wall-clock wait: one second of media can arrive in less than one second.
+## Camera and checks
 
-Here **3/18** policy/threshold contrasts meet the declared median tolerances; **one of six equal-threshold contrasts** does. At the 200 ms campus target, deadline selection gave median paired changes of **-33.85 ms startup**, **-4.84% sender UDP bytes** and **-0.078 dB PSNR**. Two of three individual pairs meet the tolerances. This is an isolated positive case, not a general ranking.
+The original hard-coded camera pose is now verified against official **cam00** COLMAP calibration: all four source cohorts match within 4.9e-9. The initial scene file is identical to the official training fixture (Git blob `823792edc9d815a77a6ebb693861c8b1e8385712`). Official video frame zero, after undistortion, matches the fixture at 51.30 dB; it is close, not byte-identical. Export code establishes NTC 0 → video frame 1. All 299 aligned video references were extracted on the server.
 
-For the controlled 500 ms estimator comparison, goodput-only versus hybrid gave median paired changes of **-29.2 ms startup**, **-53.55% sender UDP bytes** and **-0.511 dB PSNR**, with zero stalls in both. P95 bottleneck backlog fell by **634 kB** and P95 sender RTT by **271 ms** (paired medians). Smaller transfers reduced queue pressure while sacrificing quality.
+The 264 source-protocol cases retain the original projection, which approximates fx=fy (0.384% horizontal focal discrepancy). The six repository cases use [exact cam00 intrinsics](cam00.json). Compression comparisons use the same camera on both sides. Calibrated and original-camera quality values are not mixed as an algorithm improvement.
 
-Controlled-profile rows have `all_target_ranges_seen_during_selection=False` because the supplied check requires a 38–<62 Mbit/s configured-rate interval; 28/70/16.8/28 never includes that interval. This flag is not proof of a missing controlled-profile phase. All 18 campus rows satisfy the three-bin check.
+As a separate model/camera check, the calibrated FP32 replay versus source video scored **26.93 dB PSNR**, **0.8436 SSIM** over 299 frames. This includes model error and omitted dynamic additions; it is not compression-only quality.
 
-One timed trial, `controlled-500ms-rep2-deadline-goodput`, overlapped an accidental side quality probe. Its original files were quarantined outside the results archive and its row was replaced with an isolated rerun. That replacement occurred after the planned trial sequence. The final table contains one valid row per planned case.
+Every selected group passed the transport hash checks; applied trajectories were checked again during scoring. Offline quality is computed once per byte-identical applied trajectory; every reused score is disclosed in `quality_reused_from` and server `SCORE_REUSE.json`, after checking all applied group bytes/order and every scheduled live image. Timing/network measurements are always independent. Direct full replay remains available through `parallel_quality.py`.
 
-The six transport-only controls all verified their selected payloads. Campus controls missed zero synthetic base deadlines. With random loss, base deadline misses were 261/299 for fixed INT2 P0, 299/299 for fixed INT4 P0–P1 and 184/299 for adaptive. Each arm has one loss realization: these counts do not establish a ranking, rendered FPS or live stall behavior. Their connection-relative synthetic deadlines differ from the live startup-buffer clock.
+Validation: **77 Python checks**, the separately enabled real private-netns regression, and **9 Rust tests** passed. The old flat INT4 GPU path and the chunk-admission scheduler with both paired precisions also passed live/replay checks.
 
-## Evidence and reproduction
+## Scope and evidence
 
-- [Archived trial CSV](archived-trials.csv): one row per unique supplied result, with member paths into the five original ZIPs.
-- [Fresh gpu1 CSV](gpu1-trials.csv): live reruns and separately labeled network-only controls; byte counts are application or UDP payloads as named, not complete Ethernet/IP wire traffic.
-- Source bundle: [Drive download](https://drive.google.com/file/d/1kEgg-dlO702v1pIdvsoiXs4TcehoujDD/view). Size **2,610,133,391 bytes**; SHA-256 `6415bda495b011581d517a5be8105faddf50b4fce35c22ff3397792de156d546`. All **1,649 manifest entries** verified.
+These are single-clip, same-host namespace **emulations** on the GV100. The prepared CutlassMLP/Torch/CUDA/rasterizer environment differs from Públio’s original machine, so absolute scores and startup times are not cross-hardware improvement claims. The original tiny-cuda-nn parameter probe is exact; its backend output probe differed by up to 0.001465. VMAF uses local v3.0.0; all new comparisons use that same build.
 
-Raw data, logs, rootless launch helpers, compatibility patches, original ZIPs and the replacement-trial ledger stay at `/local/users/abeigi/q3dg-publio-reproduction-20261124`. Reproduction command on gpu1: `bash /local/users/abeigi/q3dg-publio-reproduction-20261124/run_startup39_compatibility.sh`. It resumes completed cases. No scene/model assets or runtimes were placed on the Mac.
+Startup measures the first GPU-render-ready update **after QUIC connection establishment**, with the scene/GPU preloaded; handshake, scene download and remote-desktop latency are excluded. Dynamic Gaussian additions are omitted, as in the supplied study. Replay quality does not penalize frozen display time: stalled duration and tick overruns are reported separately. Legacy connection-relative transport-deadline flags are not the buffered player’s actual presentation clock. Priority cannot overcome insufficient P0 capacity or retransmission delay; cumulative updates cannot simply be skipped.
 
-These results concern one clip and a small set of network profiles. Completion of all 299 updates alone does not demonstrate sustained 30 FPS rendering. The source's full 264-trial factorial was audited, not independently rerun in full.
+- [Fresh GPU1 CSV](gpu1-trials.csv): 264 main rows plus six clearly labeled calibrated repository cases; raw trial paths and quality reuse are explicit.
+- [Supplied result audit](archived-trials.csv): 264 main source cases plus seven historical pilots; these archive rows are distinct from fresh measurements.
+- [Implementation and server commands](../../ADAPTIVE.md), [source provenance](../../UPSTREAM.json).
+
+[Source bundle](https://drive.google.com/file/d/1kEgg-dlO702v1pIdvsoiXs4TcehoujDD/view) SHA256: `6415bda495b011581d517a5be8105faddf50b4fce35c22ff3397792de156d546`; 2,610,133,391 bytes and 1,649 verified manifest entries. Models, source archives and detailed trial CSVs/logs stay under `/local/users/abeigi/q3dg-publio-reproduction-20261124`. Additional camera/integration checks and the final summary are under `/local/users/abeigi/q3dg-completion-20261124`. Scene/model files were not downloaded to the Mac.
+
+The previously reported startup trial that overlapped a side quality probe remains quarantined and replaced by its isolated rerun; the 39-case cohort contains only that valid replacement. Every newly timed phase ran separately from GPU scoring.
